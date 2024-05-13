@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -406,
-    "scrollLeft": -800,
+    "scrollTop": -883,
+    "scrollLeft": -635,
     "zoomLevel": 1,
     "show": 511,
     "database": 4,
@@ -852,17 +852,17 @@
         "name": "reg_date",
         "comment": "작성일",
         "dataType": "DATETIME",
-        "default": "",
+        "default": "CURRENT_TIMESTAMP",
         "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 60,
           "widthComment": 60,
           "widthDataType": 60,
-          "widthDefault": 60
+          "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1715236010056,
+          "updateAt": 1715584735247,
           "createAt": 1715063752322
         }
       },
@@ -1993,7 +1993,7 @@
         "comment": "pk",
         "dataType": "INT",
         "default": "",
-        "options": 10,
+        "options": 11,
         "ui": {
           "keys": 1,
           "widthName": 114,
@@ -2002,7 +2002,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715144378507,
+          "updateAt": 1715584555516,
           "createAt": 1715144286810
         }
       },
@@ -2732,17 +2732,17 @@
         "name": "mod_date",
         "comment": "수정일",
         "dataType": "DATETIME",
-        "default": "CURRENT_TIMESTAMP",
+        "default": "",
         "options": 0,
         "ui": {
           "keys": 0,
           "widthName": 60,
           "widthComment": 60,
           "widthDataType": 60,
-          "widthDefault": 122
+          "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715236029236,
+          "updateAt": 1715584747696,
           "createAt": 1715236001509
         }
       },
@@ -3403,7 +3403,8 @@
         "name": 1715236010055,
         "dataType": 1715063809229,
         "comment": 1715236001423,
-        "options(notNull)": 1715235996168
+        "options(notNull)": 1715235996168,
+        "default": 1715584735246
       }
     ],
     "6O5Qv0dWL8m0fgKUqrX0M": [
@@ -4100,7 +4101,8 @@
         "options(primaryKey)": 1715144288715,
         "name": 1715144298778,
         "comment": 1715144301872,
-        "dataType": 1715144378507
+        "dataType": 1715144378507,
+        "options(autoIncrement)": 1715584555515
       }
     ],
     "lod9Ie3ILRPyyZbV139mF": [
@@ -4563,7 +4565,7 @@
         "name": 1715236012533,
         "dataType": 1715236016433,
         "comment": 1715236025026,
-        "default": 1715236029235
+        "default": 1715584747695
       }
     ],
     "uRl0lL6fTvn1nJK-Pm2m_": [
