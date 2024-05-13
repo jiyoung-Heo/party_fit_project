@@ -4,9 +4,9 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -999,
-    "scrollLeft": -158.9672,
-    "zoomLevel": 1,
+    "scrollTop": -66.1428,
+    "scrollLeft": -118.0243,
+    "zoomLevel": 0.8,
     "show": 511,
     "database": 4,
     "databaseName": "partyfit",
@@ -1603,7 +1603,7 @@
         "comment": "운동 종류",
         "dataType": "VARCHAR(100)",
         "default": "",
-        "options": 12,
+        "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 95,
@@ -1612,7 +1612,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715589546054,
+          "updateAt": 1715604053394,
           "createAt": 1715067491905
         }
       },
@@ -3749,7 +3749,7 @@
         "options(notNull)": 1715067508475,
         "default": 1715067508475,
         "comment": 1715589542327,
-        "options(unique)": 1715589539187
+        "options(unique)": 1715604053392
       }
     ],
     "tYzOfuslJMDbcAILmhf8L": [

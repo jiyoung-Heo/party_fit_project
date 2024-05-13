@@ -70,9 +70,6 @@ CREATE TABLE party
   PRIMARY KEY (party_id)
 ) COMMENT 'partyFit 그룹';
 
-ALTER TABLE party
-  ADD CONSTRAINT UQ_exercise_category UNIQUE (exercise_category);
-
 CREATE TABLE party_member_list
 (
   party_member_list_id INT        NOT NULL AUTO_INCREMENT COMMENT 'pk',
