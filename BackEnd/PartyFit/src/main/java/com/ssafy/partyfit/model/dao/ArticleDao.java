@@ -7,4 +7,5 @@ import com.ssafy.partyfit.model.dto.Article;
 
 public interface ArticleDao {
 	List<Article> selectArticle(Map<String, Object> map);
+	int insertArticle(Article article);
 }

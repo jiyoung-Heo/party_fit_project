@@ -23,5 +23,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.selectArticle(map);
 	}
 
+	@Override
+	public int makeArticle(Article article) {
+		return articleDao.insertArticle(article);
+	}
+
 
 }

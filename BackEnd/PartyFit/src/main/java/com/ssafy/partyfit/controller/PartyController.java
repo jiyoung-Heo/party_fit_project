@@ -21,6 +21,8 @@ import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleServiceImpl;
 import com.ssafy.partyfit.model.service.PartyServiceImpl;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 @RequestMapping("/party")
 public class PartyController {
@@ -66,6 +68,28 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}else {
 			return new ResponseEntity<List<Article>>(articleList, HttpStatus.OK);
+		}
+	}
+	
+	@PostMapping("/{partyId}/article/{categoty}/add")
+	public ResponseEntity<?> makeArticle(@PathVariable("partyId") int partyId, @PathVariable("categoty") int category, @RequestBody Article article, HttpSession session){
+		int userId;
+		try{
+			userId = (int) session.getAttribute("loginUser");
+		}catch(NullPointerException e) {
+			userId = 1;
+		}
+		
+		article.setUserId(userId);
+		article.setCategory(category);
+		article.setPartyId(partyId);
+		
+		int result = articleService.makeArticle(article);
+		
+		if(result == 0) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
 }
