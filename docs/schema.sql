@@ -8,6 +8,7 @@ CREATE TABLE article
   mod_date   DATETIME      NULL     COMMENT '수정일',
   view_count INT           NOT NULL DEFAULT '0' COMMENT '조회수',
   category   VARCHAR(10)   NOT NULL COMMENT '게시판 종류(0:자유게시판, 1: 가입인사, 2:공지사항)',
+  delete_yn  VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제여부',
   user_id    INT           NOT NULL COMMENT 'user pk',
   party_id   INT           NOT NULL COMMENT '그룹 pk',
   PRIMARY KEY (article_id)
