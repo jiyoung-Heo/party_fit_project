@@ -29,7 +29,7 @@ onMounted(()=>{
 const clickStyle= ref('')
 
 const clickMenu = () => {
-  consolr.log('test')
+  console.log('test')
   clickStyle = 'color:coral;'
 }
 
