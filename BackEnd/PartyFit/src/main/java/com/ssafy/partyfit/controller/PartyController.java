@@ -115,11 +115,11 @@ public class PartyController {
 		}
 	}
 
-	@GetMapping("/{partyId}/member/{grade}")
-	public ResponseEntity<?> showMember(@PathVariable("partyId") int partyId, @PathVariable("grade") int grade) {
+	@GetMapping("/{partyId}/member/{status}")
+	public ResponseEntity<?> showMember(@PathVariable("partyId") int partyId, @PathVariable("status") int status) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
-		map.put("grade", grade);
+		map.put("status", status);
 		
 		List<PartyMemberUser> partyMemberList = partyMemberService.showPartyMember(map);
 		if (partyMemberList == null || partyMemberList.size() == 0) {

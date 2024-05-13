@@ -7,6 +7,6 @@
 		select u.username, u.age, u.login_id , m.grade, m.status from party_member m, user u 
 		where m.party_id = #{partyId} 
 		and m.user_id = u.user_id
-		and m.grade = #{grade}
+		and m.status = #{status}
 	</select>
 </mapper>
