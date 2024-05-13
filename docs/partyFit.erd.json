@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -478.8094,
-    "scrollLeft": -277.7775,
+    "scrollTop": -547.2537,
+    "scrollLeft": -347.2221,
     "zoomLevel": 0.8,
     "show": 511,
     "database": 4,
@@ -403,7 +403,7 @@
           "g-YlRatuQ7u8rEa5HxIf2"
         ],
         "ui": {
-          "x": 1519.8793,
+          "x": 1512.3793,
           "y": 486.1105,
           "zIndex": 968,
           "widthName": 60,
@@ -411,7 +411,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1715236868802,
+          "updateAt": 1715607585396,
           "createAt": 1715232620758
         }
       },
@@ -923,18 +923,18 @@
         "tableId": "m_FQeJ5SeQhk9C--IYe3O",
         "name": "category",
         "comment": "게시판 종류(0:자유게시판, 1: 가입인사, 2:공지사항)",
-        "dataType": "VARCHAR(10)",
+        "dataType": "INT",
         "default": "",
         "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 60,
           "widthComment": 271,
-          "widthDataType": 75,
+          "widthDataType": 60,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715604707448,
+          "updateAt": 1715607934659,
           "createAt": 1715065114606
         }
       },
@@ -2951,7 +2951,7 @@
           "columnIds": [
             "g-YlRatuQ7u8rEa5HxIf2"
           ],
-          "x": 1762.3793,
+          "x": 1754.8793,
           "y": 486.1105,
           "direction": 4
         },
@@ -3338,7 +3338,7 @@
       {
         "options(notNull)": 1715065114605,
         "name": 1715604707447,
-        "dataType": 1715583016210,
+        "dataType": 1715607934659,
         "default": 1715065114605,
         "comment": 1715233919761
       }
