@@ -9,13 +9,17 @@
             <p><img src="" alt="종모양이미지"></p>
             <p><img src="" alt="프로필사진"></p>
             <p>000님</p>
+            | 
+      <RouterLink :to="{name:'login'}">로그인</RouterLink> |
+      <RouterLink :to="{name:'signup'}">회원가입</RouterLink>
+
         </div>
     </div>
     <nav class="navbar-menu">
       <!-- routerlink로 수정 -->
       <RouterLink :to="{name:'myFit'}">나의 운동</RouterLink>
       <RouterLink :to="{name:'myPartyFit'}">나의 party fit</RouterLink>
-      <RouterLink :to="{name:'allPartyFit'}">전체 party fit</RouterLink>
+      <RouterLink :to="{name:'allPartyFit'}">전체 party fit</RouterLink> 
     </nav>
   </div>
 </template>
