@@ -3,6 +3,8 @@ import MainView from '@/views/MainView.vue'
 import MyFitView from '@/views/MyFitView.vue'
 import MyPartyFitView from '@/views/MyPartyFitView.vue'
 import AllPartyFitView from '@/views/AllPartyFitView.vue'
+import UserLogin from '@/components/user/UserLogin.vue'
+import UserCreate from '@/components/user/UserCreate.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -27,8 +29,33 @@ const router = createRouter({
           name:'allPartyFit',
           component: AllPartyFitView
         },
+        
+      
       ]
+
     },
+    {
+      path: '/user',
+      name: 'user',
+      component: MainView,
+      children:[
+        {
+          path:'/login',
+          name:'login',
+          component: UserLogin,
+        },
+        {
+          path:'/signup',
+          name:'signup',
+          component: UserCreate,
+        },
+        
+        
+  
+      ]
+
+    },
+
   ]
 })
 
