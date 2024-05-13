@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,5 +92,17 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
-
+	
+	// Delete /article/{articleId}로도 충분히 가능한 api이다. 회의 필요
+	@DeleteMapping("/{partyId}/article/{articleId}")
+	public ResponseEntity<?> removeArticle(@PathVariable("articleId") int articleId){
+		int result = articleService.removeArticle(articleId);
+		if(result == 0) {
+			//삭제할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}else {
+			//데이터를 삭제했을 경우
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
 }

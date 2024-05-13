@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.partyfit.model.dao.ArticleDao">
 	<select id="selectArticle" parameterType="map">
-		select title, content, reg_date, mod_date, view_count, category,
+		select article_id, title, content, reg_date, mod_date, view_count, category,
 		user_id, party_id from article
 		where category = #{category} and
 		party_id = #{partyId}
@@ -21,4 +21,7 @@
 		article(title, content, category, user_id, party_id) 
 		values(#{title}, #{content}, #{category}, #{userId}, #{partyId})
 	</insert>
+	<delete id="deleteArticle" parameterType="int">
+		delete from article where article_id = #{articleId}
+	</delete>
 </mapper>

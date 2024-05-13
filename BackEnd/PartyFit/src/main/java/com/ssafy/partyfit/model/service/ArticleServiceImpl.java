@@ -28,5 +28,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleDao.insertArticle(article);
 	}
 
+	@Override
+	public int removeArticle(int articleId) {
+		return articleDao.deleteArticle(articleId);
+	}
+
 
 }
