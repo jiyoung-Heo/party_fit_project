@@ -12,6 +12,7 @@
       </div>
       <div>
         <button @click="userLogin">로그인</button>
+        
       </div>
     </fieldset>
   </div>
@@ -30,6 +31,7 @@ const password = ref("");
 
 const userLogin = function () {
   store.userLogin(loginId.value, password.value);
+  
   router.push({name:"home"})
 };
 </script>
