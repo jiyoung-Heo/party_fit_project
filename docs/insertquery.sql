@@ -11,7 +11,7 @@ INSERT INTO party (name, introduction, introduction_image, exercise_category, pa
 ('코딩 동아리', '함께 코딩 공부하는 동아리입니다.', NULL, '프로그래밍', '1');
 
 -- article 테이블 더미 데이터
-INSERT INTO article (title, content, catagory, user_id, party_id) VALUES 
+INSERT INTO article (title, content, category, user_id, party_id) VALUES 
 ('첫 번째 게시글', '첫 번째 게시글 내용입니다.', '0', 1, 1),
 ('두 번째 게시글', '두 번째 게시글 내용입니다.', '1', 2, 2),
 ('세 번째 게시글', '세 번째 게시글 내용입니다.', '2', 3, 3);

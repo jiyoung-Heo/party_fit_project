@@ -4,8 +4,8 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -66.1428,
-    "scrollLeft": -118.0243,
+    "scrollTop": -620.6984,
+    "scrollLeft": -395.8021,
     "zoomLevel": 0.8,
     "show": 511,
     "database": 4,
@@ -919,7 +919,7 @@
       "FkVtSqVi7IxiZC35ogCqF": {
         "id": "FkVtSqVi7IxiZC35ogCqF",
         "tableId": "m_FQeJ5SeQhk9C--IYe3O",
-        "name": "catagory",
+        "name": "category",
         "comment": "게시판 종류(0:자유게시판, 1: 가입인사, 2:공지사항)",
         "dataType": "VARCHAR(10)",
         "default": "",
@@ -932,7 +932,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715583016211,
+          "updateAt": 1715604707448,
           "createAt": 1715065114606
         }
       },
@@ -3315,7 +3315,7 @@
       -1,
       {
         "options(notNull)": 1715065114605,
-        "name": 1715228875324,
+        "name": 1715604707447,
         "dataType": 1715583016210,
         "default": 1715065114605,
         "comment": 1715233919761
