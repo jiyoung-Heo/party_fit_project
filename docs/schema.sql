@@ -52,12 +52,12 @@ CREATE TABLE meet
   PRIMARY KEY (meet_id)
 ) COMMENT 'partyFit 내부 모임';
 
-CREATE TABLE meet_member_list
+CREATE TABLE meet_member
 (
-  meet_member_list_id INT NOT NULL AUTO_INCREMENT COMMENT 'user 고유번호',
-  user_id             INT NOT NULL COMMENT 'user pk',
-  meet_id             INT NOT NULL COMMENT 'meet pk',
-  PRIMARY KEY (meet_member_list_id)
+  meet_member_id INT NOT NULL AUTO_INCREMENT COMMENT 'user 고유번호',
+  user_id        INT NOT NULL COMMENT 'user pk',
+  meet_id        INT NOT NULL COMMENT 'meet pk',
+  PRIMARY KEY (meet_member_id)
 ) COMMENT '내부 모임에 참여예정인 회원 리스트 ';
 
 CREATE TABLE party
@@ -71,14 +71,14 @@ CREATE TABLE party
   PRIMARY KEY (party_id)
 ) COMMENT 'partyFit 그룹';
 
-CREATE TABLE party_member_list
+CREATE TABLE party_member
 (
-  party_member_list_id INT        NOT NULL AUTO_INCREMENT COMMENT 'pk',
-  grade                VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '등급(0:일반, 1: 운영진)',
-  status               VARCHAR(1) NULL     DEFAULT '0' COMMENT '상태(0: 가입대기중, 1: 가입승인)',
-  user_id              INT        NOT NULL COMMENT 'user pk',
-  party_id             INT        NOT NULL COMMENT '그룹 pk',
-  PRIMARY KEY (party_member_list_id)
+  party_member_id INT        NOT NULL AUTO_INCREMENT COMMENT 'pk',
+  grade           VARCHAR(1) NOT NULL DEFAULT '0' COMMENT '등급(0:일반, 1: 운영진)',
+  status          VARCHAR(1) NULL     DEFAULT '0' COMMENT '상태(0: 가입대기중, 1: 가입승인)',
+  user_id         INT        NOT NULL COMMENT 'user pk',
+  party_id        INT        NOT NULL COMMENT '그룹 pk',
+  PRIMARY KEY (party_member_id)
 ) COMMENT 'partyFit  회원관리';
 
 CREATE TABLE review
@@ -131,8 +131,8 @@ ALTER TABLE user
 ALTER TABLE user
   ADD CONSTRAINT UQ_email UNIQUE (email);
 
-ALTER TABLE meet_member_list
-  ADD CONSTRAINT FK_user_TO_meet_member_list
+ALTER TABLE meet_member
+  ADD CONSTRAINT FK_user_TO_meet_member
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
@@ -141,13 +141,13 @@ ALTER TABLE meet
     FOREIGN KEY (party_id)
     REFERENCES party (party_id);
 
-ALTER TABLE party_member_list
-  ADD CONSTRAINT FK_user_TO_party_member_list
+ALTER TABLE party_member
+  ADD CONSTRAINT FK_user_TO_party_member
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
-ALTER TABLE party_member_list
-  ADD CONSTRAINT FK_party_TO_party_member_list
+ALTER TABLE party_member
+  ADD CONSTRAINT FK_party_TO_party_member
     FOREIGN KEY (party_id)
     REFERENCES party (party_id);
 
@@ -186,8 +186,8 @@ ALTER TABLE review
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
-ALTER TABLE meet_member_list
-  ADD CONSTRAINT FK_meet_TO_meet_member_list
+ALTER TABLE meet_member
+  ADD CONSTRAINT FK_meet_TO_meet_member
     FOREIGN KEY (meet_id)
     REFERENCES meet (meet_id);
 
