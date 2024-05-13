@@ -5,12 +5,13 @@
         <TheMyFitHeaderNavVue />
         <CarenderVue />
       </div>
-      <div class="col-sm-4">
+      <div class="col-sm-4 schedule-list">
         <ReservationVue />
       </div>
     </div>
     <div class="row">
       <div class="col-sm-8">
+        
         <MyPartyFitVue />
       </div>
       <div class="col-sm-4">
@@ -32,4 +33,5 @@ import TodoCheckVue from "@/components/myfit/TodoCheckVue.vue";
  .row .col-sm-8, .col-sm-4{
   border:1px solid red;
  }
+
 </style>
