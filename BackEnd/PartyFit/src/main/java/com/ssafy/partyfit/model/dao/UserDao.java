@@ -10,6 +10,8 @@ public interface UserDao {
 	// user login_id로 검색
 	public User selectByInfo(User user);
 	
-	
-	
+	// user 정보수정
+	public void updateUserInfo(User user);
+
+	public User searchById(int id);
 }

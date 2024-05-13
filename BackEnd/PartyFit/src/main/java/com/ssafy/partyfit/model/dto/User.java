@@ -14,20 +14,7 @@ public class User {
 	private char deleteYn;
 	private int age;
 	
-    public User() {
-    }
-    
-	
-	public User(String name, String loginId, String password, String username, String email, int age) {
-		super();
-		this.name = name;
-		this.loginId = loginId;
-		this.password = password;
-		this.username = username;
-		this.email = email;
-		this.age = age;
-	}
-	
+
 	
 
 

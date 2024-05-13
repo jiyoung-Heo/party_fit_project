@@ -11,7 +11,9 @@
             <p>000님</p>
             | 
       <RouterLink :to="{name:'login'}">로그인</RouterLink> |
-      <RouterLink :to="{name:'signup'}">회원가입</RouterLink>
+      <RouterLink :to="{name:'signup'}">회원가입</RouterLink> |
+      <RouterLink :to="{name:'myPage'}">마이페이지</RouterLink> |
+
 
         </div>
     </div>
@@ -34,7 +36,7 @@ const clickStyle= ref('')
 
 const clickMenu = () => {
   console.log('test')
-  clickStyle = 'color:coral;'
+  clickStyle.value = 'color:coral;'
 }
 
 </script>

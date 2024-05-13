@@ -7,7 +7,7 @@
   
   <insert id="insertUser" parameterType="User" >
   
-  INSERT INTO user(login_id,name,password,email,username) VALUES ( #{loginId},#{name},#{password},#{email},#{username})
+  INSERT INTO user(login_id,name,password,email,username,age) VALUES ( #{loginId},#{name},#{password},#{email},#{username},#{age})
   </insert>
   
     <select id ="selectByInfo" parameterType="User" resultType="User">
@@ -16,6 +16,20 @@
 		FROM user
 		WHERE login_id = #{loginId} AND password = #{password}
   
+  </select>
+  
+  <update id="updateUserInfo" parameterType="USer">
+  UPDATE user SET username=${username}, email =${email}
+  WHERE user_id=${userId}
+  </update>
+  
+  
+  <select id ="searchById" parameterType="int" resultType="User">
+  
+		SELECT *
+		FROM user
+		WHERE user_id = #{id} 
+		
   </select>
 
   </mapper>
