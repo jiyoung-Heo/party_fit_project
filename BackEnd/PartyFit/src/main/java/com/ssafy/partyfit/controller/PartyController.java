@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,7 +46,7 @@ public class PartyController {
 		}
 	}
 	
-	@PostMapping("/add")
+	@PostMapping("/")
 	public ResponseEntity<?> makeParty(@RequestBody Party party){
 		int result = partyService.makeParty(party);
 		if(result == 0) {
@@ -71,7 +72,7 @@ public class PartyController {
 		}
 	}
 	
-	@PostMapping("/{partyId}/article/{categoty}/add")
+	@PostMapping("/{partyId}/article/{categoty}")
 	public ResponseEntity<?> makeArticle(@PathVariable("partyId") int partyId, @PathVariable("categoty") int category, @RequestBody Article article, HttpSession session){
 		int userId;
 		try{
@@ -92,4 +93,5 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
+
 }
