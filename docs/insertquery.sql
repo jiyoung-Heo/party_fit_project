@@ -32,7 +32,7 @@ INSERT INTO schedule (title, content, start_time, end_time, place, user_id) VALU
 ('두 번째 일정', '두 번째 일정 내용입니다.', '2024-05-14 09:00:00', '2024-05-14 10:00:00', '운동장2', 2);
 
 -- 게시글(article) 테이블 더미 데이터
-INSERT INTO article (title, content, catagory, user_id, party_id) VALUES
+INSERT INTO article (title, content, category, user_id, party_id) VALUES
 ('첫 번째 게시글', '첫 번째 게시글 내용입니다.', '0', 1, 1),
 ('두 번째 게시글', '두 번째 게시글 내용입니다.', '1', 2, 1),
 ('세 번째 게시글', '세 번째 게시글 내용입니다.', '2', 3, 2);
