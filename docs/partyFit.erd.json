@@ -4,12 +4,12 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": 0,
-    "scrollLeft": 0,
+    "scrollTop": -999,
+    "scrollLeft": -158.9672,
     "zoomLevel": 1,
     "show": 511,
     "database": 4,
-    "databaseName": "",
+    "databaseName": "partyfit",
     "canvasType": "ERD",
     "language": 1,
     "tableNameCase": 4,
@@ -73,6 +73,7 @@
           "d7Vdcs3dSqQsduYxWnB7T",
           "9--Ev0LQPrMExSnvAB0py",
           "hgUvvmm5NW4DcYMXzBOG7",
+          "g0VPtr4HIEp-hlICIySbP",
           "oFQUvQFoVufkUv26QHJqE",
           "cCCJBe9PS4inMmaTI6EI3"
         ],
@@ -83,6 +84,7 @@
           "d7Vdcs3dSqQsduYxWnB7T",
           "9--Ev0LQPrMExSnvAB0py",
           "hgUvvmm5NW4DcYMXzBOG7",
+          "g0VPtr4HIEp-hlICIySbP",
           "w4MtdBGd1u1-MlDNjixBQ",
           "oFQUvQFoVufkUv26QHJqE",
           "cCCJBe9PS4inMmaTI6EI3"
@@ -96,7 +98,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1715236872707,
+          "updateAt": 1715588069932,
           "createAt": 1715062906155
         }
       },
@@ -152,7 +154,7 @@
       },
       "izwmb58YAaCqpcBYR0ZfH": {
         "id": "izwmb58YAaCqpcBYR0ZfH",
-        "name": "Comment",
+        "name": "comment",
         "comment": "댓글 ",
         "columnIds": [
           "dze_pRPbMSOeVZbSsBnm-",
@@ -193,7 +195,7 @@
           "color": ""
         },
         "meta": {
-          "updateAt": 1715582928682,
+          "updateAt": 1715590078374,
           "createAt": 1715063718777
         }
       },
@@ -1599,18 +1601,18 @@
         "tableId": "o_LMZqk4b0sP_4CQDHQPe",
         "name": "exercise_category",
         "comment": "운동 종류",
-        "dataType": "VARCHAR(3)",
+        "dataType": "VARCHAR(100)",
         "default": "",
-        "options": 8,
+        "options": 12,
         "ui": {
           "keys": 0,
           "widthName": 95,
           "widthComment": 60,
-          "widthDataType": 68,
+          "widthDataType": 81,
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1715585617955,
+          "updateAt": 1715589546054,
           "createAt": 1715067491905
         }
       },
@@ -2633,6 +2635,26 @@
           "updateAt": 1715236755245,
           "createAt": 1715236755245
         }
+      },
+      "g0VPtr4HIEp-hlICIySbP": {
+        "id": "g0VPtr4HIEp-hlICIySbP",
+        "tableId": "ZXbYx6eWNWb6k5xN2zZM8",
+        "name": "age",
+        "comment": "나이",
+        "dataType": "INT",
+        "default": "",
+        "options": 8,
+        "ui": {
+          "keys": 0,
+          "widthName": 60,
+          "widthComment": 60,
+          "widthDataType": 60,
+          "widthDefault": 60
+        },
+        "meta": {
+          "updateAt": 1715588073148,
+          "createAt": 1715588047555
+        }
       }
     },
     "relationshipEntities": {
@@ -2703,7 +2725,7 @@
             "zu4vgSOzGJUtCMwg_2c9g"
           ],
           "x": 1171.6589,
-          "y": 726.0319333333333,
+          "y": 730.0319333333333,
           "direction": 1
         },
         "end": {
@@ -2759,7 +2781,7 @@
             "zu4vgSOzGJUtCMwg_2c9g"
           ],
           "x": 1171.6589,
-          "y": 808.6985999999999,
+          "y": 820.6985999999999,
           "direction": 1
         },
         "end": {
@@ -2787,7 +2809,7 @@
             "zu4vgSOzGJUtCMwg_2c9g"
           ],
           "x": 1171.6589,
-          "y": 891.3652666666666,
+          "y": 911.3652666666666,
           "direction": 1
         },
         "end": {
@@ -2843,7 +2865,7 @@
             "zu4vgSOzGJUtCMwg_2c9g"
           ],
           "x": 1396.6589,
-          "y": 932.6986,
+          "y": 956.6986,
           "direction": 8
         },
         "end": {
@@ -3183,7 +3205,7 @@
       1715063718777,
       -1,
       {
-        "name": 1715063725183,
+        "name": 1715590078373,
         "comment": 1715063735738
       }
     ],
@@ -3723,10 +3745,11 @@
       -1,
       {
         "name": 1715585617954,
-        "dataType": 1715142924708,
+        "dataType": 1715589546054,
         "options(notNull)": 1715067508475,
         "default": 1715067508475,
-        "comment": 1715142931549
+        "comment": 1715589542327,
+        "options(unique)": 1715589539187
       }
     ],
     "tYzOfuslJMDbcAILmhf8L": [
@@ -4375,6 +4398,25 @@
       1715236755243,
       -1,
       {}
+    ],
+    "g0VPtr4HIEp-hlICIySbP": [
+      "tableColumnEntities",
+      1715588047546,
+      -1,
+      {
+        "name": 1715588054898,
+        "dataType": 1715588073148,
+        "comment": 1715588061479,
+        "options(notNull)": 1715588064854
+      }
+    ],
+    "settings.databaseName": [
+      "settings",
+      -1,
+      -1,
+      {
+        "databaseName": 1715589001664
+      }
     ]
   }
 }

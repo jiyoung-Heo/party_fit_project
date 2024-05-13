@@ -1,6 +1,4 @@
-drop DATABASE partyfit;
-create database partyfit;
-use partyfit;
+
 CREATE TABLE article
 (
   article_id INT           NOT NULL AUTO_INCREMENT COMMENT '게시글 아이디',
@@ -15,7 +13,7 @@ CREATE TABLE article
   PRIMARY KEY (article_id)
 ) COMMENT '게시글';
 
-CREATE TABLE Comment
+CREATE TABLE comment
 (
   comment_id INT           NOT NULL AUTO_INCREMENT COMMENT '댓글 아이디',
   content    VARCHAR(1000) NOT NULL COMMENT '댓글 내용',
@@ -67,10 +65,13 @@ CREATE TABLE party
   name               VARCHAR(20)   NOT NULL COMMENT '그룹 이름',
   introduction       VARCHAR(4000) NOT NULL COMMENT '그룹 소개글',
   introduction_image VARCHAR(1000) NULL     COMMENT '그룹 소개 이미지',
-  exercise_category  VARCHAR(3)    NOT NULL COMMENT '운동 종류',
+  exercise_category  VARCHAR(100)  NOT NULL COMMENT '운동 종류',
   party_type         VARCHAR(1)    NOT NULL DEFAULT '0' COMMENT '그룹종류(0:개인그룹, 1:기업그룹)',
   PRIMARY KEY (party_id)
 ) COMMENT 'partyFit 그룹';
+
+ALTER TABLE party
+  ADD CONSTRAINT UQ_exercise_category UNIQUE (exercise_category);
 
 CREATE TABLE party_member_list
 (
@@ -117,6 +118,7 @@ CREATE TABLE user
   password  VARCHAR(100)  NOT NULL COMMENT '비밀번호',
   username  VARCHAR(20)   NOT NULL COMMENT '닉네임',
   email     VARCHAR(255)  NOT NULL COMMENT '이메일',
+  age       INT           NOT NULL COMMENT '나이',
   profile   VARCHAR(1000) NULL     COMMENT '프로필 사진',
   delete_yn VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '탈퇴여부',
   PRIMARY KEY (user_id)
@@ -156,13 +158,13 @@ ALTER TABLE article
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
-ALTER TABLE Comment
-  ADD CONSTRAINT FK_user_TO_Comment
+ALTER TABLE comment
+  ADD CONSTRAINT FK_user_TO_comment
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
-ALTER TABLE Comment
-  ADD CONSTRAINT FK_article_TO_Comment
+ALTER TABLE comment
+  ADD CONSTRAINT FK_article_TO_comment
     FOREIGN KEY (article_id)
     REFERENCES article (article_id);
 
