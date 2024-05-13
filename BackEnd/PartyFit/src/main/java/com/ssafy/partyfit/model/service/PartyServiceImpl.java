@@ -20,7 +20,7 @@ public class PartyServiceImpl implements PartyService {
 	
 	@Override
 	public List<Party> showParty(SearchCondition condition) {
-		return partyDao.selectAllParty(condition);
+		return partyDao.selectParty(condition);
 
 	}
 
