@@ -15,4 +15,8 @@
 			order by ${orderBy} ${orderByDir}
 		</if>
 	</select>
+	<insert id="insertParty" parameterType="Party">
+		insert into party(name, introduction, introduction_image, exercise_category, party_type) 
+		values(#{name}, #{introduction}, #{introductionImage}, #{exerciseCategory}, #{partyType})
+	</insert>
 </mapper>

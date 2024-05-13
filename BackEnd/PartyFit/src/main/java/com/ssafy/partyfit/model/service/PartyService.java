@@ -7,4 +7,5 @@ import com.ssafy.partyfit.model.dto.SearchCondition;
 
 public interface PartyService {
 	public List<Party> showParty(SearchCondition condition);
+	public int makeParty(Party party);
 }

@@ -7,4 +7,5 @@ import com.ssafy.partyfit.model.dto.Party;
 
 public interface PartyDao {
 	List<Party> selectAllParty(SearchCondition condition);
+	int insertParty(Party party);
 }
