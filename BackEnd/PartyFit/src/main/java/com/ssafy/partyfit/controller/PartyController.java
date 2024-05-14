@@ -18,12 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.Article;
+import com.ssafy.partyfit.model.dto.Comment;
 import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
 import com.ssafy.partyfit.model.service.ArticleServiceImpl;
+import com.ssafy.partyfit.model.service.CommentService;
 import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 import com.ssafy.partyfit.model.service.PartyService;
@@ -38,14 +40,16 @@ public class PartyController {
 	private ArticleService articleService;
 	private PartyMemberService partyMemberService;
 	private MeetService meetService;
+	private CommentService commentService;
 
 	public PartyController(PartyService partyService, ArticleService articleService,
-			PartyMemberService partyMemberService, MeetService meetService) {
+			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService) {
 		super();
 		this.partyService = partyService;
 		this.articleService = articleService;
 		this.partyMemberService = partyMemberService;
 		this.meetService = meetService;
+		this.commentService = commentService;
 	}
 
 	/**
@@ -154,6 +158,23 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	/**
+	 * 파티 내부 게시글의 댓글 데이터 가져오기
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/article/{articleId}/comment")
+	public ResponseEntity<?> showComment(@PathVariable("articleId") int articleId) {
+		List<Comment> commentList = commentService.showComment(articleId);
+		if (commentList == null || commentList.size() == 0) {
+			//댓글없음
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+		}
+	}
 
 	/**
 	 * 파티 내부 게시글 수정하기
@@ -186,7 +207,7 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-
+	
 	/**
 	 * 파티 내부 멤버 조회하기
 	 * 
@@ -243,5 +264,5 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
-
+	
 }
