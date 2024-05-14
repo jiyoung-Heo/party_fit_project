@@ -73,9 +73,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const store = useUserStore();
 
-onMounted(() => {
-    console.log(store.loginUser)
-})
 
 const loginUser = store.loginUser;
 

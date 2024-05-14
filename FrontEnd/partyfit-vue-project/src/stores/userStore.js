@@ -32,35 +32,44 @@ export const useUserStore = defineStore("user", () => {
       password: pw,
     };
     console.log(user);
+
     axios({
       url: `${REST_USER_API}/login`,
       method: "POST",
       data: user,
     })
       .then((res) => {
-        loginUser.value = res.data;
-        // console.log(loginUser.value)
-        // console.log("login")
-        window.alert('로그인성공')
-        router.push({ name: "home" });
+
+        sessionStorage.setItem('access-token', res.data["access-token"]);
+        const token = res.data["access-token"].split('.')
+        let userId = JSON.parse(atob(token[1])).userId;
+        loginUser.value = userId;
+        console.log(loginUser.value);
+        sessionStorage.setItem('loginUser', userId)
+        window.alert('로그인 성공')
+        
+        // router.push({name:"home"})
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
         console.log(loginUser);
         window.alert('로그인 실패')
         console.error("로그인 실패 : ", error);
+        router.replace("login");
       });
   };
 
   //로그아웃
   const userLogout = function () {
-    axios.get(`${REST_USER_API}/logout`).then((res) => {
+    axios.post(`${REST_USER_API}/logout`).then((res) => {
+      // console.log(time);
       loginUser.value = "";
-      // console.log(loginUser);
-      router.push({ name: "home" });
-    })
-    .then(
+      sessionStorage.removeItem('access-token');
+      sessionStorage.removeItem('loginUser');
+      router.push({ name: "home" })
       window.alert('로그아웃')
+
+    }
     );
   };
 
@@ -82,6 +91,9 @@ export const useUserStore = defineStore("user", () => {
   const isPW = function(pw){
     //비밀번호 맞는지 확인하고 true false 반환
   }
+
+
+
   return {
     createUser,
     userLogin,
