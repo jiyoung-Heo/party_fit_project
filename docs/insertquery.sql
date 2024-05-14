@@ -11,7 +11,7 @@ INSERT INTO party (name, introduction, introduction_image, exercise_category, pa
 ('코딩 동아리', '함께 코딩 공부하는 동아리입니다.', NULL, '프로그래밍', '1');
 
 -- article 테이블 더미 데이터
-INSERT INTO article (title, content, catagory, user_id, party_id) VALUES 
+INSERT INTO article (title, content, category, user_id, party_id) VALUES 
 ('첫 번째 게시글', '첫 번째 게시글 내용입니다.', '0', 1, 1),
 ('두 번째 게시글', '두 번째 게시글 내용입니다.', '1', 2, 2),
 ('세 번째 게시글', '세 번째 게시글 내용입니다.', '2', 3, 3);
@@ -26,8 +26,8 @@ INSERT INTO Comment (content, depth, seq, user_id, article_id) VALUES
 INSERT INTO meet (title, content, max_headcount, start_time, end_time, status, party_id) VALUES
 ('파티Fit 모임', '다함께 운동하고 친목을 다지는 모임입니다.', 20, NOW(), NOW(), '1', 1);
 
--- meet_member_list 테이블 더미 데이터 삽입
-INSERT INTO meet_member_list (user_id, meet_id) VALUES
+-- meet_member 테이블 더미 데이터 삽입
+INSERT INTO meet_member (user_id, meet_id) VALUES
 (1, 1);
 
 -- review 테이블 더미 데이터 삽입
@@ -38,8 +38,8 @@ INSERT INTO review (title, content, reg_date, mod_date, view_count, likes, map_j
 INSERT INTO image (file_name, uuid, upload_Path, review_id) VALUES
 ('image1.jpg', '123456', '/uploads', 1);
 
--- party_member_list 테이블 더미 데이터 삽입
-INSERT INTO party_member_list (grade, status, user_id, party_id) VALUES
+-- party_member 테이블 더미 데이터 삽입
+INSERT INTO party_member (grade, status, user_id, party_id) VALUES
 ('0', '1', 1, 1);
 
 -- schedule 테이블 더미 데이터 삽입

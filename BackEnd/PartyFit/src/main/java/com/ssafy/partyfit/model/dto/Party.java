@@ -8,6 +8,6 @@ public class Party {
 	private String name;
 	private String introduction;
 	private String introductionImage;
-	private String exerciseCatagory;
+	private String exerciseCategory;
 	private String partyType;
 }

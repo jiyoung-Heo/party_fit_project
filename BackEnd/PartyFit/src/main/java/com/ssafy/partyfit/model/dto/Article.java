@@ -2,6 +2,9 @@ package com.ssafy.partyfit.model.dto;
 
 import java.util.Date;
 
+import lombok.Data;
+
+@Data
 public class Article {
     private int articleId;
     private String title;
@@ -9,7 +12,7 @@ public class Article {
     private Date regDate;
     private Date modDate;
     private int viewCount;
-    private String category;
+    private int category;
     private int userId;
     private int partyId;
 
