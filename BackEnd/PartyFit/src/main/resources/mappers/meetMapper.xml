@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.partyfit.model.dao.MeetDao">
+	<select id="selectMeet" parameterType="map">
+		select meet_id, title, content, max_headcount, start_time, end_time, status, party_id 
+		from meet
+		where party_id = #{partyId}
+		<if test="condition.key != null">
+			and ${condition.key} like
+			concat('%',#{condition.word},'%')
+		</if>
+		<if test="condition.orderBy != null">
+			order by ${condition.orderBy} ${condition.orderByDir}
+		</if>
+	</select>
+</mapper>

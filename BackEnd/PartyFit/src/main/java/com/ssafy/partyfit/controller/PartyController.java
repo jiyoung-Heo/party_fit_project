@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.Article;
+import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
 import com.ssafy.partyfit.model.service.ArticleServiceImpl;
+import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 import com.ssafy.partyfit.model.service.PartyService;
 import com.ssafy.partyfit.model.service.PartyServiceImpl;
@@ -35,17 +37,20 @@ public class PartyController {
 	private PartyService partyService;
 	private ArticleService articleService;
 	private PartyMemberService partyMemberService;
+	private MeetService meetService;
 
 	public PartyController(PartyService partyService, ArticleService articleService,
-			PartyMemberService partyMemberService) {
+			PartyMemberService partyMemberService, MeetService meetService) {
 		super();
 		this.partyService = partyService;
 		this.articleService = articleService;
 		this.partyMemberService = partyMemberService;
+		this.meetService = meetService;
 	}
 
 	/**
 	 * 파티목록
+	 * 
 	 * @param condition
 	 * @return
 	 */
@@ -61,6 +66,7 @@ public class PartyController {
 
 	/**
 	 * 파티 만들기
+	 * 
 	 * @param party
 	 * @return
 	 */
@@ -76,6 +82,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 게시글 목록 조회
+	 * 
 	 * @param partyId
 	 * @param category
 	 * @param condition
@@ -100,6 +107,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 게시글 등록하기
+	 * 
 	 * @param partyId
 	 * @param category
 	 * @param article
@@ -131,6 +139,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 게시글 지우기
+	 * 
 	 * @param articleId
 	 * @return
 	 */
@@ -145,9 +154,10 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	/**
 	 * 파티 내부 게시글 수정하기
+	 * 
 	 * @param partyId
 	 * @param articleId
 	 * @param article
@@ -155,7 +165,8 @@ public class PartyController {
 	 * @return
 	 */
 	@PutMapping("/{partyId}/article/{articleId}")
-	public ResponseEntity<?> modifyArticle(@PathVariable("partyId") int partyId, @PathVariable("articleId") int articleId, @RequestBody Article article, HttpSession session) {
+	public ResponseEntity<?> modifyArticle(@PathVariable("partyId") int partyId,
+			@PathVariable("articleId") int articleId, @RequestBody Article article, HttpSession session) {
 		int userId;
 		try {
 			userId = (int) session.getAttribute("loginUser");
@@ -165,7 +176,7 @@ public class PartyController {
 		article.setPartyId(partyId);
 		article.setArticleId(articleId);
 		article.setUserId(userId);
-		
+
 		int result = articleService.modifyArticle(article);
 		if (result == 0) {
 			// 업데이트할 데이터가 없다면
@@ -178,6 +189,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 멤버 조회하기
+	 * 
 	 * @param partyId
 	 * @param status
 	 * @return
@@ -187,7 +199,7 @@ public class PartyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
 		map.put("status", status);
-		
+
 		List<PartyMemberUser> partyMemberList = partyMemberService.showPartyMember(map);
 		if (partyMemberList == null || partyMemberList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -195,6 +207,24 @@ public class PartyController {
 			return new ResponseEntity<List<PartyMemberUser>>(partyMemberList, HttpStatus.OK);
 		}
 	}
-	
-	
+
+	/**
+	 * 파티 내부 모임 조회하기
+	 * @param partyId
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/meet")
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @ModelAttribute SearchCondition condition) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("partyId", partyId);
+		map.put("condition", condition);
+		List<Meet> meetList = meetService.showMeet(map);
+		if (meetList == null || meetList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
+		}
+	}
+
 }
