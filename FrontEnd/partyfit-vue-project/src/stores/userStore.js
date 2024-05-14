@@ -32,7 +32,7 @@ export const useUserStore = defineStore("user", () => {
       password: pw,
     };
     console.log(user);
-    
+
     axios({
       url: `${REST_USER_API}/login`,
       method: "POST",
@@ -47,13 +47,14 @@ export const useUserStore = defineStore("user", () => {
         console.log(loginUser.value);
 
         window.alert('로그인 성공')
-
+        router.push({name:"home"})
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
         console.log(loginUser);
         window.alert('로그인 실패')
         console.error("로그인 실패 : ", error);
+        router.replace("login");
       });
   };
 
@@ -61,7 +62,7 @@ export const useUserStore = defineStore("user", () => {
   const userLogout = function () {
     axios.get(`${REST_USER_API}/logout`).then((res) => {
       loginUser.value = "";
-      // console.log(loginUser);
+      sessionStorage.removeItem('access-token');
       router.push({ name: "home" });
     })
     .then(
