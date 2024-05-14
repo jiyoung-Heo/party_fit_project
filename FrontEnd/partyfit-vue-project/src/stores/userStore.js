@@ -45,9 +45,10 @@ export const useUserStore = defineStore("user", () => {
         let userId = JSON.parse(atob(token[1])).userId;
         loginUser.value = userId;
         console.log(loginUser.value);
-
+        sessionStorage.setItem('loginUser', userId)
         window.alert('로그인 성공')
-        router.push({name:"home"})
+        
+        // router.push({name:"home"})
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -60,13 +61,15 @@ export const useUserStore = defineStore("user", () => {
 
   //로그아웃
   const userLogout = function () {
-    axios.get(`${REST_USER_API}/logout`).then((res) => {
+    axios.post(`${REST_USER_API}/logout`).then((res) => {
+      // console.log(time);
       loginUser.value = "";
       sessionStorage.removeItem('access-token');
-      router.push({ name: "home" });
-    })
-    .then(
+      sessionStorage.removeItem('loginUser');
+      router.push({ name: "home" })
       window.alert('로그아웃')
+
+    }
     );
   };
 

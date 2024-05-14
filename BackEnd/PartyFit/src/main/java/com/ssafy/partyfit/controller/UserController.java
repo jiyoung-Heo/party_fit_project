@@ -29,10 +29,11 @@ public class UserController {
 	
 	// 회원가입 하는 기능
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(@RequestBody User user) {
+	public ResponseEntity<?> signup(@RequestBody User user,HttpSession session) {
 		System.out.println("signup");
 		System.out.println("signup" + user);
 		userService.signUp(user);
+		System.out.println("회원가입할때" + session.getAttribute("loginUser"));
 		
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
@@ -52,6 +53,8 @@ public class UserController {
 			result.put("message", "success");
 			result.put("access-token",jwtUtil.createToken(tmp.getUserId()));
 			System.out.println("성공"  + tmp);
+			session.setAttribute("loginuser", tmp.getUserId());
+			System.out.println("로그인 후 " + session.getAttribute("loginUser"));
 			status = HttpStatus.ACCEPTED;
 		}
 		else {
@@ -60,26 +63,15 @@ public class UserController {
 		}
 		
 		return new ResponseEntity<>(result, status);
-		
-		
-		
-		
-//		System.out.println("user" + user);
-//		User tmp = userService.login(user);
-//		if (tmp == null)
-//			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
-//		user.getUserId();
-//		session.setAttribute("loginUser", tmp.getUserId());
-//		
-//		System.out.println(session.getAttribute("loginUser"));
-//		return new ResponseEntity<User>(tmp, HttpStatus.OK);
 
 	}
 	
 	//로그아웃
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
+		System.out.println("로그아웃 전 " + session.getAttribute("loginUser"));
 		session.removeAttribute("loginUser");
+		System.out.println(session.getAttribute("loginUser"));
 		return new ResponseEntity<String>("로그아웃완료", HttpStatus.OK);
 	}
 	
@@ -87,6 +79,7 @@ public class UserController {
 	//회원정보 수정
 	@PostMapping("/userUpdate")
 	public ResponseEntity<?> updateUserInfo(@RequestBody User user, HttpSession session) {
+		System.out.println("로그아웃전 " + session.getAttribute("loginUser"));
 //		userService.userUpdate(user);
 //		System.out.println("userUpdate" + user);
 //		session.getAttribute("loginUser")
