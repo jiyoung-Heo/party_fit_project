@@ -14,4 +14,6 @@ public interface UserDao {
 	public void updateUserInfo(User user);
 
 	public User searchById(int id);
+	
+	public User searchByEmail(String email);
 }

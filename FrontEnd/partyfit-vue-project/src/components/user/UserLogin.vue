@@ -14,6 +14,11 @@
         <button @click="userLogin">로그인</button>
         
       </div>
+      <div>
+        <RouterLink :to="{name:'findLoginId'}">아이디찾기</RouterLink> |
+        <RouterLink :to="{name:'findPassword'}">비밀번호찾기</RouterLink> |
+
+      </div>
     </fieldset>
   </div>
 </template>
@@ -34,6 +39,9 @@ const userLogin = function () {
   
   
 };
+
+
+
 </script>
 
 

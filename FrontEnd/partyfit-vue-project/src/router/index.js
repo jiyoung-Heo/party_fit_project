@@ -8,6 +8,8 @@ import UserCreate from '@/components/user/UserCreate.vue'
 import UserDetail from '@/components/user/UserDetail.vue'
 import UserUpdate from '@/components/user/UserUpdate.vue'
 import UserChangePW from '@/components/user/UserChangePW.vue'
+import UserFindLoginId from '@/components/user/UserFindLoginId.vue'
+import UserFindPW from '@/components/user/UserFindPW.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,10 +34,7 @@ const router = createRouter({
           name:'allPartyFit',
           component: AllPartyFitView
         },
-        
-      
       ]
-
     },
     {
       path: '/user',
@@ -68,6 +67,16 @@ const router = createRouter({
           path:'/changePW',
           name :'changePW',
           component : UserChangePW,
+        },
+        {
+          path:'/findLoginId',
+          name :'findLoginId',
+          component : UserFindLoginId,
+        },
+        {
+          path:'/findPassword',
+          name :'findPassword',
+          component : UserFindPW,
         }
         
   

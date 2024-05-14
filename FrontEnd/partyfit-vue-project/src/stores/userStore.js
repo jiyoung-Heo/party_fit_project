@@ -75,9 +75,10 @@ export const useUserStore = defineStore("user", () => {
 
   //회원정보수정
   const updateUser = function(user){
+    console.log(user.userId);
     axios({
-      url: `${REST_USER_API}/userUpdate`,
-      method: "POST",
+      url: `${REST_USER_API}/${user.userId}`,
+      method: "PUT",
       data: user,
     })
     .then((res)=>{
@@ -92,8 +93,28 @@ export const useUserStore = defineStore("user", () => {
     //비밀번호 맞는지 확인하고 true false 반환
   }
 
-
-
+  const findedId = ref("")
+  const findLoginID = function(user){
+    console.log(user.email);
+    
+    axios({
+      url: `${REST_USER_API}/find-id`,
+      method: "GET",
+      params: {
+        email: user.email,
+        name: user.name,
+      }
+    })
+   .then((res)=>{
+      // console.log(res.data);
+      findedId.value = res.data.loginId;
+    })
+    .catch((err)=>{
+      // console.log(err);
+      findedId.value = "";
+      window.alert("아이디찾기 실패")
+    })
+  }
   return {
     createUser,
     userLogin,
@@ -101,5 +122,8 @@ export const useUserStore = defineStore("user", () => {
     userLogout,
     updateUser,
     isPW,
+    findLoginID,
+    findedId,
+    
   };
 });

@@ -15,4 +15,6 @@ public interface UserService {
 
 	public User getUserById(int id);
 	
+	//아이디찾기
+	public User getUserByEmail(String email);
 }
