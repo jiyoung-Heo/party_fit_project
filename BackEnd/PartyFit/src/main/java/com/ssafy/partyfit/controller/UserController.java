@@ -1,5 +1,8 @@
 package com.ssafy.partyfit.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.User;
 import com.ssafy.partyfit.model.service.UserService;
+import com.ssafy.partyfit.util.JwtUtil;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,6 +23,9 @@ public class UserController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+		private JwtUtil jwtUtil;
 	
 	// 회원가입 하는 기능
 	@PostMapping("/signup")
@@ -33,17 +40,39 @@ public class UserController {
 	//로그인
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
-
-		System.out.println("user" + user);
-		User tmp = userService.login(user);
-		if (tmp == null)
-			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
-		user.getUserId();
-		session.setAttribute("loginUser", tmp.getUserId());
-//		session.getAttribute("loginUser")
 		
-		System.out.println(session.getAttribute("loginUser"));
-		return new ResponseEntity<User>(tmp, HttpStatus.OK);
+		HttpStatus status = null;
+		Map<String,Object> result = new HashMap<>();
+		
+		System.out.println(user);
+		
+		User tmp = userService.login(user);
+		
+		if(tmp.getLoginId() != null ) {
+			result.put("message", "success");
+			result.put("access-token",jwtUtil.createToken(tmp.getUserId()));
+			System.out.println("성공"  + tmp);
+			status = HttpStatus.ACCEPTED;
+		}
+		else {
+			result.put("message", "fail");
+			status = HttpStatus.NO_CONTENT;
+		}
+		
+		return new ResponseEntity<>(result, status);
+		
+		
+		
+		
+//		System.out.println("user" + user);
+//		User tmp = userService.login(user);
+//		if (tmp == null)
+//			return new ResponseEntity<>(HttpStatus.BAD_GATEWAY);
+//		user.getUserId();
+//		session.setAttribute("loginUser", tmp.getUserId());
+//		
+//		System.out.println(session.getAttribute("loginUser"));
+//		return new ResponseEntity<User>(tmp, HttpStatus.OK);
 
 	}
 	

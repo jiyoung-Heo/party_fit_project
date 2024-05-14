@@ -38,11 +38,17 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then((res) => {
-        loginUser.value = res.data;
-        // console.log(loginUser.value)
-        // console.log("login")
-        window.alert('로그인성공')
-        router.push({ name: "home" });
+        console.log(res.data["access-token"]);
+        console.log(res.data);
+        sessionStorage.setItem('access-token', res.data["access-token"]);
+        
+        const token = res.data["access-token"].split('.')
+        let userId = JSON.parse(atob(token[1])).userId;
+        console.log(userId)
+
+        window.alert('로그인 성공')
+
+        // router.push({ name: "home" });
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -82,6 +88,9 @@ export const useUserStore = defineStore("user", () => {
   const isPW = function(pw){
     //비밀번호 맞는지 확인하고 true false 반환
   }
+
+
+
   return {
     createUser,
     userLogin,
