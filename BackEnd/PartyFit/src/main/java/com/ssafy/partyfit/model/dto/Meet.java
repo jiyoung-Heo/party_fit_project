@@ -13,6 +13,6 @@ public class Meet {
     private Date startTime;
     private Date endTime;
     private int status;
-    private String partyId;
+    private int partyId;
 
 }

@@ -23,4 +23,9 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.selectMeet(map);
 	}
 
+	@Override
+	public int makeMeet(Meet meet) {
+		return meetDao.insertMeet(meet);
+	}
+
 }

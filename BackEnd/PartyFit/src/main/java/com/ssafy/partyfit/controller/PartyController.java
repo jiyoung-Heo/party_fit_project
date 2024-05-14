@@ -226,5 +226,16 @@ public class PartyController {
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
+	
+	@PostMapping("/{partyId}/meet")
+	public ResponseEntity<?> makeMeetRequest(@PathVariable("partyId") int partyId, @RequestBody Meet meet) {
+		meet.setPartyId(partyId);
+		int result = meetService.makeMeet(meet);
+		if (result == 0) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
 
 }
