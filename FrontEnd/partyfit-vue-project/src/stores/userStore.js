@@ -32,23 +32,22 @@ export const useUserStore = defineStore("user", () => {
       password: pw,
     };
     console.log(user);
+    
     axios({
       url: `${REST_USER_API}/login`,
       method: "POST",
       data: user,
     })
       .then((res) => {
-        console.log(res.data["access-token"]);
-        console.log(res.data);
+
         sessionStorage.setItem('access-token', res.data["access-token"]);
-        
         const token = res.data["access-token"].split('.')
         let userId = JSON.parse(atob(token[1])).userId;
-        console.log(userId)
+        loginUser.value = userId;
+        console.log(loginUser.value);
 
         window.alert('로그인 성공')
 
-        // router.push({ name: "home" });
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
