@@ -44,6 +44,11 @@ public class PartyController {
 		this.partyMemberService = partyMemberService;
 	}
 
+	/**
+	 * 파티목록
+	 * @param condition
+	 * @return
+	 */
 	@GetMapping("/")
 	public ResponseEntity<?> showParty(@ModelAttribute SearchCondition condition) {
 		List<Party> partyList = partyService.showParty(condition);
@@ -54,6 +59,11 @@ public class PartyController {
 		}
 	}
 
+	/**
+	 * 파티 만들기
+	 * @param party
+	 * @return
+	 */
 	@PostMapping("/")
 	public ResponseEntity<?> makeParty(@RequestBody Party party) {
 		int result = partyService.makeParty(party);
@@ -64,6 +74,13 @@ public class PartyController {
 		}
 	}
 
+	/**
+	 * 파티 내부 게시글 목록 조회
+	 * @param partyId
+	 * @param category
+	 * @param condition
+	 * @return
+	 */
 	@GetMapping("/{partyId}/article/{categoty}")
 	public ResponseEntity<?> showArticle(@PathVariable("partyId") int partyId, @PathVariable("categoty") int category,
 			@ModelAttribute SearchCondition condition) {
@@ -81,6 +98,14 @@ public class PartyController {
 		}
 	}
 
+	/**
+	 * 파티 내부 게시글 등록하기
+	 * @param partyId
+	 * @param category
+	 * @param article
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/{partyId}/article/{categoty}")
 	public ResponseEntity<?> makeArticle(@PathVariable("partyId") int partyId, @PathVariable("categoty") int category,
 			@RequestBody Article article, HttpSession session) {
@@ -104,7 +129,11 @@ public class PartyController {
 		}
 	}
 
-	// Delete /article/{articleId}로도 충분히 가능한 api이다. 회의 필요
+	/**
+	 * 파티 내부 게시글 지우기
+	 * @param articleId
+	 * @return
+	 */
 	@DeleteMapping("/{partyId}/article/{articleId}")
 	public ResponseEntity<?> removeArticle(@PathVariable("articleId") int articleId) {
 		int result = articleService.removeArticle(articleId);
@@ -117,6 +146,14 @@ public class PartyController {
 		}
 	}
 	
+	/**
+	 * 파티 내부 게시글 수정하기
+	 * @param partyId
+	 * @param articleId
+	 * @param article
+	 * @param session
+	 * @return
+	 */
 	@PutMapping("/{partyId}/article/{articleId}")
 	public ResponseEntity<?> modifyArticle(@PathVariable("partyId") int partyId, @PathVariable("articleId") int articleId, @RequestBody Article article, HttpSession session) {
 		int userId;
@@ -139,6 +176,12 @@ public class PartyController {
 		}
 	}
 
+	/**
+	 * 파티 내부 멤버 조회하기
+	 * @param partyId
+	 * @param status
+	 * @return
+	 */
 	@GetMapping("/{partyId}/member/{status}")
 	public ResponseEntity<?> showMember(@PathVariable("partyId") int partyId, @PathVariable("status") int status) {
 		Map<String, Object> map = new HashMap<>();
@@ -152,4 +195,6 @@ public class PartyController {
 			return new ResponseEntity<List<PartyMemberUser>>(partyMemberList, HttpStatus.OK);
 		}
 	}
+	
+	
 }
