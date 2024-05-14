@@ -10,5 +10,9 @@ public interface UserService {
 	//로그인하기 
 	User login(User user);
 	
+	//회원정보수정하기 
+	void userUpdate(User user);
+
+	public User getUserById(int id);
 	
 }

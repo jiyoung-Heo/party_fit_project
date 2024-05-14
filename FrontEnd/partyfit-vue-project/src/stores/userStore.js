@@ -15,15 +15,18 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then(() => {
+        console.log("store" + user)
+        console.log(user)
+        window.alert('회원가입 성공')
         router.push({ name: "home" }); 
       })
       .catch((err) => {});
   };
 
-  const loginUser = ref("");
+  const loginUser = ref({});
 
   //로그인
-  const userLogin = function (id, pw) {
+  const userLogin = function (id,pw) {
     const user = {
       loginId: id,
       password: pw,
@@ -35,12 +38,16 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then((res) => {
-        loginUser.value = id;
+        loginUser.value = res.data;
+        // console.log(loginUser.value)
+        // console.log("login")
+        window.alert('로그인성공')
         router.push({ name: "home" });
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
         console.log(loginUser);
+        window.alert('로그인 실패')
         console.error("로그인 실패 : ", error);
       });
   };
@@ -50,14 +57,37 @@ export const useUserStore = defineStore("user", () => {
     axios.get(`${REST_USER_API}/logout`).then((res) => {
       loginUser.value = "";
       // console.log(loginUser);
-      router.push({ name: "home" }); //어디로보내지?
-    });
+      router.push({ name: "home" });
+    })
+    .then(
+      window.alert('로그아웃')
+    );
   };
 
+  //회원정보수정
+  const updateUser = function(user){
+    axios({
+      url: `${REST_USER_API}/userUpdate`,
+      method: "POST",
+      data: user,
+    })
+    .then((res)=>{
+      window.alert('누가 로그인 돼있는지 ')
+      console.log(res.data)
+      router.push({name : "mypage"})
+    })
+  }
+
+  //비밀번호 확인
+  const isPW = function(pw){
+    //비밀번호 맞는지 확인하고 true false 반환
+  }
   return {
     createUser,
     userLogin,
     loginUser,
     userLogout,
+    updateUser,
+    isPW,
   };
 });
