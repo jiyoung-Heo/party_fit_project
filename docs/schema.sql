@@ -21,6 +21,7 @@ CREATE TABLE comment
   reg_date   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
   mod_date   DATETIME      NULL     COMMENT '수정일',
   likes      INT           NOT NULL DEFAULT 0 COMMENT '좋아요',
+  top_id     INT           NOT NULL COMMENT '해당 댓글/대댓글 그룹의 최상위 댓글 id',
   depth      INT           NOT NULL COMMENT '댓글/대댓글관련',
   seq        INT           NOT NULL COMMENT '댓글/대댓글관련',
   delete_yn  VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제유무',
