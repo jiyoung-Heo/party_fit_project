@@ -29,4 +29,12 @@
 	<delete id="deleteArticle" parameterType="int">
 		delete from article where article_id = #{articleId}
 	</delete>
+	<select id="selectAtricleDetail" parameterType="int" resultType="ArticleUser">
+		select a.*, u.*
+		from article a, user u 
+		where article_id = #{articleId} and a.user_id = u.user_id
+	</select>
+	<update id="updateArticleViewCount" parameterType="int">
+		update article set view_count = view_count +1 where article_id = #{articleId}
+	</update>
 </mapper>

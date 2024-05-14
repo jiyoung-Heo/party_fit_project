@@ -1,6 +1,5 @@
 package com.ssafy.partyfit.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,18 +17,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.Article;
+import com.ssafy.partyfit.model.dto.ArticleUser;
 import com.ssafy.partyfit.model.dto.Comment;
 import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
-import com.ssafy.partyfit.model.service.ArticleServiceImpl;
 import com.ssafy.partyfit.model.service.CommentService;
 import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 import com.ssafy.partyfit.model.service.PartyService;
-import com.ssafy.partyfit.model.service.PartyServiceImpl;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -58,7 +56,7 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/")
+	@GetMapping("")
 	public ResponseEntity<?> showParty(@ModelAttribute SearchCondition condition) {
 		List<Party> partyList = partyService.showParty(condition);
 		if (partyList == null || partyList.size() == 0) {
@@ -74,7 +72,7 @@ public class PartyController {
 	 * @param party
 	 * @return
 	 */
-	@PostMapping("/")
+	@PostMapping("")
 	public ResponseEntity<?> makeParty(@RequestBody Party party) {
 		int result = partyService.makeParty(party);
 		if (result == 0) {
@@ -158,6 +156,25 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
+	
+	/**
+	 * 파티 내부 게시글 상세보기
+	 * @param partyId
+	 * @param category
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/article/{categoty}/{articleId}")
+	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId) {
+		ArticleUser articleUser = articleService.showAtricleDetail(articleId);
+
+		if (articleUser == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<ArticleUser>(articleUser, HttpStatus.OK);
+		}
+	}
+
 	
 	/**
 	 * 파티 내부 게시글의 댓글 데이터 가져오기
