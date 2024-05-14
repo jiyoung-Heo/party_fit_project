@@ -227,6 +227,12 @@ public class PartyController {
 		}
 	}
 	
+	/**
+	 * 파티 내부 모임 생성요청
+	 * @param partyId
+	 * @param meet
+	 * @return
+	 */
 	@PostMapping("/{partyId}/meet")
 	public ResponseEntity<?> makeMeetRequest(@PathVariable("partyId") int partyId, @RequestBody Meet meet) {
 		meet.setPartyId(partyId);
