@@ -36,7 +36,10 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.5'
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.5'
-	
+	// logback
+	implementation 'org.springframework.boot:spring-boot-starter-logging:3.2.4'
+	// log4jdbc: 실행된 쿼리 찍을 수 있는 repo
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	
 }
 
