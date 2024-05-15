@@ -19,6 +19,9 @@
     
             </div>
     
+
+
+
             <div>
     
                 <label for="name">이름</label>
@@ -64,7 +67,7 @@
   
   
 <script setup>
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/user";
 import { ref ,onMounted} from "vue";
 import { useRouter } from "vue-router";
 
