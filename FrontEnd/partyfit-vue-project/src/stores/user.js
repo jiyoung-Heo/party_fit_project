@@ -85,7 +85,7 @@ export const useUserStore = defineStore("user", () => {
     .then((res)=>{
       window.alert('누가 로그인 돼있는지 ')
       console.log(res.data)
-      router.push({name : "mypage"})
+      router.push({name : "myPage"})
     })
   }
 

@@ -9,7 +9,7 @@
       </div>
       <div>
         <label for="password">PW</label>
-        <input type="password" id="password" v-model="user.password"placeholder="비밀번호"/>
+        <input type="password" id="password" v-model="user.password" placeholder="비밀번호"/>
       </div>
       <div>
         <label for="name">이름</label>
@@ -17,7 +17,7 @@
       </div>
       <div>
         <label for="username">닉네임</label>
-        <input type="text" id="username" v-model="user.username"placeholder="닉네임" />
+        <input type="text" id="username" v-model="user.username" placeholder="닉네임" />
         <p v-if="isValid2">{{ errorMsg2 }}</p>
       </div>
       <div>

@@ -34,7 +34,7 @@
                 <label for="username">닉네임</label>
     
                 <input type="text" id="username" v-model="user.username" />
-    
+                <p v-if="isValid2">{{ errorMsg2 }}</p>
             </div>
     
             <div>
@@ -67,7 +67,7 @@
   
 <script setup>
 import { useUserStore } from "@/stores/user";
-import { ref,onMounted,watch } from "vue";
+import { ref,onMounted,watch ,computed} from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -95,6 +95,51 @@ watch(loginUser,(newVal,oldVal)=>{
 
 })
 
+const errorMsg2 = ref("");
+const error2 = ref(false);
+const isValid2 = computed(() => {
+  return error2.value
+})
+const isUsernameOK = async function () {
+  user.value.username = user.value.username.trim()
+
+  const username = user.value.username
+  
+  console.log(username)
+  if (username.length < 2 || username.length > 10) {
+    // alert("아이디를 입력해주세요.")
+    errorMsg2.value = '별명은 2자 이상, 10자 이하로 입력해주세요.'
+    error2.value = true
+    return
+  }
+  if (/\s/.test(username)) {
+    error2.value = true
+    errorMsg2.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
+    return;
+  }
+
+  error2.value = false 
+  await isUsernameUQ()
+}
+
+const isUsernameUQ = async function () {
+  await store.isValidUsername(user.value.username)
+    .then((isValid) => {
+      if (isValid) {
+        console.log("닉네임 사용가능")
+      }
+      else {
+        console.log("닉네임중복됨")
+        error2.value = true
+        errorMsg2.value = '중복됨';
+        
+        return
+      }
+
+  })
+
+};
+
 
 const user = ref({
     userId:"",
@@ -102,16 +147,23 @@ const user = ref({
     name: loginUser.name,
     username: "",
     password: "",
-    email: "",
-    age: "",
+    email: loginUser.email,
+    age: loginUser.age,
 
 });
 
-const updateUser = function() {
-    store.updateUser(user.value);
+const updateUser = async function() {
+    await isUsernameOK();
+    if(!error2.value){
+        store.updateUser(user.value);
+
+    }
+    else{
+        console.log("실 패 ")
+    }
     
     console.log(user.value)
-    console.log(loginUser.value.userId)
+    
     // router.push({ name: "home" })
 };
 </script>
