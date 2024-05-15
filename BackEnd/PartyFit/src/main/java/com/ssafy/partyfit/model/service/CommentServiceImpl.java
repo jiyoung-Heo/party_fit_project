@@ -21,5 +21,17 @@ public class CommentServiceImpl implements CommentService {
 	public List<Comment> showComment(int articleId) {
 		return commentDao.selectComment(articleId);
 	}
-	
+
+	@Override
+	public int addComment(Comment comment, boolean isParent) {
+		if (isParent) {
+			int lastCommentId = commentDao.selectLastCommentId();
+			comment.setParentId(lastCommentId + 1);
+		} else {
+			// 마지막댓글가져와서 seq 유추
+			int lastSeq = commentDao.selectLastSeq(comment);
+			comment.setSeq(lastSeq + 1);
+		}
+		return commentDao.insertComment(comment);
+	}
 }
