@@ -11,7 +11,7 @@ public class Comment {
 	private Date regDate;
 	private Date modDate;
 	private int likes;
-	private int topId;
+	private int parentId;
 	private int depth;
 	private int seq;
 	private String deleteYn;

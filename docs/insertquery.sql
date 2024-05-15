@@ -17,7 +17,7 @@ INSERT INTO article (title, content, category, user_id, party_id) VALUES
 ('세 번째 게시글', '세 번째 게시글 내용입니다.', '2', 3, 3);
 
 -- Comment 테이블 더미 데이터
-INSERT INTO comment (content, top_id, depth, seq, user_id, article_id) VALUES 
+INSERT INTO comment (content, parent_id, depth, seq, user_id, article_id) VALUES 
 ('첫 번째 댓글입니다.', 1, 1, 1, 1, 1),
 ('두 번째 댓글입니다.', 1, 1, 2, 2, 1),
 ('세 번째 댓글입니다.', 1, 1, 3, 3, 2);
