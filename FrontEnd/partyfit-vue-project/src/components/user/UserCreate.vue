@@ -4,31 +4,32 @@
     <fieldset>
       <div>
         <label for="loginId">ID</label>
-        <input type="text" id="loginId" v-model="user.loginId" />
+        <input type="text" id="loginId" v-model="user.loginId" placeholder="아이디"/>
         <p v-if="isValid">{{ errorMsg }}</p>
       </div>
       <div>
         <label for="password">PW</label>
-        <input type="password" id="password" v-model="user.password" />
+        <input type="password" id="password" v-model="user.password"placeholder="비밀번호"/>
       </div>
       <div>
         <label for="name">이름</label>
-        <input type="text" id="name" v-model="user.name" />
+        <input type="text" id="name" v-model="user.name" placeholder="이름"/>
       </div>
       <div>
         <label for="username">닉네임</label>
-        <input type="text" id="username" v-model="user.username" />
+        <input type="text" id="username" v-model="user.username"placeholder="닉네임" />
         <p v-if="isValid2">{{ errorMsg2 }}</p>
       </div>
       <div>
         <label for="age">나이</label>
-        <input type="int" id="age" v-model="user.age" />
+        <input type="number" id="age" v-model="user.age" placeholder="나이"/>
       </div>
       <div>
         <label for="email">이메일</label>
-        <input type="text" id="email" v-model="user.email" />
+        <input type="email" id="email" v-model="user.email" placeholder="example@email.com" />
         <p v-if="isValid3">{{ errorMsg3 }}</p>
       </div>
+
       <div>
         <button @click="createUser">등록</button>
       </div>
@@ -82,9 +83,11 @@ console.log(`error.value: ${error.value}`);
 console.log(`error2.value: ${error2.value}`);
 console.log(`error3.value: ${error3.value}`);
 
-  if(isOK.value===true &&!error.value &&!error2.value&&!error3.value)
-  console.log("사 용 가 능")
-    // store.createUser(user)
+  if(isOK.value===true &&!error.value &&!error2.value&&!error3.value){
+    console.log(user)
+    // console.log("사 용 가 능")
+    store.createUser(user.value)
+  }
     else
     console.log("사용불가능")
   
@@ -143,10 +146,10 @@ const isUsernameOK = async function () {
 }
 
 const isEmailOK = async function () {
-  user.value.email = user.value.email.trim()
+
 
   const email = user.value.email
-  const idRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   console.log(email)
 
   if (/\s/.test(email)) {
@@ -154,9 +157,9 @@ const isEmailOK = async function () {
     errorMsg3.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
     return;
   }
-  if (!idRegex.test(email)) {
+  if (!emailRegex.test(email)) {
     error3.value = true
-    errorMsg3.value = '올바른 형식의 아이디를 입력해주세요.(대소문자 알파벳, 숫자, 밑줄(_), 대시(-)만 가능)';
+    errorMsg3.value = '올바른 형식의 이메일을 입력해주세요.';
     return;
   }
   
@@ -164,8 +167,6 @@ const isEmailOK = async function () {
   error3.value = false 
   await isEmailUQ()
 }
-
-
 
 const isIdUQ = async function () {
   isOK.value = true
@@ -185,7 +186,8 @@ const isIdUQ = async function () {
   })
 };
 const isUsernameUQ = async function () {
-  if(isOK==true){
+  console.log("user"+isOK)
+  if(isOK.value==true){
   await store.isValidUsername(user.value.username)
     .then((isValid) => {
       if (isValid) {
@@ -203,7 +205,8 @@ const isUsernameUQ = async function () {
 }
 };
 const isEmailUQ = async function () {
-  if(isOK==true){
+  console.log("email"+isOK)
+  if(isOK.value==true){
   await store.isValidEmail(user.value.email)
     .then((isValid) => {
       if (isValid) {
@@ -220,6 +223,7 @@ const isEmailUQ = async function () {
   })
 }
 };
+
 </script>
 
 
