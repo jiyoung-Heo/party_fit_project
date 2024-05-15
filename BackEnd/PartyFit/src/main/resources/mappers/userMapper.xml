@@ -16,13 +16,13 @@
 		SELECT *
 		FROM user
 		WHERE login_id = #{loginId} AND password =
-		#{password}
+		#{password} AND delete_yn ='N';
 
 	</select>
 
 	<update id="updateUserInfo" parameterType="User">
-		UPDATE user SET username=${username}, email =${email}, age =${age}
-		WHERE user_id=${userId}
+		UPDATE user SET username= #{username}, email =${email}, age =${age}
+		WHERE user_id=${userId} AND delete_yn ='N';
 	</update>
 
 
@@ -30,7 +30,7 @@
 
 		SELECT *
 		FROM user
-		WHERE user_id = #{id}
+		WHERE user_id = #{id} AND delete_yn ='N';
 
 	</select>
 
@@ -39,18 +39,18 @@
 
 		SELECT *
 		FROM user
-		WHERE email = #{email}
+		WHERE email = #{email} AND delete_yn ='N';
 
 	</select>
 
 	<select id="selectId" parameterType="String"  >
-		SELECT count(*) FROM user WHERE login_id = #{loginId}
+		SELECT count(*) FROM user WHERE login_id = #{loginId} AND delete_yn ='N';
 	</select>
 		<select id="selectUsername" parameterType="String"  >
-		SELECT count(*) FROM user WHERE username = #{username}
+		SELECT count(*) FROM user WHERE username = #{username} AND delete_yn ='N';
 	</select>
 		<select id="selectEmail" parameterType="String"  >
-		SELECT count(*) FROM user WHERE email = #{email}
+		SELECT count(*) FROM user WHERE email = #{email} AND delete_yn ='N';
 	</select>
 	
 	
