@@ -133,6 +133,48 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+//아이디 중복 검사 
+  const Msg = ref()
+  const isValidId = function(loginId){
+    return new Promise((resolve, reject) => {
+
+ 
+
+    axios({
+      url: `${REST_USER_API}/confirmId`,
+      method: "POST",
+      data: {loginId: loginId} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+      // console.log(res+"사용가능")
+      // Msg.value = "사용가능한 아이디입니다"
+      // return "사용가능한 아이디입니다."
+    })
+    .catch((err)=>{
+      // if()
+      console.log(err +"사용안가능")
+      Msg.value = "중복된 아이디입니다"
+
+    } )
+
+  })
+    
+  }
+
+
+/*
+
+{"userId":5,"name":"13","loginId":"13",
+"password":"13","username":"13","email":"13",
+"profile":null,"deleteYn":"N","age":13}
+*/
 
   return {
     createUser,
@@ -144,5 +186,8 @@ export const useUserStore = defineStore("user", () => {
     findLoginID,
     findedId,
     getUser,
+    isValidId,
+    Msg,
+
   };
 });

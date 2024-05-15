@@ -16,4 +16,6 @@ public interface UserDao {
 	public User searchById(int id);
 	
 	public User searchByEmail(String email);
+
+	public int selectId(String loginId);
 }

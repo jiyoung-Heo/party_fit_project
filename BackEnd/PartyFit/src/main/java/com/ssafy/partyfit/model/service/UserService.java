@@ -18,4 +18,6 @@ public interface UserService {
 	//아이디찾기
 	public User getUserByEmail(String email);
 
+	public boolean selectId(String loginId);
+
 }
