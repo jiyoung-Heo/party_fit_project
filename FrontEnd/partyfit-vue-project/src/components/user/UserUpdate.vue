@@ -67,15 +67,37 @@
   
 <script setup>
 import { useUserStore } from "@/stores/user";
-import { ref } from "vue";
+import { ref,onMounted,watch } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useUserStore();
 
-const loginUser = store.loginUser;
+const loginUser = ref();
+
+onMounted(() => {
+    store.getUser(sessionStorage.getItem("loginUser")).then(()=>
+    loginUser.value = store.loginUser
+)
+})
+
+watch(loginUser,(newVal,oldVal)=>{
+    user.value = {
+        userId: newVal.userId,
+    loginId: newVal.loginId,
+    name: newVal.name,
+    username: "",
+    password: "",
+    email: "",
+    age: "",
+}
+
+
+})
+
 
 const user = ref({
+    userId:"",
     loginId: loginUser.loginId,
     name: loginUser.name,
     username: "",
@@ -87,7 +109,10 @@ const user = ref({
 
 const updateUser = function() {
     store.updateUser(user.value);
-    router.push({ name: "home" })
+    
+    console.log(user.value)
+    console.log(loginUser.value.userId)
+    // router.push({ name: "home" })
 };
 </script>
   

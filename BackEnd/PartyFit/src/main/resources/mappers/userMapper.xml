@@ -18,8 +18,8 @@
   
   </select>
   
-  <update id="updateUserInfo" parameterType="USer">
-  UPDATE user SET username=${username}, email =${email}
+  <update id="updateUserInfo" parameterType="User">
+  UPDATE user SET username=${username}, email =${email}, age =${age}
   WHERE user_id=${userId}
   </update>
   
