@@ -127,22 +127,13 @@ export const useUserStore = defineStore("user", () => {
         }
       });
       loginUser.value = res.data;
-      // console.log("getUser");
-      // console.log(res.data);
-    } catch (err) {
+    }catch (err) {
       console.log(err);
       window.alert("회원정보 가져오기 실패");
     }
   };
 
-  const init = function () {
-    const id = sessionStorage.getItem("loginUser");
-    getUser(id).then(() => {
-      // console.log("init  " +JSON.stringify( loginUser.value));
-    });
-    
-    
-  }
+
   return {
     createUser,
     userLogin,
@@ -153,6 +144,5 @@ export const useUserStore = defineStore("user", () => {
     findLoginID,
     findedId,
     getUser,
-    init,
   };
 });
