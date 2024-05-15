@@ -22,6 +22,13 @@ INSERT INTO comment (content, parent_id, depth, seq, user_id, article_id) VALUES
 ('두 번째 댓글입니다.', 1, 1, 2, 2, 1),
 ('세 번째 댓글입니다.', 1, 1, 3, 3, 2);
 
+-- likes 테이블 더미 데이터 삽입
+INSERT INTO likes (comment_id, user_id) VALUES
+(1, 3),
+(2, 4),
+(3, 1),
+(3, 2);
+
 -- meet 테이블 더미 데이터 삽입
 INSERT INTO meet (title, content, max_headcount, start_time, end_time, status, party_id) VALUES
 ('파티Fit 모임', '다함께 운동하고 친목을 다지는 모임입니다.', 20, NOW(), NOW(), '1', 1);
