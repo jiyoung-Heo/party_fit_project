@@ -135,12 +135,8 @@ export const useUserStore = defineStore("user", () => {
   };
 
 //아이디 중복 검사 
-  const Msg = ref()
   const isValidId = function(loginId){
     return new Promise((resolve, reject) => {
-
- 
-
     axios({
       url: `${REST_USER_API}/confirmId`,
       method: "POST",
@@ -154,21 +150,46 @@ export const useUserStore = defineStore("user", () => {
       }else{
         resolve(false)
       }
-      // console.log(res+"사용가능")
-      // Msg.value = "사용가능한 아이디입니다"
-      // return "사용가능한 아이디입니다."
     })
-    .catch((err)=>{
-      // if()
-      console.log(err +"사용안가능")
-      Msg.value = "중복된 아이디입니다"
-
-    } )
-
   })
-    
   }
 
+  const isValidUsername = function(username){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmUserName`,
+      method: "POST",
+      data: {username: username} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+  const isValidEmail = function(email){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmEmail`,
+      method: "POST",
+      data: {email: email} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
 
 /*
 
@@ -188,7 +209,8 @@ export const useUserStore = defineStore("user", () => {
     findedId,
     getUser,
     isValidId,
-    Msg,
+    isValidUsername,
+    isValidEmail
 
   };
 });

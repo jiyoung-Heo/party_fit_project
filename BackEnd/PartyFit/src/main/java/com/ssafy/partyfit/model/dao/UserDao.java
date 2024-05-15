@@ -18,4 +18,8 @@ public interface UserDao {
 	public User searchByEmail(String email);
 
 	public int selectId(String loginId);
+
+	public int selectEmail(String email);
+
+	public int selectUsername(String username);
 }

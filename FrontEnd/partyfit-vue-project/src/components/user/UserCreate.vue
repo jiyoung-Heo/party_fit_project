@@ -1,37 +1,39 @@
 <template>
- <div class="signup-container">
-  <h1>회원가입</h1>
-  <fieldset>
-    <div>
-      <label for="loginId">ID</label>
-      <input type="text" id="loginId" v-model="user.loginId" />
-      <p v-if="isValid">{{ errorMsg }}</p>
-    </div>
-    <div>
-      <label for="password">PW</label>
-      <input type="password" id="password" v-model="user.password" />
-    </div>
-    <div>
-      <label for="name">이름</label>
-      <input type="text" id="name" v-model="user.name" />
-    </div>
-    <div>
-      <label for="username">닉네임</label>
-      <input type="text" id="username" v-model="user.username" />
-    </div>
-    <div>
-      <label for="age">나이</label>
-      <input type="int" id="age" v-model="user.age" />
-    </div>
-    <div>
-      <label for="email">이메일</label>
-      <input type="text" id="email" v-model="user.email" />
-    </div>
-    <div>
-      <button @click="isOKfn">등록</button>
-    </div>
-  </fieldset>
-</div>
+  <div class="signup-container">
+    <h1>회원가입</h1>
+    <fieldset>
+      <div>
+        <label for="loginId">ID</label>
+        <input type="text" id="loginId" v-model="user.loginId" />
+        <p v-if="isValid">{{ errorMsg }}</p>
+      </div>
+      <div>
+        <label for="password">PW</label>
+        <input type="password" id="password" v-model="user.password" />
+      </div>
+      <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" v-model="user.name" />
+      </div>
+      <div>
+        <label for="username">닉네임</label>
+        <input type="text" id="username" v-model="user.username" />
+        <p v-if="isValid2">{{ errorMsg2 }}</p>
+      </div>
+      <div>
+        <label for="age">나이</label>
+        <input type="int" id="age" v-model="user.age" />
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input type="text" id="email" v-model="user.email" />
+        <p v-if="isValid3">{{ errorMsg3 }}</p>
+      </div>
+      <div>
+        <button @click="createUser">등록</button>
+      </div>
+    </fieldset>
+  </div>
 </template>
 
 
@@ -44,6 +46,8 @@ const router = useRouter();
 const store = useUserStore();
 
 const errorMsg = ref("");
+const errorMsg2 = ref("");
+const errorMsg3 = ref("");
 const user = ref({
   loginId: "",
   name: "",
@@ -54,19 +58,46 @@ const user = ref({
 
 });
 const error = ref(false);
+const error2 = ref(false);
+const error3 = ref(false);
 const isValid = computed(() => {
   return error.value
 })
+const isValid2 = computed(() => {
+  return error2.value
+})
+const isValid3 = computed(() => {
+  return error3.value
+})
 
 
-const isOK = ref(true)
+const isOK = ref(false)
 
-const createUser = function () {
+const createUser = async function () {
+  await isIdOK();
+  await isUsernameOK();
+  await isEmailOK();
+  console.log(`isOK.value: ${isOK.value}`);
+console.log(`error.value: ${error.value}`);
+console.log(`error2.value: ${error2.value}`);
+console.log(`error3.value: ${error3.value}`);
 
+  if(isOK.value===true &&!error.value &&!error2.value&&!error3.value)
+  console.log("사 용 가 능")
+    // store.createUser(user)
+    else
+    console.log("사용불가능")
+  
+  // user.loginId = user.loginId.trim()
+  // store.createUser(user.value);
+  // router.push({name:"home"})
 }
-const isOKfn = async function () {
+const isIdOK = async function () {
+
   user.value.loginId = user.value.loginId.trim()
+
   const id = user.value.loginId
+  const idRegex = /^[a-zA-Z0-9_-]+$/;
   console.log(id)
   if (id.length < 4 || id.length > 20) {
     // alert("아이디를 입력해주세요.")
@@ -74,34 +105,120 @@ const isOKfn = async function () {
     error.value = true
     return
   }
-  if (!/^[a-zA-Z0-9_-]+$/.test(id)) {
+  if (/\s/.test(id)) {
+    error.value = true
+    errorMsg.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
+    return;
+  }
+  if (!idRegex.test(id)) {
     error.value = true
     errorMsg.value = '올바른 형식의 아이디를 입력해주세요.(대소문자 알파벳, 숫자, 밑줄(_), 대시(-)만 가능)';
     return;
   }
+  error.value = false 
+  await isIdUQ()
+}
 
 
-  console.log("유효성검사")
+const isUsernameOK = async function () {
+  user.value.username = user.value.username.trim()
+
+  const username = user.value.username
+  
+  console.log(username)
+  if (username.length < 2 || username.length > 10) {
+    // alert("아이디를 입력해주세요.")
+    errorMsg2.value = '별명은 2자 이상, 10자 이하로 입력해주세요.'
+    error2.value = true
+    return
+  }
+  if (/\s/.test(username)) {
+    error2.value = true
+    errorMsg2.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
+    return;
+  }
+
+  error2.value = false 
+  await isUsernameUQ()
+}
+
+const isEmailOK = async function () {
+  user.value.email = user.value.email.trim()
+
+  const email = user.value.email
+  const idRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  console.log(email)
+
+  if (/\s/.test(email)) {
+    error3.value = true
+    errorMsg3.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
+    return;
+  }
+  if (!idRegex.test(email)) {
+    error3.value = true
+    errorMsg3.value = '올바른 형식의 아이디를 입력해주세요.(대소문자 알파벳, 숫자, 밑줄(_), 대시(-)만 가능)';
+    return;
+  }
+  
+
+  error3.value = false 
+  await isEmailUQ()
+}
+
+
+
+const isIdUQ = async function () {
+  isOK.value = true
   await store.isValidId(user.value.loginId)
     .then((isValid) => {
-      console.log(typeof (isValid))
       if (isValid) {
-        console.log("사용가능")
+        console.log("아이디 사용가능")
       }
       else {
         console.log("중복됨")
+        error.value = true
+        errorMsg.value = '중복됨';
         isOK.value = false
         return
       }
 
-    })
+  })
+};
+const isUsernameUQ = async function () {
+  if(isOK==true){
+  await store.isValidUsername(user.value.username)
+    .then((isValid) => {
+      if (isValid) {
+        console.log("닉네임 사용가능")
+      }
+      else {
+        console.log("닉네임중복됨")
+        error2.value = true
+        errorMsg2.value = '중복됨';
+        isOK.value = false
+        return
+      }
 
-  console.log("가능하다면 계속 됨 ")
+  })
+}
+};
+const isEmailUQ = async function () {
+  if(isOK==true){
+  await store.isValidEmail(user.value.email)
+    .then((isValid) => {
+      if (isValid) {
+        console.log("이메일 사용가능")
+      }
+      else {
+        console.log("중복됨")
+        error3.value = true
+        errorMsg3.value = '중복됨';
+        isOK.value = false
+        return
+      }
 
-
-  // user.loginId = user.loginId.trim()
-  // store.createUser(user.value);
-  // router.push({name:"home"})
+  })
+}
 };
 </script>
 

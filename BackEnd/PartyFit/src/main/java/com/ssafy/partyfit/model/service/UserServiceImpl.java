@@ -49,6 +49,20 @@ public class UserServiceImpl implements UserService{
 			return false;
 		return true;
 	}
+
+	@Override
+	public boolean selectUsername(String username) {
+		if(userDao.selectUsername(username)!=0)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean selectEmail(String email) {
+		if(userDao.selectEmail(email)!=0)
+			return false;
+		return true;
+	}
 	
 	
 	

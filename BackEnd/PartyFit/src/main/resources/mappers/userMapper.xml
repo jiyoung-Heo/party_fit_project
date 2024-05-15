@@ -46,7 +46,12 @@
 	<select id="selectId" parameterType="String"  >
 		SELECT count(*) FROM user WHERE login_id = #{loginId}
 	</select>
-	
+		<select id="selectUsername" parameterType="String"  >
+		SELECT count(*) FROM user WHERE username = #{username}
+	</select>
+		<select id="selectEmail" parameterType="String"  >
+		SELECT count(*) FROM user WHERE email = #{email}
+	</select>
 	
 	
 </mapper>

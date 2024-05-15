@@ -142,5 +142,30 @@ public class UserController {
 		}
 		return new ResponseEntity<String>("0",HttpStatus.OK);
 	}
+	
+	//닉네임 중복 체크 
+	@PostMapping("/confirmUserName")
+	public ResponseEntity<?> confirmUserName(@RequestBody User user ){
+		System.out.println(user);
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectUsername(user.getUsername())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("0",HttpStatus.OK);
+	}
+	
+	//이메일 중복 체크 
+	@PostMapping("/confirmEmail")
+	public ResponseEntity<?> confirmEmail(@RequestBody User user ){
+		System.out.println(user.getEmail());
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectEmail(user.getEmail())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("0",HttpStatus.OK);
+	}
+	
 
 }

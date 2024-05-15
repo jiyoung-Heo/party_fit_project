@@ -20,4 +20,8 @@ public interface UserService {
 
 	public boolean selectId(String loginId);
 
+	public boolean selectUsername(String username);
+
+	public boolean selectEmail(String email);
+
 }
