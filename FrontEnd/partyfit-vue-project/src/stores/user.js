@@ -46,6 +46,7 @@ export const useUserStore = defineStore("user", () => {
         loginUser.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
+        router.push({ name: "home" })
         window.alert('로그인 성공')
         
         // router.push({name:"home"})

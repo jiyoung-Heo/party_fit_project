@@ -36,7 +36,6 @@ const password = ref("");
 
 const userLogin = function () {
   store.userLogin(loginId.value, password.value);
-  router.push({name :"home"})
 };
 
 </script>
