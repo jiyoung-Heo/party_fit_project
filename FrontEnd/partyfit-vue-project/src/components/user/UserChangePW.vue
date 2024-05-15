@@ -1,24 +1,23 @@
 <template>
     <div class="signup-container">
 
-        <h1>비밀번호변경</h1>
+        <h1>비밀번호</h1>
         <fieldset>
             <div>
                 <label for="nowPW">현재 비밀번호</label>
-                <input type="password" id="nowPW" v-model="nowPW" placeholder= "Password"/>
+                <input type="password" id="nowPW" v-model="nowPW" placeholder= "현재 비밀번호"/>
             </div>
             <div>
-                <label for="changePW">새 비밀번호</label>
-                <input type="password" id="changePW" v-model="changePW" placeholder= "Password" />
+                <label for="changePW">변경할 비밀번호</label>
+                <input type="password" id="changePW" v-model="changePW" placeholder= "변경할 비밀번호" />
             </div>
             <div>
-                <label for="changePW2">새 비밀번호 확인</label>
-                <input type="password" id="changePW2" v-model="changePW2" placeholder= "Password" />
+                <input type="password" id="changePW2" v-model="changePW2" placeholder= "변경할 비밀번호확인" />
             </div>
 
 
             <div>
-                <button @click="changePassword">비밀번호 변경</button>
+                <button @click="changePassword">저장하기</button>
             </div>
         </fieldset>
 
