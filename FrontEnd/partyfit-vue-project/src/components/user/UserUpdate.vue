@@ -55,7 +55,7 @@
     
             <div>
     
-                <button @click="updateUser">수정</button>
+                <button @click="updateUser">저장하기</button>
     
             </div>
     

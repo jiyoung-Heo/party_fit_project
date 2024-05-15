@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then(() => {
-        console.log("store" + user)
+        // console.log("store" + user)/
         console.log(user)
         window.alert('회원가입 성공')
         router.push({ name: "home" }); 
@@ -23,7 +23,7 @@ export const useUserStore = defineStore("user", () => {
       .catch((err) => {});
   };
 
-  const loginUser = ref({});
+
 
   //로그인
   const userLogin = function (id,pw) {
@@ -31,7 +31,7 @@ export const useUserStore = defineStore("user", () => {
       loginId: id,
       password: pw,
     };
-    console.log(user);
+    console.log("login" + user);
 
     axios({
       url: `${REST_USER_API}/login`,
@@ -115,6 +115,34 @@ export const useUserStore = defineStore("user", () => {
       window.alert("아이디찾기 실패")
     })
   }
+
+  const loginUser = ref({});
+  const getUser = async function(userId) {
+    try {
+      const res = await axios({
+        url: `${REST_USER_API}/${userId}`,
+        method: "GET",
+        params: {
+          userId: userId,
+        }
+      });
+      loginUser.value = res.data;
+      // console.log("getUser");
+      // console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      window.alert("회원정보 가져오기 실패");
+    }
+  };
+
+  const init = function () {
+    const id = sessionStorage.getItem("loginUser");
+    getUser(id).then(() => {
+      // console.log("init  " +JSON.stringify( loginUser.value));
+    });
+    
+    
+  }
   return {
     createUser,
     userLogin,
@@ -124,6 +152,7 @@ export const useUserStore = defineStore("user", () => {
     isPW,
     findLoginID,
     findedId,
-    
+    getUser,
+    init,
   };
 });
