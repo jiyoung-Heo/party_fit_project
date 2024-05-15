@@ -3,6 +3,7 @@ import MainView from '@/views/MainView.vue'
 import MyFitView from '@/views/MyFitView.vue'
 import MyPartyFitView from '@/views/MyPartyFitView.vue'
 import AllPartyFitView from '@/views/AllPartyFitView.vue'
+import UserView from '@/views/UserView.vue'
 import UserLogin from '@/components/user/UserLogin.vue'
 import UserCreate from '@/components/user/UserCreate.vue'
 import UserDetail from '@/components/user/UserDetail.vue'
@@ -39,7 +40,7 @@ const router = createRouter({
     {
       path: '/user',
       name: 'user',
-      component: MainView,
+      component: UserView,
       children:[
         {
           path:'/login',
