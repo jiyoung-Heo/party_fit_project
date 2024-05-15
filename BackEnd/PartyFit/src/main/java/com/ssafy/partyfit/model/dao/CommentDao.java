@@ -16,4 +16,8 @@ public interface CommentDao {
 	int selectLastSeq(Comment comment);
 
 	int insertComment(Comment comment);
+	
+	int updateDeleteComment(int commentId);
+	
+	int updateComment(Comment comment);
 }

@@ -266,6 +266,44 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
+	
+	/**
+	 * 댓글 수정하기
+	 * @param commentId
+	 * @param comment
+	 * @return
+	 */
+	@PutMapping("/{partyId}/article/{articleId}/comment/{commentId}")
+	public ResponseEntity<?> modifyComment(@PathVariable("commentId") int commentId, @RequestBody Comment comment) {
+		comment.setCommentId(commentId);
+		int result = commentService.modifyComment(comment);
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+
+	
+	/**
+	 * 댓글 삭제하기
+	 * @param commentId
+	 * @return
+	 */
+	@DeleteMapping("/{partyId}/article/{articleId}/comment/{commentId}")
+	public ResponseEntity<?> removeComment(@PathVariable("commentId") int commentId) {
+		int result = commentService.removeComment(commentId);
+		if (result == 0) {
+			// 삭제할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 삭제했을 경우
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
 
 	/**
 	 * 파티 내부 멤버 조회하기
