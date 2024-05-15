@@ -57,7 +57,7 @@
             <div>
     
                 <button @click="goUpdatepage">수정</button>
-                <!-- <button @click ="getInfo">정보보기 </button> -->
+               
             </div>
     
         </fieldset>
@@ -68,45 +68,43 @@
   
 <script setup>
 import { useUserStore } from "@/stores/user";
-import { ref ,onMounted} from "vue";
+import { ref ,onMounted,watch} from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useUserStore();
 
+const loginUser = ref()
+
 onMounted(() => {
-    console.log(store.loginUser)
+    store.getUser(sessionStorage.getItem("loginUser")).then(()=>
+    loginUser.value = store.loginUser
+)
 })
 
-const loginUser = store.loginUser;
+watch(loginUser,(newVal,oldVal)=>{
+//   console.log("new"+newVal.loginId)
+//   console.log("detail "+JSON.stringify(store.loginUser))
+  
+  user.value = {
+    loginId: newVal.loginId,
+    name: newVal.name,
+    username: newVal.username,
+    password: newVal.password,
+    email: newVal.email,
+    age: newVal.age,}
+})
 
-const getInfo = function(){
-    store.updateUser(user);
-
-}
-
-// const user = ref({
-//     loginId: loginUser.loginId,
-//     name: loginUser.name,
-//     username: loginUser.username,
-//     password: loginUser.password,
-//     email: loginUser.email,
-//     age: loginUser.age,
-
-// });
 
 const user = ref({
-    loginId: "inId",
-    name: "e",
-    username: "rname",
-    password: "word",
-    email:" il",
-    age: 3,
+    loginId: "",
+    name: "",
+    username: "",
+    password: "",
+    email:"",
+    age: "",
 
 });
-
-
-
 
 const goUpdatepage = function(){
     router.push({ name: "update" })
