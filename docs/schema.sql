@@ -18,10 +18,10 @@ CREATE TABLE article
 
 CREATE TABLE article_likes
 (
-  review_likes_id INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
-  user_id         INT NOT NULL COMMENT 'user pk',
-  article_id      INT NOT NULL COMMENT '게시글 아이디',
-  PRIMARY KEY (review_likes_id)
+  likes_id  INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
+  user_id   INT NOT NULL COMMENT 'user pk',
+  target_id INT NOT NULL COMMENT '게시글 아이디',
+  PRIMARY KEY (likes_id)
 ) COMMENT '게시글 좋아요';
 
 CREATE TABLE comment
@@ -41,10 +41,10 @@ CREATE TABLE comment
 
 CREATE TABLE comment_likes
 (
-  comments_likes_id INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
-  comment_id        INT NOT NULL COMMENT '댓글 아이디',
-  user_id           INT NOT NULL COMMENT 'user pk',
-  PRIMARY KEY (comments_likes_id)
+  likes_id  INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
+  user_id   INT NOT NULL COMMENT 'user pk',
+  target_id INT NOT NULL COMMENT '댓글 아이디',
+  PRIMARY KEY (likes_id)
 ) COMMENT '댓글 좋아요';
 
 CREATE TABLE image
@@ -156,7 +156,7 @@ ALTER TABLE comment
 
 ALTER TABLE comment_likes
   ADD CONSTRAINT FK_comment_TO_comment_likes
-    FOREIGN KEY (comment_id)
+    FOREIGN KEY (target_id)
     REFERENCES comment (comment_id);
 
 ALTER TABLE comment_likes
@@ -206,7 +206,7 @@ ALTER TABLE article
 
 ALTER TABLE article_likes
   ADD CONSTRAINT FK_article_TO_article_likes
-    FOREIGN KEY (article_id)
+    FOREIGN KEY (target_id)
     REFERENCES article (article_id);
 
 ALTER TABLE image

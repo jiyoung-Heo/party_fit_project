@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +27,7 @@ import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
 import com.ssafy.partyfit.model.service.CommentService;
+import com.ssafy.partyfit.model.service.LikesService;
 import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 import com.ssafy.partyfit.model.service.PartyService;
@@ -34,20 +37,25 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/party")
 public class PartyController {
+	Logger logger =  LoggerFactory.getLogger(getClass());
+			
 	private PartyService partyService;
 	private ArticleService articleService;
 	private PartyMemberService partyMemberService;
 	private MeetService meetService;
 	private CommentService commentService;
+	private LikesService likesService;
 
 	public PartyController(PartyService partyService, ArticleService articleService,
-			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService) {
+			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService,
+			LikesService likesService) {
 		super();
 		this.partyService = partyService;
 		this.articleService = articleService;
 		this.partyMemberService = partyMemberService;
 		this.meetService = meetService;
 		this.commentService = commentService;
+		this.likesService = likesService;
 	}
 
 	/**
@@ -165,9 +173,10 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/article/{categoty}/{articleId}")
-	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId) {
-		ArticleUser articleUser = articleService.showAtricleDetail(articleId);
+	@GetMapping("/{partyId}/article/{categoty}/{articleId}/{isReload}")
+	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId,
+			@PathVariable("isReload") boolean isReload) {
+		ArticleUser articleUser = articleService.showAtricleDetail(articleId, isReload);
 
 		if (articleUser == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -207,6 +216,38 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
+
+	/**
+	 * 파티 내부 게시글 좋아요 누르기 눌러져 있는 상태라면 해제하기
+	 * @param commentId
+	 * @param comment
+	 * @return
+	 */
+	@PutMapping("/{partyId}/article/{articleId}/like")
+	public ResponseEntity<?> clickArticleLikes(@PathVariable("articleId") int articleId, HttpSession session) {
+		int userId;
+		try {
+			userId = (int) session.getAttribute("loginUser");
+		} catch (NullPointerException e) {
+			userId = 1;
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tableName", "article_likes");
+		map.put("userId", userId);
+		map.put("targetId", articleId);
+		
+		int result = likesService.clickLikes(map);
+		
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+
 
 	/**
 	 * 파티 내부 게시글의 댓글 데이터 가져오기
@@ -266,9 +307,10 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
-	
+
 	/**
 	 * 댓글 수정하기
+	 * 
 	 * @param commentId
 	 * @param comment
 	 * @return
@@ -286,9 +328,9 @@ public class PartyController {
 		}
 	}
 
-	
 	/**
 	 * 댓글 삭제하기
+	 * 
 	 * @param commentId
 	 * @return
 	 */
@@ -303,7 +345,37 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-
+	
+	/**
+	 * 코멘트 좋아요 등록, 해제 관련
+	 * @param articleId
+	 * @param session
+	 * @return
+	 */
+	@PutMapping("/{partyId}/article/{articleId}/comment/like")
+	public ResponseEntity<?> clickCommentLikes(@PathVariable("articleId") int articleId, HttpSession session) {
+		int userId;
+		try {
+			userId = (int) session.getAttribute("loginUser");
+		} catch (NullPointerException e) {
+			userId = 1;
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tableName", "comment_likes");
+		map.put("userId", userId);
+		map.put("targetId", articleId);
+		
+		int result = likesService.clickLikes(map);
+		
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
 
 	/**
 	 * 파티 내부 멤버 조회하기
