@@ -24,6 +24,7 @@ export const useUserStore = defineStore("user", () => {
   };
 
   const loginUser = ref({});
+  const loginUserId=ref()
 
   //로그인
   const userLogin = function (id,pw) {
@@ -43,7 +44,8 @@ export const useUserStore = defineStore("user", () => {
         sessionStorage.setItem('access-token', res.data["access-token"]);
         const token = res.data["access-token"].split('.')
         let userId = JSON.parse(atob(token[1])).userId;
-        loginUser.value = userId;
+        getUser(userId);
+        loginUserId.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
         // router.push({name:"home"})
@@ -68,7 +70,7 @@ export const useUserStore = defineStore("user", () => {
       sessionStorage.removeItem('loginUser');
       router.push({ name: "home" })
       window.alert('로그아웃')
-      window.location.reload();
+      // window.location.reload();
     }
     );
   };
@@ -188,18 +190,32 @@ export const useUserStore = defineStore("user", () => {
     })
   })
   }
+const partyList = ref([])
+  const getMyPartyFit = function(){
+    const userId = sessionStorage.getItem('loginUser')
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/myPartyfit/${userId}`,
+      method: "GET",
+      params: {
+        userId : userId,
+      }
+    })
+   .then((res)=>{
+      partyList.value =res.data
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      
+    })
 
-  const getMyPartyFit = function(userId){
-    axios.get(`${REST_USER_API}/myPartyFit/${userId}`)
-    console.log(loginUser.value)
   }
-
-
 
   return {
     createUser,
     userLogin,
     loginUser,
+    loginUserId,
     userLogout,
     updateUser,
     isPW,
@@ -208,6 +224,8 @@ export const useUserStore = defineStore("user", () => {
     getUser,
     isValidId,
     isValidUsername,
-    isValidEmail
+    isValidEmail,
+    getMyPartyFit,
+    partyList,
   };
 },{persist:true});

@@ -203,7 +203,7 @@ public class UserController {
 	@GetMapping("/myPartyfit/{userId}")
 	public ResponseEntity<?> showMyParty(@ModelAttribute User user){
 		List<Party> partyList = partyMemberService.showMyParty(user);
-		
+		 System.out.println(partyList);
 		if (partyList == null || partyList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
