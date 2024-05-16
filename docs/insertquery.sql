@@ -37,7 +37,7 @@ INSERT INTO article (title, content, reg_date, view_count, map_json, category, d
 
 
 -- 게시글 좋아요 더미 데이터
-INSERT INTO article_likes (user_id, article_id) VALUES
+INSERT INTO article_likes (user_id, target_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);
@@ -49,7 +49,7 @@ INSERT INTO comment (content, reg_date, parent_id, depth, seq, delete_yn, user_i
 ('세번째 댓글입니다.', NOW(), 1, 1, 3, 'N', 3, 3);
 
 -- 댓글 좋아요 더미 데이터
-INSERT INTO comment_likes (comment_id, user_id) VALUES
+INSERT INTO comment_likes (target_id, user_id) VALUES
 (1, 1),
 (2, 2),
 (3, 3);

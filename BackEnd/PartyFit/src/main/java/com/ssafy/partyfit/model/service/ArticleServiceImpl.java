@@ -32,7 +32,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public int removeArticle(int articleId) {
-		return articleDao.deleteArticle(articleId);
+		return articleDao.updateDeleteArticle(articleId);
 	}
 
 	@Override
@@ -41,8 +41,10 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public ArticleUser showAtricleDetail(int articleId) {
-		articleDao.updateArticleViewCount(articleId);
+	public ArticleUser showAtricleDetail(int articleId, boolean isReload) {
+		if(!isReload) {
+			articleDao.updateArticleViewCount(articleId);
+		}
 		return articleDao.selectAtricleDetail(articleId);
 	}
 

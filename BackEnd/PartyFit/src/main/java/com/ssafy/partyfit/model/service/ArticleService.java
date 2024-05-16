@@ -12,6 +12,6 @@ public interface ArticleService {
 	int makeArticle(Article article);
 	int removeArticle(int articleId);
 	int modifyArticle(Article article);
-	ArticleUser showAtricleDetail(int articleId);
+	ArticleUser showAtricleDetail(int articleId, boolean isReload);
 	List<Article> showMyArticle(User user);
 }

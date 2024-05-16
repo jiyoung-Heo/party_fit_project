@@ -10,12 +10,12 @@ public class Comment {
 	private String content;
 	private Date regDate;
 	private Date modDate;
-	private int likes;
 	private int parentId;
 	private int depth;
 	private int seq;
 	private String deleteYn;
 	private int userId;
 	private int articleId;
+	private int likesCount;
 	
 }

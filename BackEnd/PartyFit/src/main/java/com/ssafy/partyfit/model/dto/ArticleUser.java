@@ -6,15 +6,19 @@ import lombok.Data;
 
 @Data
 public class ArticleUser {
-    private int articleId;
+	private int articleId;
     private String title;
     private String content;
     private Date regDate;
     private Date modDate;
     private int viewCount;
+    private String mapJson;
     private int category;
     private int userId;
     private int partyId;
+    private int meetId;
+    
+    private int likesCount;
     
 	private String name;
 	private String loginId;
