@@ -37,4 +37,9 @@
 		content = #{content}, mod_date = now()
 		where comment_id = #{commentId}
 	</update>
+	<select id="selectMyComment" parameterType="User" resultType="Comment">
+		select * from comment where user_id=#{userId}
+		
+	</select>
+		
 </mapper>

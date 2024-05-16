@@ -17,4 +17,7 @@ public interface UserService {
 	
 	//아이디찾기
 	public User getUserByEmail(String email);
+
+	public int deleteUser(int userId);
+
 }

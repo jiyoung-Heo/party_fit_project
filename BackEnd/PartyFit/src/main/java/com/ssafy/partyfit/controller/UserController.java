@@ -1,11 +1,12 @@
 package com.ssafy.partyfit.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.partyfit.model.dto.Article;
+import com.ssafy.partyfit.model.dto.Comment;
+import com.ssafy.partyfit.model.dto.Meet;
+import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.User;
+import com.ssafy.partyfit.model.service.ArticleService;
+import com.ssafy.partyfit.model.service.CommentService;
+import com.ssafy.partyfit.model.service.MeetService;
+import com.ssafy.partyfit.model.service.PartyMemberService;
+import com.ssafy.partyfit.model.service.PartyService;
 import com.ssafy.partyfit.model.service.UserService;
 import com.ssafy.partyfit.util.JwtUtil;
 
@@ -26,11 +35,27 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/user")
 public class UserController {
 	
-	@Autowired
-	UserService userService;
+	private UserService userService;	
+	private PartyService partyService;
+	private ArticleService articleService;
+	private PartyMemberService partyMemberService;
+	private MeetService meetService;
+	private CommentService commentService;
+	private JwtUtil jwtUtil;
 	
-	@Autowired
-		private JwtUtil jwtUtil;
+	public UserController(UserService userService, PartyService partyService, ArticleService articleService,
+			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService,
+			JwtUtil jwtUtil) {
+		super();
+		this.userService = userService;
+		this.partyService = partyService;
+		this.articleService = articleService;
+		this.partyMemberService = partyMemberService;
+		this.meetService = meetService;
+		this.commentService = commentService;
+		this.jwtUtil = jwtUtil;
+	}
+
 	
 	// 회원가입 하는 기능
 	@PostMapping("/signup")
@@ -110,7 +135,7 @@ public class UserController {
 		
 	}
 	
-	//이메일,아이디로 비밀번호 찾기 
+	//비밀번호 일치 여부 
 	@GetMapping("/find-pw/{email}/{loginId}")
 	public ResponseEntity<?> findPW(@PathVariable("email") String email,@PathVariable("loginId") String loginId,@RequestBody String name){
 	
@@ -123,4 +148,63 @@ public class UserController {
 		
 	}
 	
-}
+	
+	
+	//나의 파티핏 조회
+	@GetMapping("/myPartyfit")
+	public ResponseEntity<?> showMyParty(@ModelAttribute User user){
+		List<Party> partyList = partyMemberService.showMyParty(user);
+		
+		if (partyList == null || partyList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Party>>(partyList, HttpStatus.OK);
+		}
+		
+	}
+	
+	
+	//내가 쓴 글 조회 
+	@GetMapping("/myArticle")
+	public ResponseEntity<?> showMyArticle(@ModelAttribute User user){
+	List<Article> articleList = articleService.showMyArticle(user);
+		if (articleList == null || articleList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Article>>(articleList, HttpStatus.OK);
+		}
+	}
+	
+	//내가 쓴 댓글 조회 
+	@GetMapping("/myComment")
+	public ResponseEntity<?> showMyComment(@ModelAttribute User user){
+	List<Comment> commentList = commentService.showMyComment(user);
+		if (commentList == null || commentList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+		}
+	}
+	
+	
+	//내가 참여한 모임 
+	@GetMapping("/myMeet")
+	public ResponseEntity<?> showMyMeet(@ModelAttribute User user){
+	List<Meet> meetList = meetService.showMyMeet(user);
+		if (meetList == null || meetList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
+		}
+	}
+	
+	@DeleteMapping("/{userId}")
+	public ResponseEntity<?> removeUser(@PathVariable("commentId") int userId){
+		int result = userService.deleteUser(userId);
+		if (result == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	}

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.CommentDao;
 import com.ssafy.partyfit.model.dto.Comment;
+import com.ssafy.partyfit.model.dto.User;
 
 @Service
 @Transactional
@@ -43,5 +44,10 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int modifyComment(Comment comment) {
 		return commentDao.updateComment(comment);
+	}
+
+	@Override
+	public List<Comment> showMyComment(User user) {
+		return commentDao.selectMyComment(user);
 	}
 }

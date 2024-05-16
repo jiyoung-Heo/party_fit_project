@@ -40,4 +40,8 @@
 	
   </select>
 
+
+<update id="deleteUser" parameterType="int">
+update user set delete_yn = "Y" where user_id=#{userId}
+</update>
   </mapper>

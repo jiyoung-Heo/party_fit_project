@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.Comment;
+import com.ssafy.partyfit.model.dto.User;
 
 public interface CommentDao {
 	List<Comment> selectComment(int articleId);
@@ -20,4 +21,6 @@ public interface CommentDao {
 	int updateDeleteComment(int commentId);
 	
 	int updateComment(Comment comment);
+
+	List<Comment> selectMyComment(User user);
 }
