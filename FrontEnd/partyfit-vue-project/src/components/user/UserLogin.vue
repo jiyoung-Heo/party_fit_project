@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
@@ -35,6 +35,7 @@ const loginId = ref("");
 const password = ref("");
 
 const userLogin = function () {
+  router.replace({name:"home"})
   store.userLogin(loginId.value, password.value);
 };
 

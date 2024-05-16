@@ -29,7 +29,7 @@
 
 
 <script setup>
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/user";
 import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 

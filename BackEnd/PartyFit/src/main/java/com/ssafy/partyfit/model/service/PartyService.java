@@ -4,8 +4,10 @@ import java.util.List;
 
 import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.SearchCondition;
+import com.ssafy.partyfit.model.dto.User;
 
 public interface PartyService {
 	public List<Party> showParty(SearchCondition condition);
 	public int makeParty(Party party);
+
 }

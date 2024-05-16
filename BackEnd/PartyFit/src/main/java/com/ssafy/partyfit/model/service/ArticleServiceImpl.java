@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ssafy.partyfit.model.dao.ArticleDao;
 import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.ArticleUser;
+import com.ssafy.partyfit.model.dto.User;
 
 @Service
 @Transactional
@@ -43,6 +44,11 @@ public class ArticleServiceImpl implements ArticleService {
 	public ArticleUser showAtricleDetail(int articleId) {
 		articleDao.updateArticleViewCount(articleId);
 		return articleDao.selectAtricleDetail(articleId);
+	}
+
+	@Override
+	public List<Article> showMyArticle(User user) {
+		return articleDao.selectMyArticle(user);
 	}
 
 }

@@ -46,9 +46,9 @@ export const useUserStore = defineStore("user", () => {
         loginUser.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
-        window.alert('로그인 성공')
-        
         // router.push({name:"home"})
+        window.location.reload();
+        // window.alert('로그인 성공')
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -68,7 +68,7 @@ export const useUserStore = defineStore("user", () => {
       sessionStorage.removeItem('loginUser');
       router.push({ name: "home" })
       window.alert('로그아웃')
-
+      window.location.reload();
     }
     );
   };
@@ -84,7 +84,7 @@ export const useUserStore = defineStore("user", () => {
     .then((res)=>{
       window.alert('누가 로그인 돼있는지 ')
       console.log(res.data)
-      router.push({name : "mypage"})
+      router.push({name : "myPage"})
     })
   }
 
@@ -115,6 +115,87 @@ export const useUserStore = defineStore("user", () => {
       window.alert("아이디찾기 실패")
     })
   }
+
+  const getUser = async function(userId) {
+    try {
+      const res = await axios({
+        url: `${REST_USER_API}/${userId}`,
+        method: "GET",
+        params: {
+          userId: userId,
+        }
+      });
+      loginUser.value = res.data;
+    }catch (err) {
+      console.log(err);
+      window.alert("회원정보 가져오기 실패");
+    }
+  };
+
+  //아이디 중복 검사 
+  const isValidId = function(loginId){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmId`,
+      method: "POST",
+      data: {loginId: loginId} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+
+  const isValidUsername = function(username){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmUserName`,
+      method: "POST",
+      data: {username: username} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+  const isValidEmail = function(email){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmEmail`,
+      method: "POST",
+      data: {email: email} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+
+  const getMyPartyFit = function(userId){
+    axios.get(`${REST_USER_API}/myPartyFit/${userId}`)
+    console.log(loginUser.value)
+  }
+
+
+
   return {
     createUser,
     userLogin,
@@ -124,6 +205,9 @@ export const useUserStore = defineStore("user", () => {
     isPW,
     findLoginID,
     findedId,
-    
+    getUser,
+    isValidId,
+    isValidUsername,
+    isValidEmail
   };
-});
+},{persist:true});

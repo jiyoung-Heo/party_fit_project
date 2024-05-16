@@ -10,8 +10,10 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import "./assets/css/font.css"
 
 const app = createApp(App);
-
-app.use(createPinia());
+const pinia = createPinia();
+import piniaPluginPersistendstate from "pinia-plugin-persistedstate"
+pinia.use(piniaPluginPersistendstate);
+app.use(pinia);
 app.use(router);
 
 app.mount("#app");
