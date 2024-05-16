@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { useUserStore } from "@/stores/userStore";
+import { useUserStore } from "@/stores/user";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
