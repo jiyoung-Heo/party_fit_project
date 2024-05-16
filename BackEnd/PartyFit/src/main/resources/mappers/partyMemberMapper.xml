@@ -11,10 +11,16 @@
 	</select>
 	
 	<select id="selectMyParty" parameterType="User" resultType="Party">
-		
-			select * from party where party_id IN (select DISTINCT party_id
+		select * from party where party_id IN (select DISTINCT party_id
 		from party_member
 		where user_id = #{userId})
 	</select>
 	
+	<update id="updatePartyMember" parameterType="party">
+		update party_member set status = '1' where user_id=#{userId} and party_id=#{partyId}
+	</update>
+	
+	<delete id="deletePartyMember" parameterType="party">
+		delete from party_member where user_id=#{userId} and party_id=#{partyId}
+	</delete>
 </mapper>
