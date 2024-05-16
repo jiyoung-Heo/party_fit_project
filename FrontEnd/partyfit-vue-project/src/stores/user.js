@@ -47,8 +47,7 @@ export const useUserStore = defineStore("user", () => {
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
         window.alert('로그인 성공')
-        
-        // router.push({name:"home"})
+        router.push({name:"home"})
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -84,7 +83,7 @@ export const useUserStore = defineStore("user", () => {
     .then((res)=>{
       window.alert('누가 로그인 돼있는지 ')
       console.log(res.data)
-      router.push({name : "mypage"})
+      router.push({name : "myPage"})
     })
   }
 
