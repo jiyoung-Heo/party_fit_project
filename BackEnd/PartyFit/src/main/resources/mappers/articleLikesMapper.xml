@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.partyfit.model.dao.LikesDao">
+	<insert id="insertLikes" parameterType="map">
+		insert into ${tableName}(user_id, target_id) values(#{userId}, #{targetId})
+	</insert>
+	<select id="isLike" parameterType="map">
+		select count(*) from ${tableName} where user_id = #{userId} and targetId = #{targetId}
+	</select>
+	<delete id="deleteLikes" parameterType="map">
+		delete from ${tableName} where user_id = #{userId} and targetId = #{targetId} 
+	</delete>
+</mapper>
