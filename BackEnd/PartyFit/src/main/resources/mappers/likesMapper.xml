@@ -5,9 +5,9 @@
 		insert into ${tableName}(user_id, target_id) values(#{userId}, #{targetId})
 	</insert>
 	<select id="isLike" parameterType="map">
-		select count(*) from ${tableName} where user_id = #{userId} and targetId = #{targetId}
+		select count(*) from ${tableName} where user_id = #{userId} and target_id = #{targetId}
 	</select>
 	<delete id="deleteLikes" parameterType="map">
-		delete from ${tableName} where user_id = #{userId} and targetId = #{targetId} 
+		delete from ${tableName} where user_id = #{userId} and target_id = #{targetId} 
 	</delete>
 </mapper>

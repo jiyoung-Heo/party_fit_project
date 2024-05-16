@@ -18,6 +18,8 @@ public class ArticleUser {
     private int partyId;
     private int meetId;
     
+    private int likesCount;
+    
 	private String name;
 	private String loginId;
 	private String password;

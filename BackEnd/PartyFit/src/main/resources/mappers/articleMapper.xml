@@ -3,10 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.partyfit.model.dao.ArticleDao">
-	<select id="selectArticle" parameterType="map">
-		select article_id, title, content, reg_date, mod_date, view_count, map_json, category,
-		user_id, party_id from article
-		where category = #{category} and
+	<select id="selectArticle" parameterType="map" resultType="Article">
+		select a.article_id, a.title, a.content, a.reg_date, a.mod_date, a.view_count, a.map_json, a.category,
+		a.user_id, a.party_id,a.delete_yn, count(l.likes_id) as likesCount
+		from article a left join article_likes l ON  a.article_id = l.target_id
+		group by a.article_id
+		having category = #{category} and 
 		party_id = #{partyId}
 		and delete_yn = 'N'
 		<if test="condition.key != null">
@@ -31,9 +33,10 @@
 		update article set delete_yn = 'Y' where article_id = #{articleId}
 	</update>
 	<select id="selectAtricleDetail" parameterType="int" resultType="ArticleUser">
-		select a.*, u.*
-		from article a, user u 
-		where article_id = #{articleId} and a.user_id = u.user_id
+		select a.*, u.*, count(l.likes_id) as likesCount
+		from article a left join article_likes l on a.article_id = l.target_id
+        join user u on a.user_id = u.user_id
+		where article_id = #{articleId}
 	</select>
 	<update id="updateArticleViewCount" parameterType="int">
 		update article set view_count = view_count +1 where article_id = #{articleId}

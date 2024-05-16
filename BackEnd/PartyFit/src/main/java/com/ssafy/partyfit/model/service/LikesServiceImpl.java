@@ -11,7 +11,7 @@ import com.ssafy.partyfit.model.dao.LikesDao;
 @Transactional
 public class LikesServiceImpl implements LikesService {
 	private LikesDao likesDao;
-	
+
 	public LikesServiceImpl(LikesDao likesDao) {
 		super();
 		this.likesDao = likesDao;
@@ -19,8 +19,17 @@ public class LikesServiceImpl implements LikesService {
 
 	@Override
 	public int clickLikes(Map<String, Object> map) {
-//		likesDao.isLike(map)
-		return likesDao.insertLikes(map);
+		int isLike = likesDao.isLike(map);
+		int result;
+		if (isLike == 1) {
+			// 데이터가 있는경우 삭제해야함
+			result = likesDao.deleteLikes(map);
+		} else {
+			// 데이터가 없으면 만들어야함
+			result = likesDao.insertLikes(map);
+
+		}
+		return result;
 	}
 
 }

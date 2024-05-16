@@ -18,5 +18,6 @@ public class Article {
     private int userId;
     private int partyId;
     private int meetId;
+    private int likesCount;
 
 }
