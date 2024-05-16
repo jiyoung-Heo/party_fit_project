@@ -8,4 +8,16 @@ import com.ssafy.partyfit.model.dto.Comment;
 
 public interface CommentDao {
 	List<Comment> selectComment(int articleId);
+
+	Comment selectLastComment(Comment comment);
+
+	int selectLastCommentId();
+
+	int selectLastSeq(Comment comment);
+
+	int insertComment(Comment comment);
+	
+	int updateDeleteComment(int commentId);
+	
+	int updateComment(Comment comment);
 }

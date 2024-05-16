@@ -1,12 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.partyfit.model.dao.CommentDao">
 	<select id="selectComment" parameterType="int" resultType="Comment">
-		select c.content, c.reg_date, c.mod_date, c.likes, c.top_id, c.depth, c.seq, c.article_id, u.username, u.user_id
-		from comment c, user u 
-		where c.delete_yn = 'N' and c.user_id = u.user_id and c.article_id = #{articleId}
-		order by c.top_id asc, c.depth asc, c.seq asc
+		select c.comment_id, c.content, c.reg_date, c.mod_date, 
+		c.parent_id, c.depth, c.seq, c.article_id, u.username, u.user_id
+		from comment c, user u
+		where c.delete_yn = 'N' and c.user_id = u.user_id and c.article_id =
+		#{articleId}
+		order by c.parent_id asc, c.depth asc, c.seq asc
 	</select>
+	<select id="selectLastComment" parameterType="Comment" resultType="Comment">
+		select c.content, c.reg_date, c.mod_date, c.likes, c.parent_id, c.depth,
+		c.seq, c.article_id
+		from comment c
+		where c.delete_yn = 'N' and c.article_id = #{articleId}
+		order by c.parent_id desc, c.depth desc, c.seq desc
+		limit 1
+	</select>
+	<select id="selectLastCommentId" resultType="int">
+		select ifnull(max(comment_id),0) from comment
+	</select>
+	<select id="selectLastSeq" resultType="int" parameterType="Comment">
+		select ifnull(max(seq),0) from comment where parent_id = #{parentId} and
+		depth = #{depth}
+	</select>
+	<insert id="insertComment" parameterType="Comment">
+		insert into comment(content, parent_id, depth, seq, user_id, article_id)
+		values(#{content}, #{parentId}, #{depth}, #{seq}, #{userId},
+		#{articleId})
+	</insert>
+	<update id="updateDeleteComment" parameterType="int">
+		update comment set delete_yn = 'Y' where comment_id = #{commentId} 
+	</update>
+	<update id="updateComment" parameterType="comment">
+		update comment set
+		content = #{content}, mod_date = now()
+		where comment_id = #{commentId}
+	</update>
 </mapper>

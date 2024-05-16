@@ -21,11 +21,11 @@
 		article(title, content, category, user_id, party_id) 
 		values(#{title}, #{content}, #{category}, #{userId}, #{partyId})
 	</insert>
-	<insert id="updateArticle" parameterType="Article">
+	<update id="updateArticle" parameterType="Article">
 		update article set
 		title = #{title}, content = #{content}, mod_date = now(), user_id = #{userId}, party_id =#{partyId}
 		where article_id = #{articleId}
-	</insert>
+	</update>
 	<delete id="deleteArticle" parameterType="int">
 		delete from article where article_id = #{articleId}
 	</delete>

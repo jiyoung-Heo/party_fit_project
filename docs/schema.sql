@@ -20,10 +20,9 @@ CREATE TABLE comment
   content    VARCHAR(1000) NOT NULL COMMENT '댓글 내용',
   reg_date   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
   mod_date   DATETIME      NULL     COMMENT '수정일',
-  likes      INT           NOT NULL DEFAULT 0 COMMENT '좋아요',
-  top_id     INT           NOT NULL COMMENT '해당 댓글/대댓글 그룹의 최상위 댓글 id',
-  depth      INT           NOT NULL COMMENT '댓글/대댓글관련',
-  seq        INT           NOT NULL COMMENT '댓글/대댓글관련',
+  parent_id  INT           NOT NULL COMMENT '해당 댓글/대댓글 그룹의 최상위 댓글 id',
+  depth      INT           NOT NULL DEFAULT 1 COMMENT '댓글/대댓글관련',
+  seq        INT           NOT NULL DEFAULT 1 COMMENT '댓글/대댓글관련',
   delete_yn  VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제유무',
   user_id    INT           NOT NULL COMMENT 'user pk',
   article_id INT           NOT NULL COMMENT '게시글 아이디',
@@ -39,6 +38,14 @@ CREATE TABLE image
   review_id   int           NOT NULL COMMENT 'review pk',
   PRIMARY KEY (image_id)
 ) COMMENT '사진저장할테이블';
+
+CREATE TABLE likes
+(
+  likes_id   INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
+  comment_id INT NOT NULL COMMENT '댓글 아이디',
+  user_id    INT NOT NULL COMMENT 'user pk',
+  PRIMARY KEY (likes_id)
+) COMMENT '좋아요';
 
 CREATE TABLE meet
 (
@@ -196,3 +203,13 @@ ALTER TABLE article
   ADD CONSTRAINT FK_party_TO_article
     FOREIGN KEY (party_id)
     REFERENCES party (party_id);
+
+ALTER TABLE likes
+  ADD CONSTRAINT FK_comment_TO_likes
+    FOREIGN KEY (comment_id)
+    REFERENCES comment (comment_id);
+
+ALTER TABLE likes
+  ADD CONSTRAINT FK_user_TO_likes
+    FOREIGN KEY (user_id)
+    REFERENCES user (user_id);
