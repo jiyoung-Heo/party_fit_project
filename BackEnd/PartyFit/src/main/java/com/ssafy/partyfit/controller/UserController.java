@@ -200,7 +200,7 @@ public class UserController {
 	
 	
 	//나의 파티핏 조회
-	@GetMapping("/myPartyfit")
+	@GetMapping("/myPartyfit/{userId}")
 	public ResponseEntity<?> showMyParty(@ModelAttribute User user){
 		List<Party> partyList = partyMemberService.showMyParty(user);
 		
@@ -249,7 +249,7 @@ public class UserController {
 	
 	//회원 탈퇴
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<?> removeUser(@PathVariable("commentId") int userId){
+	public ResponseEntity<?> removeUser(@PathVariable("userId") int userId){
 		int result = userService.deleteUser(userId);
 		if (result == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);

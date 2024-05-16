@@ -46,8 +46,9 @@ export const useUserStore = defineStore("user", () => {
         loginUser.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
-        window.alert('로그인 성공')
-        router.push({name:"home"})
+        // router.push({name:"home"})
+        window.location.reload();
+        // window.alert('로그인 성공')
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -67,7 +68,7 @@ export const useUserStore = defineStore("user", () => {
       sessionStorage.removeItem('loginUser');
       router.push({ name: "home" })
       window.alert('로그아웃')
-
+      window.location.reload();
     }
     );
   };
@@ -188,6 +189,11 @@ export const useUserStore = defineStore("user", () => {
   })
   }
 
+  const getMyPartyFit = function(userId){
+    axios.get(`${REST_USER_API}/myPartyFit/${userId}`)
+    console.log(loginUser.value)
+  }
+
 
 
   return {
@@ -204,4 +210,4 @@ export const useUserStore = defineStore("user", () => {
     isValidUsername,
     isValidEmail
   };
-});
+},{persist:true});
