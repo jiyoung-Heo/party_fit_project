@@ -32,4 +32,12 @@
 		
   </select>
 
+  <select id ="searchByEmail" parameterType="String" resultType="User">
+  
+		SELECT *
+		FROM user
+		WHERE email = #{email} 
+	
+  </select>
+
   </mapper>
