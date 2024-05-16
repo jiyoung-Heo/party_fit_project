@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,6 +37,8 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/party")
 public class PartyController {
+	Logger logger =  LoggerFactory.getLogger(getClass());
+			
 	private PartyService partyService;
 	private ArticleService articleService;
 	private PartyMemberService partyMemberService;
@@ -230,7 +234,7 @@ public class PartyController {
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("tableName", "article_likes");
-		map.put("userID", userId);
+		map.put("userId", userId);
 		map.put("targetId", articleId);
 		
 		int result = likesService.clickLikes(map);
@@ -339,6 +343,37 @@ public class PartyController {
 		} else {
 			// 데이터를 삭제했을 경우
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	/**
+	 * 코멘트 좋아요 등록, 해제 관련
+	 * @param articleId
+	 * @param session
+	 * @return
+	 */
+	@PutMapping("/{partyId}/article/{articleId}/comment/like")
+	public ResponseEntity<?> clickCommentLikes(@PathVariable("articleId") int articleId, HttpSession session) {
+		int userId;
+		try {
+			userId = (int) session.getAttribute("loginUser");
+		} catch (NullPointerException e) {
+			userId = 1;
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tableName", "comment_likes");
+		map.put("userId", userId);
+		map.put("targetId", articleId);
+		
+		int result = likesService.clickLikes(map);
+		
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
 
