@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.ArticleUser;
+import com.ssafy.partyfit.model.dto.User;
 
 public interface ArticleService {
 	List<Article> showArticle(Map<String, Object> map);
@@ -12,4 +13,5 @@ public interface ArticleService {
 	int removeArticle(int articleId);
 	int modifyArticle(Article article);
 	ArticleUser showAtricleDetail(int articleId, boolean isReload);
+	List<Article> showMyArticle(User user);
 }

@@ -38,4 +38,9 @@
 	<update id="updateArticleViewCount" parameterType="int">
 		update article set view_count = view_count +1 where article_id = #{articleId}
 	</update>
+	<select id="selectMyArticle" parameterType="User" resultType="Article">
+		select * from article where user_id=#{userId}
+	
+	</select>
+	
 </mapper>

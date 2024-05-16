@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.PartyDao;
-import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.SearchCondition;
+import com.ssafy.partyfit.model.dto.User;
 
 @Service
 @Transactional
@@ -27,6 +28,6 @@ public class PartyServiceImpl implements PartyService {
 	@Override
 	public int makeParty(Party party) {
 		return partyDao.insertParty(party);
-	};
+	}
 
 }

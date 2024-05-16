@@ -10,10 +10,15 @@
             <p><img src="" alt="프로필사진"></p>
             <p>000님</p>
             | 
+      <div v-if="isLogin" >
       <RouterLink :to="{name:'login'}">로그인</RouterLink> |
       <RouterLink :to="{name:'signup'}">회원가입</RouterLink> |
+      </div>
+      <div v-else>
+      <a> {{ loginUserName }} 님 </a>
       <RouterLink :to="{name:'myPage'}">마이페이지</RouterLink> |
       <button @click="logout">로그아웃</button>
+      </div>
 
 
         </div>
@@ -28,14 +33,37 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useUserStore } from "@/stores/userStore";
+import { onMounted, ref ,watch} from 'vue';
+import { useUserStore } from "@/stores/user";
 
+import { useRouter } from "vue-router";
+
+const router = useRouter()
 const store = useUserStore()
+const loginUser = ref()
+const isLogin= ref()
+const loginUserName = ref()
 
 onMounted(()=>{
-
+  const storedUser = sessionStorage.getItem("loginUser")
+  loginUser.value = JSON.parse(storedUser)
+  // console.log(store.loginUser)
+  // console.log("headNav" + store.loginUser.value)
 })
+
+watch(loginUser,(newVal,oldVal)=>{
+  console.log(newVal)
+  console.log(isLogin.value)
+  if(newVal === null){
+    isLogin.value = true;
+    
+  }else{
+    isLogin.value = false;
+    
+  }
+  loginUserName.value = loginUser.value
+})
+
 const clickStyle= ref('')
 
 const clickMenu = () => {

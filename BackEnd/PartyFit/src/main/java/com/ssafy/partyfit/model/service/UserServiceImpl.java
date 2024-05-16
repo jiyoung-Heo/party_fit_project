@@ -42,8 +42,31 @@ public class UserServiceImpl implements UserService{
 	public User getUserByEmail(String email) {
 		return userDao.searchByEmail(email);
 	}
-	
-	
-	
+
+	@Override
+	public boolean selectId(String loginId) {
+		if(userDao.selectId(loginId)!=0)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean selectUsername(String username) {
+		if(userDao.selectUsername(username)!=0)
+			return false;
+		return true;
+	}
+
+	@Override
+	public boolean selectEmail(String email) {
+		if(userDao.selectEmail(email)!=0)
+			return false;
+		return true;
+	}
+
+	@Override
+	public int deleteUser(int userId) {
+		return userDao.deleteUser(userId);
+	}
 
 }

@@ -21,4 +21,7 @@
 		content, max_headcount, start_time, end_time, party_id)
 		values(#{title}, #{content}, #{maxHeadcount}, #{startTime}, #{endTime}, #{partyId})
 	</insert>
+	<select id="selectMyMeet" parameterType="user" resultType="Meet">
+	select * from meet where meet_id IN (select DISTINCT meet_id from meet_member where user_id =#{userId});
+		</select>
 </mapper>
