@@ -88,7 +88,7 @@ public class UserController {
 			status = HttpStatus.ACCEPTED;
 		}
 		else {
-			result.put("message", "fail");
+			 result.put("message", "fail");
 			status = HttpStatus.NO_CONTENT;
 		}
 		
@@ -148,6 +148,55 @@ public class UserController {
 		
 	}
 	
+	// UserId만 담겨있는 객체를 주면 User객체 리턴
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getUser(@ModelAttribute User user) {
+		User tmp = userService.getUserById(user.getUserId());
+		System.out.println("getUser  " + tmp);
+		if (tmp != null) {
+			return new ResponseEntity<User>(tmp, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+	
+	
+	//아이디 중복 체크 
+	@PostMapping("/confirmId")
+	public ResponseEntity<?> confirmId(@RequestBody User user ){
+//		System.out.println(user);
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectId(user.getLoginId())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("0",HttpStatus.OK);
+	}
+	
+	//닉네임 중복 체크 
+	@PostMapping("/confirmUserName")
+	public ResponseEntity<?> confirmUserName(@RequestBody User user ){
+		System.out.println(user);
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectUsername(user.getUsername())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("0",HttpStatus.OK);
+	}
+	
+	//이메일 중복 체크 
+	@PostMapping("/confirmEmail")
+	public ResponseEntity<?> confirmEmail(@RequestBody User user ){
+		System.out.println(user.getEmail());
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectEmail(user.getEmail())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("0",HttpStatus.OK);
+	}
+	
+	
 	
 	
 	//나의 파티핏 조회
@@ -198,6 +247,7 @@ public class UserController {
 		}
 	}
 	
+	//회원 탈퇴
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> removeUser(@PathVariable("commentId") int userId){
 		int result = userService.deleteUser(userId);

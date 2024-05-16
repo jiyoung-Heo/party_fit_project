@@ -115,6 +115,82 @@ export const useUserStore = defineStore("user", () => {
       window.alert("아이디찾기 실패")
     })
   }
+
+  const getUser = async function(userId) {
+    try {
+      const res = await axios({
+        url: `${REST_USER_API}/${userId}`,
+        method: "GET",
+        params: {
+          userId: userId,
+        }
+      });
+      loginUser.value = res.data;
+    }catch (err) {
+      console.log(err);
+      window.alert("회원정보 가져오기 실패");
+    }
+  };
+
+  //아이디 중복 검사 
+  const isValidId = function(loginId){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmId`,
+      method: "POST",
+      data: {loginId: loginId} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+
+  const isValidUsername = function(username){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmUserName`,
+      method: "POST",
+      data: {username: username} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+  const isValidEmail = function(email){
+    return new Promise((resolve, reject) => {
+    axios({
+      url: `${REST_USER_API}/confirmEmail`,
+      method: "POST",
+      data: {email: email} ,
+    }) 
+    .then((res)=>{ 
+      // console.log(res.data)
+      console.log(res.data == "1")
+      if(res.data == "1"){
+        resolve(true)
+      }else{
+        resolve(false)
+      }
+    })
+  })
+  }
+
+
+
   return {
     createUser,
     userLogin,
@@ -124,6 +200,9 @@ export const useUserStore = defineStore("user", () => {
     isPW,
     findLoginID,
     findedId,
-    
+    getUser,
+    isValidId,
+    isValidUsername,
+    isValidEmail
   };
 });

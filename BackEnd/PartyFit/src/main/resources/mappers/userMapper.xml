@@ -40,6 +40,16 @@
 	
   </select>
 
+<select id="selectId" parameterType="String"  >
+		SELECT count(*) FROM user WHERE login_id = #{loginId} AND delete_yn ='N';
+	</select>
+		<select id="selectUsername" parameterType="String"  >
+		SELECT count(*) FROM user WHERE username = #{username} AND delete_yn ='N';
+	</select>
+		<select id="selectEmail" parameterType="String"  >
+		SELECT count(*) FROM user WHERE email = #{email} AND delete_yn ='N';
+	</select>
+	
 
 <update id="deleteUser" parameterType="int">
 update user set delete_yn = "Y" where user_id=#{userId}
