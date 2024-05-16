@@ -165,9 +165,10 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/article/{categoty}/{articleId}")
-	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId) {
-		ArticleUser articleUser = articleService.showAtricleDetail(articleId);
+	@GetMapping("/{partyId}/article/{categoty}/{articleId}/{isReload}")
+	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId,
+			@PathVariable("isReload") boolean isReload) {
+		ArticleUser articleUser = articleService.showAtricleDetail(articleId, isReload);
 
 		if (articleUser == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -266,9 +267,10 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
-	
+
 	/**
 	 * 댓글 수정하기
+	 * 
 	 * @param commentId
 	 * @param comment
 	 * @return
@@ -286,9 +288,9 @@ public class PartyController {
 		}
 	}
 
-	
 	/**
 	 * 댓글 삭제하기
+	 * 
 	 * @param commentId
 	 * @return
 	 */
@@ -303,7 +305,6 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-
 
 	/**
 	 * 파티 내부 멤버 조회하기

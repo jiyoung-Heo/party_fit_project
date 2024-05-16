@@ -12,9 +12,11 @@ public class Article {
     private Date regDate;
     private Date modDate;
     private int viewCount;
+    private String mapJson;
     private int category;
+    private String deleteYn;
     private int userId;
     private int partyId;
+    private int meetId;
 
-    // 생성자, getter 및 setter 생략 (필요에 따라 추가할 수 있음)
 }

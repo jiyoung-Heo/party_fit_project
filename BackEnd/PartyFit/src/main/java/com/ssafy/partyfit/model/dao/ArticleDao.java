@@ -10,7 +10,7 @@ public interface ArticleDao {
 	List<Article> selectArticle(Map<String, Object> map);
 	int insertArticle(Article article);
 	int updateArticle(Article article);
-	int deleteArticle(int articleId);
+	int updateDeleteArticle(int articleId);
 	ArticleUser selectAtricleDetail(int articleId);
 	int updateArticleViewCount(int articleId);
 }
