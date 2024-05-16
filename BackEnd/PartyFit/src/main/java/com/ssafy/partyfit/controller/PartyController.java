@@ -405,10 +405,11 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/meet")
-	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @ModelAttribute SearchCondition condition) {
+	@GetMapping("/{partyId}/meet/{status}")
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status, @ModelAttribute SearchCondition condition) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
+		map.put("partyId", status);
 		map.put("condition", condition);
 		List<Meet> meetList = meetService.showMeet(map);
 		if (meetList == null || meetList.size() == 0) {

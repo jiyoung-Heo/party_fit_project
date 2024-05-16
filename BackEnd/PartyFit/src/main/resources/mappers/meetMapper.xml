@@ -7,7 +7,7 @@
 		select meet_id, title, content, max_headcount, start_time, end_time,
 		status, party_id
 		from meet
-		where party_id = #{partyId}
+		where party_id = #{partyId} and status = #{status}
 		<if test="condition.key != null">
 			and ${condition.key} like
 			concat('%',#{condition.word},'%')
@@ -22,6 +22,6 @@
 		values(#{title}, #{content}, #{maxHeadcount}, #{startTime}, #{endTime}, #{partyId})
 	</insert>
 	<select id="selectMyMeet" parameterType="user" resultType="Meet">
-	select * from meet where meet_id IN (select DISTINCT meet_id from meet_member where user_id =#{userId});
-		</select>
+		select * from meet where meet_id IN (select DISTINCT meet_id from meet_member where user_id =#{userId});
+	</select>
 </mapper>
