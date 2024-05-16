@@ -156,9 +156,10 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	/**
 	 * 파티 내부 게시글 상세보기
+	 * 
 	 * @param partyId
 	 * @param category
 	 * @param condition
@@ -172,24 +173,6 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<ArticleUser>(articleUser, HttpStatus.OK);
-		}
-	}
-
-	
-	/**
-	 * 파티 내부 게시글의 댓글 데이터 가져오기
-	 * 
-	 * @param condition
-	 * @return
-	 */
-	@GetMapping("/{partyId}/article/{articleId}/comment")
-	public ResponseEntity<?> showComment(@PathVariable("articleId") int articleId) {
-		List<Comment> commentList = commentService.showComment(articleId);
-		if (commentList == null || commentList.size() == 0) {
-			//댓글없음
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
 		}
 	}
 
@@ -224,7 +207,104 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
+
+	/**
+	 * 파티 내부 게시글의 댓글 데이터 가져오기
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/article/{articleId}/comment")
+	public ResponseEntity<?> showComment(@PathVariable("articleId") int articleId) {
+		List<Comment> commentList = commentService.showComment(articleId);
+		if (commentList == null || commentList.size() == 0) {
+			// 댓글없음
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+		}
+	}
+
+	/**
+	 * 댓글 작성하기
+	 * 
+	 * @param articleId
+	 * @param comment
+	 * @param session
+	 * @return
+	 */
+	@PostMapping("/{partyId}/article/{articleId}/comment")
+	public ResponseEntity<?> addComment(@PathVariable("articleId") int articleId, @RequestBody Comment comment,
+			HttpSession session) {
+		// 해당 article 조회해와서 마지막의 topId를 조회해온다.
+		comment.setArticleId(articleId);
+		int userId;
+		try {
+			userId = (int) session.getAttribute("loginUser");
+		} catch (NullPointerException e) {
+			userId = 1;
+		}
+		comment.setUserId(userId);
+
+		int result = 0;
+
+		// 제일 상위 depth의 댓글인 경우
+		if (comment.getParentId() == 0) {
+			// 부모글이 되는 경우
+			result = commentService.addComment(comment, true);
+		} else {
+			// 대댓글인경우
+			// depth는 하나 늘어야하고
+			// seq는 해당 parent, depth중에 가장 마지막것의 +1
+			comment.setDepth(comment.getDepth() + 1);
+			result = commentService.addComment(comment, false);
+		}
+
+		if (result == 0) {
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
 	
+	/**
+	 * 댓글 수정하기
+	 * @param commentId
+	 * @param comment
+	 * @return
+	 */
+	@PutMapping("/{partyId}/article/{articleId}/comment/{commentId}")
+	public ResponseEntity<?> modifyComment(@PathVariable("commentId") int commentId, @RequestBody Comment comment) {
+		comment.setCommentId(commentId);
+		int result = commentService.modifyComment(comment);
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+
+	
+	/**
+	 * 댓글 삭제하기
+	 * @param commentId
+	 * @return
+	 */
+	@DeleteMapping("/{partyId}/article/{articleId}/comment/{commentId}")
+	public ResponseEntity<?> removeComment(@PathVariable("commentId") int commentId) {
+		int result = commentService.removeComment(commentId);
+		if (result == 0) {
+			// 삭제할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 삭제했을 경우
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+	}
+
+
 	/**
 	 * 파티 내부 멤버 조회하기
 	 * 
@@ -248,6 +328,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 모임 조회하기
+	 * 
 	 * @param partyId
 	 * @param condition
 	 * @return
@@ -264,9 +345,10 @@ public class PartyController {
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 파티 내부 모임 생성요청
+	 * 
 	 * @param partyId
 	 * @param meet
 	 * @return
@@ -281,5 +363,5 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
-	
+
 }

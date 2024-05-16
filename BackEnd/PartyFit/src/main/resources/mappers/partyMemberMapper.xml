@@ -9,4 +9,12 @@
 		and m.user_id = u.user_id
 		and m.status = #{status}
 	</select>
+	
+	<select id="selectMyParty" parameterType="User" resultType="Party">
+		
+			select * from party where party_id IN (select DISTINCT party_id
+		from party_member
+		where user_id = #{userId})
+	</select>
+	
 </mapper>

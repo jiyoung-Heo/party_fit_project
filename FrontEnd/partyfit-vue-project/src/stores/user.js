@@ -23,7 +23,8 @@ export const useUserStore = defineStore("user", () => {
       .catch((err) => {});
   };
 
-
+  
+  const loginUserId=ref()
 
   //로그인
   const userLogin = function (id,pw) {
@@ -43,13 +44,16 @@ export const useUserStore = defineStore("user", () => {
         sessionStorage.setItem('access-token', res.data["access-token"]);
         const token = res.data["access-token"].split('.')
         let userId = JSON.parse(atob(token[1])).userId;
-        loginUser.value = userId;
+        getUser(userId);
+        loginUserId.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
         router.push({ name: "home" })
         window.alert('로그인 성공')
         
         // router.push({name:"home"})
+        window.location.reload();
+        // window.alert('로그인 성공')
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
@@ -69,7 +73,7 @@ export const useUserStore = defineStore("user", () => {
       sessionStorage.removeItem('loginUser');
       router.push({ name: "home" })
       window.alert('로그아웃')
-
+      // window.location.reload();
     }
     );
   };
@@ -134,7 +138,8 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-//아이디 중복 검사 
+
+  //아이디 중복 검사 
   const isValidId = function(loginId){
     return new Promise((resolve, reject) => {
     axios({
@@ -190,18 +195,32 @@ export const useUserStore = defineStore("user", () => {
     })
   })
   }
+const partyList = ref([])
+  const getMyPartyFit = function(){
+    const userId = sessionStorage.getItem('loginUser')
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/myPartyfit/${userId}`,
+      method: "GET",
+      params: {
+        userId : userId,
+      }
+    })
+   .then((res)=>{
+      partyList.value =res.data
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      
+    })
 
-/*
-
-{"userId":5,"name":"13","loginId":"13",
-"password":"13","username":"13","email":"13",
-"profile":null,"deleteYn":"N","age":13}
-*/
+  }
 
   return {
     createUser,
     userLogin,
     loginUser,
+    loginUserId,
     userLogout,
     updateUser,
     isPW,
@@ -210,7 +229,8 @@ export const useUserStore = defineStore("user", () => {
     getUser,
     isValidId,
     isValidUsername,
-    isValidEmail
-
+    isValidEmail,
+    getMyPartyFit,
+    partyList,
   };
-});
+},{persist:true});

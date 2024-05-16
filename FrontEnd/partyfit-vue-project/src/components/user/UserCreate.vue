@@ -49,6 +49,20 @@ const store = useUserStore();
 const errorMsg = ref("");
 const errorMsg2 = ref("");
 const errorMsg3 = ref("");
+const error = ref(false);
+const error2 = ref(false);
+const error3 = ref(false);
+const isValid = computed(() => {
+  return error.value
+})
+const isValid2 = computed(() => {
+  return error2.value
+})
+const isValid3 = computed(() => {
+  return error3.value
+})
+const isUQ = ref(false)
+
 const user = ref({
   loginId: "",
   name: "",
@@ -78,32 +92,26 @@ const createUser = async function () {
   await isIdOK();
   await isUsernameOK();
   await isEmailOK();
-  console.log(`isOK.value: ${isOK.value}`);
-console.log(`error.value: ${error.value}`);
-console.log(`error2.value: ${error2.value}`);
-console.log(`error3.value: ${error3.value}`);
+  console.log(`isUQ.value: ${isUQ.value}`);
+  console.log(`error.value: ${error.value}`);
+  console.log(`error2.value: ${error2.value}`);
+  console.log(`error3.value: ${error3.value}`);
 
-  if(isOK.value===true &&!error.value &&!error2.value&&!error3.value){
+  if(isUQ.value===true &&!error.value &&!error2.value&&!error3.value){
     console.log(user)
     // console.log("사 용 가 능")
     store.createUser(user.value)
   }
     else
     console.log("사용불가능")
-  
-  // user.loginId = user.loginId.trim()
-  // store.createUser(user.value);
-  // router.push({name:"home"})
 }
+
 const isIdOK = async function () {
+  const id = user.value.loginId.trim()
+  const idRegex = /^[a-zA-Z0-9_-]+$/
 
-  user.value.loginId = user.value.loginId.trim()
-
-  const id = user.value.loginId
-  const idRegex = /^[a-zA-Z0-9_-]+$/;
   console.log(id)
   if (id.length < 4 || id.length > 20) {
-    // alert("아이디를 입력해주세요.")
     errorMsg.value = '아이디는 4자 이상, 20자 이하로 입력해주세요.'
     error.value = true
     return
@@ -124,13 +132,10 @@ const isIdOK = async function () {
 
 
 const isUsernameOK = async function () {
-  user.value.username = user.value.username.trim()
-
-  const username = user.value.username
+  const username = user.value.username.trim()
   
   console.log(username)
   if (username.length < 2 || username.length > 10) {
-    // alert("아이디를 입력해주세요.")
     errorMsg2.value = '별명은 2자 이상, 10자 이하로 입력해주세요.'
     error2.value = true
     return
@@ -146,12 +151,10 @@ const isUsernameOK = async function () {
 }
 
 const isEmailOK = async function () {
-
-
   const email = user.value.email
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  
   console.log(email)
-
   if (/\s/.test(email)) {
     error3.value = true
     errorMsg3.value = '공백이 포함되어 있습니다. 다시 입력해주세요.';
@@ -163,13 +166,12 @@ const isEmailOK = async function () {
     return;
   }
   
-
   error3.value = false 
   await isEmailUQ()
 }
 
 const isIdUQ = async function () {
-  isOK.value = true
+  isUQ.value = true
   await store.isValidId(user.value.loginId)
     .then((isValid) => {
       if (isValid) {
@@ -179,15 +181,14 @@ const isIdUQ = async function () {
         console.log("중복됨")
         error.value = true
         errorMsg.value = '중복됨';
-        isOK.value = false
+        isUQ.value = false
         return
       }
-
   })
 };
 const isUsernameUQ = async function () {
-  console.log("user"+isOK)
-  if(isOK.value==true){
+  console.log("user"+isUQ)
+  if(isUQ.value==true){
   await store.isValidUsername(user.value.username)
     .then((isValid) => {
       if (isValid) {
@@ -197,7 +198,7 @@ const isUsernameUQ = async function () {
         console.log("닉네임중복됨")
         error2.value = true
         errorMsg2.value = '중복됨';
-        isOK.value = false
+        isUQ.value = false
         return
       }
 
@@ -205,8 +206,8 @@ const isUsernameUQ = async function () {
 }
 };
 const isEmailUQ = async function () {
-  console.log("email"+isOK)
-  if(isOK.value==true){
+  console.log("email"+isUQ)
+  if(isUQ.value==true){
   await store.isValidEmail(user.value.email)
     .then((isValid) => {
       if (isValid) {
@@ -216,7 +217,7 @@ const isEmailUQ = async function () {
         console.log("중복됨")
         error3.value = true
         errorMsg3.value = '중복됨';
-        isOK.value = false
+        isUQ.value = false
         return
       }
 

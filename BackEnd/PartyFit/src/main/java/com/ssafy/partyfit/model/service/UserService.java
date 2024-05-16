@@ -17,11 +17,13 @@ public interface UserService {
 	
 	//아이디찾기
 	public User getUserByEmail(String email);
-
+	
 	public boolean selectId(String loginId);
 
 	public boolean selectUsername(String username);
 
 	public boolean selectEmail(String email);
+
+	public int deleteUser(int userId);
 
 }

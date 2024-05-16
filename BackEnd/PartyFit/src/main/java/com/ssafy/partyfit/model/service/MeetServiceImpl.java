@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.MeetDao;
 import com.ssafy.partyfit.model.dto.Meet;
+import com.ssafy.partyfit.model.dto.User;
 
 @Service
 @Transactional
@@ -26,6 +27,11 @@ public class MeetServiceImpl implements MeetService {
 	@Override
 	public int makeMeet(Meet meet) {
 		return meetDao.insertMeet(meet);
+	}
+
+	@Override
+	public List<Meet> showMyMeet(User user) {
+		return meetDao.selectMyMeet(user);
 	}
 
 }

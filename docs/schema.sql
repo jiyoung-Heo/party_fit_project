@@ -6,13 +6,23 @@ CREATE TABLE article
   content    VARCHAR(4000) NOT NULL COMMENT '게시글 내용',
   reg_date   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
   mod_date   DATETIME      NULL     COMMENT '수정일',
-  view_count INT           NOT NULL DEFAULT '0' COMMENT '조회수',
-  category   INT           NOT NULL COMMENT '게시판 종류(0:자유게시판, 1: 가입인사, 2:공지사항)',
+  view_count INT           NOT NULL DEFAULT 0 COMMENT '조회수',
+  map_json   VARCHAR(4000) NULL     COMMENT '지도 데이터',
+  category   INT           NOT NULL COMMENT '게시판 종류(0:자유게시판, 1: 가입인사, 2:공지사항, 3:  모임후기)',
   delete_yn  VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제여부',
   user_id    INT           NOT NULL COMMENT 'user pk',
   party_id   INT           NOT NULL COMMENT '그룹 pk',
+  meet_id    INT           NULL     COMMENT 'meet pk',
   PRIMARY KEY (article_id)
 ) COMMENT '게시글';
+
+CREATE TABLE article_likes
+(
+  review_likes_id INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
+  user_id         INT NOT NULL COMMENT 'user pk',
+  article_id      INT NOT NULL COMMENT '게시글 아이디',
+  PRIMARY KEY (review_likes_id)
+) COMMENT '게시글 좋아요';
 
 CREATE TABLE comment
 (
@@ -20,15 +30,22 @@ CREATE TABLE comment
   content    VARCHAR(1000) NOT NULL COMMENT '댓글 내용',
   reg_date   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '작성일',
   mod_date   DATETIME      NULL     COMMENT '수정일',
-  likes      INT           NOT NULL DEFAULT 0 COMMENT '좋아요',
-  top_id     INT           NOT NULL COMMENT '해당 댓글/대댓글 그룹의 최상위 댓글 id',
-  depth      INT           NOT NULL COMMENT '댓글/대댓글관련',
-  seq        INT           NOT NULL COMMENT '댓글/대댓글관련',
+  parent_id  INT           NOT NULL COMMENT '해당 댓글/대댓글 그룹의 최상위 댓글 id',
+  depth      INT           NOT NULL DEFAULT 1 COMMENT '댓글/대댓글관련',
+  seq        INT           NOT NULL DEFAULT 1 COMMENT '댓글/대댓글관련',
   delete_yn  VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제유무',
   user_id    INT           NOT NULL COMMENT 'user pk',
   article_id INT           NOT NULL COMMENT '게시글 아이디',
   PRIMARY KEY (comment_id)
 ) COMMENT '댓글 ';
+
+CREATE TABLE comment_likes
+(
+  comments_likes_id INT NOT NULL AUTO_INCREMENT COMMENT '좋아요 pk',
+  comment_id        INT NOT NULL COMMENT '댓글 아이디',
+  user_id           INT NOT NULL COMMENT 'user pk',
+  PRIMARY KEY (comments_likes_id)
+) COMMENT '댓글 좋아요';
 
 CREATE TABLE image
 (
@@ -36,7 +53,7 @@ CREATE TABLE image
   file_name   VARCHAR(1000) NOT NULL COMMENT '이미지 저장 경로',
   uuid        VARCHAR(1000) NOT NULL COMMENT '이미지 고유번호',
   upload_Path VARCHAR(1000) NOT NULL COMMENT '업로드위치',
-  review_id   int           NOT NULL COMMENT 'review pk',
+  article_id  INT           NOT NULL COMMENT '게시글 아이디',
   PRIMARY KEY (image_id)
 ) COMMENT '사진저장할테이블';
 
@@ -82,21 +99,6 @@ CREATE TABLE party_member
   PRIMARY KEY (party_member_id)
 ) COMMENT 'partyFit  회원관리';
 
-CREATE TABLE review
-(
-  review_id  int           NOT NULL AUTO_INCREMENT COMMENT 'review pk',
-  title      VARCHAR(100)  NOT NULL COMMENT '제목',
-  content    VARCHAR(4000) NOT NULL COMMENT '내용',
-  reg_date   DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
-  mod_date   DATETIME      NULL     COMMENT '수정일',
-  view_count int           NOT NULL DEFAULT 0 COMMENT '조회수',
-  likes      int           NOT NULL DEFAULT 0 COMMENT '좋아요',
-  map_json   VARCHAR(4000) NULL     COMMENT '지도 데이터',
-  meet_id    INT           NOT NULL COMMENT 'meet pk',
-  user_id    INT           NOT NULL COMMENT 'user pk',
-  PRIMARY KEY (review_id)
-) COMMENT '후기';
-
 CREATE TABLE schedule
 (
   schedule_id int           NOT NULL AUTO_INCREMENT COMMENT '스케줄 pk',
@@ -132,30 +134,15 @@ ALTER TABLE user
 ALTER TABLE user
   ADD CONSTRAINT UQ_email UNIQUE (email);
 
-ALTER TABLE meet_member
-  ADD CONSTRAINT FK_user_TO_meet_member
-    FOREIGN KEY (user_id)
-    REFERENCES user (user_id);
-
-ALTER TABLE meet
-  ADD CONSTRAINT FK_party_TO_meet
-    FOREIGN KEY (party_id)
-    REFERENCES party (party_id);
-
-ALTER TABLE party_member
-  ADD CONSTRAINT FK_user_TO_party_member
-    FOREIGN KEY (user_id)
-    REFERENCES user (user_id);
-
-ALTER TABLE party_member
-  ADD CONSTRAINT FK_party_TO_party_member
-    FOREIGN KEY (party_id)
-    REFERENCES party (party_id);
-
 ALTER TABLE article
   ADD CONSTRAINT FK_user_TO_article
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
+
+ALTER TABLE article
+  ADD CONSTRAINT FK_party_TO_article
+    FOREIGN KEY (party_id)
+    REFERENCES party (party_id);
 
 ALTER TABLE comment
   ADD CONSTRAINT FK_user_TO_comment
@@ -167,23 +154,23 @@ ALTER TABLE comment
     FOREIGN KEY (article_id)
     REFERENCES article (article_id);
 
-ALTER TABLE schedule
-  ADD CONSTRAINT FK_user_TO_schedule
+ALTER TABLE comment_likes
+  ADD CONSTRAINT FK_comment_TO_comment_likes
+    FOREIGN KEY (comment_id)
+    REFERENCES comment (comment_id);
+
+ALTER TABLE comment_likes
+  ADD CONSTRAINT FK_user_TO_comment_likes
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
-ALTER TABLE review
-  ADD CONSTRAINT FK_meet_TO_review
-    FOREIGN KEY (meet_id)
-    REFERENCES meet (meet_id);
+ALTER TABLE meet
+  ADD CONSTRAINT FK_party_TO_meet
+    FOREIGN KEY (party_id)
+    REFERENCES party (party_id);
 
-ALTER TABLE image
-  ADD CONSTRAINT FK_review_TO_image
-    FOREIGN KEY (review_id)
-    REFERENCES review (review_id);
-
-ALTER TABLE review
-  ADD CONSTRAINT FK_user_TO_review
+ALTER TABLE meet_member
+  ADD CONSTRAINT FK_user_TO_meet_member
     FOREIGN KEY (user_id)
     REFERENCES user (user_id);
 
@@ -192,7 +179,37 @@ ALTER TABLE meet_member
     FOREIGN KEY (meet_id)
     REFERENCES meet (meet_id);
 
-ALTER TABLE article
-  ADD CONSTRAINT FK_party_TO_article
+ALTER TABLE party_member
+  ADD CONSTRAINT FK_user_TO_party_member
+    FOREIGN KEY (user_id)
+    REFERENCES user (user_id);
+
+ALTER TABLE party_member
+  ADD CONSTRAINT FK_party_TO_party_member
     FOREIGN KEY (party_id)
     REFERENCES party (party_id);
+
+ALTER TABLE schedule
+  ADD CONSTRAINT FK_user_TO_schedule
+    FOREIGN KEY (user_id)
+    REFERENCES user (user_id);
+
+ALTER TABLE article_likes
+  ADD CONSTRAINT FK_user_TO_article_likes
+    FOREIGN KEY (user_id)
+    REFERENCES user (user_id);
+
+ALTER TABLE article
+  ADD CONSTRAINT FK_meet_TO_article
+    FOREIGN KEY (meet_id)
+    REFERENCES meet (meet_id);
+
+ALTER TABLE article_likes
+  ADD CONSTRAINT FK_article_TO_article_likes
+    FOREIGN KEY (article_id)
+    REFERENCES article (article_id);
+
+ALTER TABLE image
+  ADD CONSTRAINT FK_article_TO_image
+    FOREIGN KEY (article_id)
+    REFERENCES article (article_id);
