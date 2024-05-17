@@ -5,7 +5,7 @@
         <hr>
         <div class="container">
             <div class="main">
-                <div style="leftbox" id="leftbox">
+                <div  id="leftbox">
                     <PartyNav />
                 </div>
                 <div class="rightbox" id="rightbox">
@@ -50,7 +50,6 @@ onMounted(() => {
 }
 
 .leftbox {
-
     width: 200px;
     height: 70vh;
     overflow-y: auto;
