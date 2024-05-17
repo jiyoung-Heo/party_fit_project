@@ -7,7 +7,8 @@ public class Party {
 	private int partyId;
 	private String name;
 	private String introduction;
-	private String introductionImage;
+	private String introductionImage; 
+	private String bannerImage; 
 	private String exerciseCategory;
 	private String partyType;
 }
