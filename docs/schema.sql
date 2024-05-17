@@ -3,6 +3,9 @@ create database partyfit;
 use partyfit;
 
 
+
+            
+            
 CREATE TABLE article
 (
   article_id INT           NOT NULL AUTO_INCREMENT COMMENT '게시글 아이디',
