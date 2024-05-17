@@ -6,7 +6,7 @@
 	<select id="selectParty" parameterType="SearchCondition"
 		resultType="Party">
 		select
-		party_id, name, introduction, introduction_image, exercise_category
+		party_id, name, introduction, introduction_image, banner_image, exercise_category
 		from party
 		<if test="key != null">
 			where ${key} like concat('%',#{word},'%')
@@ -16,7 +16,9 @@
 		</if>
 	</select>
 	<insert id="insertParty" parameterType="Party">
-		insert into party(name, introduction, introduction_image, exercise_category, party_type) 
-		values(#{name}, #{introduction}, #{introductionImage}, #{exerciseCategory}, #{partyType})
+		insert into party(name, introduction, introduction_image, banner_image, exercise_category, party_type) 
+		values(#{name}, #{introduction}, #{introductionImage}, #{bannerImage},#{exerciseCategory}, #{partyType})
 	</insert>
+
+	
 </mapper>

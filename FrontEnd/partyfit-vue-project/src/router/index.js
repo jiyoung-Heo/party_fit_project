@@ -10,6 +10,15 @@ import UserUpdate from '@/components/user/UserUpdate.vue'
 import UserChangePW from '@/components/user/UserChangePW.vue'
 import UserFindLoginId from '@/components/user/UserFindLoginId.vue'
 import UserFindPW from '@/components/user/UserFindPW.vue'
+import PartyFitView from '@/views/PartyFitView.vue'
+import ArticleCreate from '@/components/article/ArticleCreate.vue'
+import PartyMain from '@/components/partyfit/PartyMain.vue'
+import FreeBoard from '@/components/article/FreeBoard.vue'
+import IntroductionBoard from '@/components/article/IntroductionBoard.vue'
+import NoticeBoard from '@/components/article/NoticeBoard.vue'
+import MeetList from '@/components/meet/MeetList.vue'
+import MeetCreate from '@/components/meet/MeetCreate.vue'
+import MeetListDetail from '@/components/meet/MeetListDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,72 +27,122 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: MainView,
-      children:[
+      children: [
         {
-          path:'/my-fit',
-          name:'myFit',
+          path: '/my-fit',
+          name: 'myFit',
           component: MyFitView,
         },
         {
-          path:'/my-party-fit',
-          name:'myPartyFit',
+          path: '/my-party-fit',
+          name: 'myPartyFit',
           component: MyPartyFitView,
         },
         {
-          path:'/all-party-fit',
-          name:'allPartyFit',
+          path: '/all-party-fit',
+          name: 'allPartyFit',
           component: AllPartyFitView
         },
       ]
     },
+
+
     {
       path: '/user',
       name: 'user',
       component: MainView,
-      children:[
+      children: [
         {
-          path:'/login',
-          name:'login',
+          path: '/login',
+          name: 'login',
           component: UserLogin,
         },
         {
-          path:'/signup',
-          name:'signup',
+          path: '/signup',
+          name: 'signup',
           component: UserCreate,
         },
         {
-          path:'/myPage',
-          name:"myPage",
-          component : UserDetail,
-          
+          path: '/myPage',
+          name: "myPage",
+          component: UserDetail,
+
         },
         {
-          path:'/update',
-          name:"update",
-          component : UserUpdate,
-          
+          path: '/update',
+          name: "update",
+          component: UserUpdate,
+
         },
         {
-          path:'/changePW',
-          name :'changePW',
-          component : UserChangePW,
+          path: '/changePW',
+          name: 'changePW',
+          component: UserChangePW,
         },
         {
-          path:'/findLoginId',
-          name :'findLoginId',
-          component : UserFindLoginId,
+          path: '/findLoginId',
+          name: 'findLoginId',
+          component: UserFindLoginId,
         },
         {
-          path:'/findPassword',
-          name :'findPassword',
-          component : UserFindPW,
+          path: '/findPassword',
+          name: 'findPassword',
+          component: UserFindPW,
         }
-        
-  
+
+
       ]
 
     },
 
+    {
+      path: '/partyfit',
+      name: 'partyfit',
+      component: PartyFitView,
+      children: [
+        {
+          path: '/partyfit/:partyId',
+          name: 'partyfitmain',
+          component: PartyMain,
+        },
+        {
+          path: '/partyfit/createArticle/:partyId',
+          name: 'createArticle',
+          component: ArticleCreate,
+        },
+        {
+          path: '/partyfit/:partyId/freeboard',
+          name: 'freeboard',
+          component: FreeBoard,
+        },
+        {
+          path: '/partyfit/:partyId/introductionboard',
+          name: 'introductionboard',
+          component: IntroductionBoard,
+        },
+        {
+          path: '/partyfit/:partyId/noticeboard',
+          name: 'noticeboard',
+          component: NoticeBoard,
+        },
+        {
+          path: '/partyfit/:partyId/meetlist',
+          name: 'meetlist',
+          component: MeetList,
+        },
+        {
+          path: '/partyfit/:partyId/meetdetail',
+          name: 'meetdetail',
+          component: MeetListDetail,
+        },
+        {
+          path: '/partyfit/:partyId/meetcreate',
+          name: 'meetcreate',
+          component: MeetCreate,
+        },
+
+      ]
+    },
   ]
 })
 

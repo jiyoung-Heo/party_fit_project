@@ -192,7 +192,7 @@ export const useUserStore = defineStore("user", () => {
   }
 const partyList = ref([])
   const getMyPartyFit = function(){
-    const userId = sessionStorage.getItem('loginUser')
+    const userId = loginUser.value.userId;
     // console.log("store"+ userId)
     axios({
       url: `${REST_USER_API}/myPartyfit/${userId}`,
@@ -213,7 +213,7 @@ const partyList = ref([])
 
   const meetList = ref([])
   const getMyMeet = function(){
-    const userId = sessionStorage.getItem('loginUser')
+    const userId = loginUser.value.userId;
     // console.log("store"+ userId)
     axios({
       url: `${REST_USER_API}/myMeet`,
@@ -234,7 +234,7 @@ const partyList = ref([])
 
   const articleList = ref([])
   const getMyArticle = function(){
-    const userId = sessionStorage.getItem('loginUser')
+    const userId = loginUser.value.userId;
     // console.log("store"+ userId)
     axios({
       url: `${REST_USER_API}/myArcticle`,

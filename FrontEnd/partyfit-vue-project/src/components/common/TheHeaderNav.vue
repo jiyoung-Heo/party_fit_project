@@ -10,22 +10,24 @@
             notifications
           </span>
         </p>
-
-        <div v-if="isLoginn">
-          <RouterLink :to="{ name: 'login' }">로그인</RouterLink> |
-          <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink> |
-
-        </div>
-        <div v-else>
-          <a> {{ loginUser.name }} 님 </a>
-          <div v-if="hasProfile">
-            <img :src=loginUser.profile alt="프로필사진">
+        
+        <div class="user-info">
+          <div v-if="isLoginn">
+            <RouterLink :to="{ name: 'login' }">로그인</RouterLink> |
+            <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink> |
+            
           </div>
           <div v-else>
-            <span class="material-icons">face</span> 
+            <a> {{ loginUser.name }} 님 </a>
+            <div v-if="hasProfile">
+              <img :src=loginUser.profile alt="프로필사진" width="20px">
+            </div>
+            <div v-else>
+              <span class="material-icons">face</span> 
+            </div>
+            <RouterLink :to="{ name: 'myPage' }">마이페이지</RouterLink> |
+            <button @click="logout">로그아웃</button>
           </div>
-          <RouterLink :to="{ name: 'myPage' }">마이페이지</RouterLink> |
-          <button @click="logout">로그아웃</button>
         </div>
 
 
@@ -73,6 +75,13 @@ const logout = () => {
 </script>
 
 <style scoped>
+.user-info a,
+.user-info div, .user-info button{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
+}
+
 @font-face {
   font-family: 'Material Icons';
   font-style: normal;
