@@ -1,19 +1,22 @@
 <template>
     <div class="reservation">
-        여기는 예약페이지
+      
+        <div class="row justify-content-between align-items-center" style="margin:0px;">
 
-        <h2>
-            예약된 일정
-        </h2>
-        <hr>
+            <div style="" class="col-auto reduce-margin fs-4  fw-normal">
+                예약된 일정
+            </div>
+            <a style="color: coral;" class="col-auto ">+ 더보기</a> 
+        </div> 
+        <hr style="margin:5px;">
         <div class="container">
             {{ store.meetList.value }}
             <div  v-for="(meet,index) in store.meetList" :key="index" >
                 <div class="meet">
                     <p> {{meet.title}}</p>
                     
-                    <p> {{meet.startTime.split('T')[0]}}</p>
-<hr>    
+                    <p style="color:grey;"> {{meet.startTime.split('T')[0]}}</p>
+
                 </div>
             </div> 
          
@@ -42,11 +45,16 @@ meetList.value = store.meetList.value;
 </script>
 
 <style scoped>
+/* .header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top : 10px;
+} */
 .container{
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    border: solid black 1px;
 }
 
 .meet {
