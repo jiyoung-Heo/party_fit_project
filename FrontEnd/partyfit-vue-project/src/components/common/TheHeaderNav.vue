@@ -1,114 +1,167 @@
 <template>
   <div class="container">
     <div class="top">
-        <div class="logo">
-            <h1>party fit</h1>
+      <div class="logo">
+        <h1>party fit</h1>
+      </div>
+      <div class="logo-right">
+        <p class="plus-party-fit">+party fit</p>
+        <p><span class="material-symbols-outlined">
+            notifications
+          </span>
+        </p>
+        
+        <div class="user-info">
+          <div v-if="isLoginn">
+            <RouterLink :to="{ name: 'login' }">로그인</RouterLink> |
+            <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink> |
+            
+          </div>
+          <div v-else>
+            <a> {{ loginUser.name }} 님 </a>
+            <div v-if="hasProfile">
+              <img :src=loginUser.profile alt="프로필사진" width="20px">
+            </div>
+            <div v-else>
+              <span class="material-icons">face</span> 
+            </div>
+            <RouterLink :to="{ name: 'myPage' }">마이페이지</RouterLink> |
+            <button @click="logout">로그아웃</button>
+          </div>
         </div>
-        <div class="logo-right">
-            <p class="plus-party-fit">+party fit</p>
-            <p><img src="" alt="종모양이미지"></p>
-            <p><img src="" alt="프로필사진"></p>
-             | 
-           
-      <div v-if="isLoginn" >
-      <RouterLink :to="{name:'login'}">로그인</RouterLink> |
-      <RouterLink :to="{name:'signup'}">회원가입</RouterLink> |
-      
-      </div>
-      <div v-else>
-      <a> {{ loginUser.name }} 님 </a>
-      <RouterLink :to="{name:'myPage'}">마이페이지</RouterLink> |
-      <button @click="logout">로그아웃</button>
-      </div>
 
 
-        </div>
+      </div>
     </div>
     <nav class="navbar-menu">
       <!-- routerlink로 수정 -->
-      <RouterLink :to="{name:'myFit'}">나의 운동</RouterLink>
-      <RouterLink :to="{name:'myPartyFit'}">나의 party fit</RouterLink>
-      <RouterLink :to="{name:'allPartyFit'}">전체 party fit</RouterLink> 
+      <RouterLink :to="{ name: 'myFit' }">나의 운동</RouterLink>
+      <RouterLink :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
+      <RouterLink :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
     </nav>
   </div>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
 </template>
 
 <script setup>
-import { computed, onMounted, ref ,watch} from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import { useUserStore } from "@/stores/user";
 
-import { useRouter } from "vue-router";
-
-const router = useRouter()
 const store = useUserStore()
 const loginUser = ref(store.loginUser)
-const isLogin= ref(true)
-const loginUserName = ref()
+const isLogin = ref(true)
 
-onMounted(()=>{
-  // const storedUser = sessionStorage.getItem("loginUser")
-  // loginUser.value = JSON.parse(storedUser)
-  // console.log(store.loginUser)
-  // console.log("headNav" + store.loginUser)
+onMounted(() => {
+
   loginUser.value = store.loginUser
 })
 
-const isLoginn = computed(()=>{
-  return store.loginUser ===""
+const isLoginn = computed(() => {
+  return store.loginUser === ""
 })
-
-// watch(store.loginUser,(newVal,oldVal)=>{
-//   if (newVal) {
-//     // store.loginUser이 비어있지 않은 경우
-//     isLogin.value = false;
-//   } else {
-//     // store.loginUser이 비어있는 경우
-//     isLogin.value = true;
-//   }
-  
-// })
-// watch(isLogin, (newVal, oldVal) => {
-//       // isLogin 값이 변경될 때 실행되는 로직
-//       console.log('isLogin changed:', newVal);
-//     });
-
+const hasProfile = computed(() => {
+  return store.loginUser.profile !== null
+})
 
 const logout = () => {
   store.userLogout()
   isLogin.value = true;
 }
+
 </script>
 
 <style scoped>
-.top{
-    padding:5% 0;
-    display: flex;
-    justify-content: flex-start;
+.user-info a,
+.user-info div, .user-info button{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 10px;
 }
 
-.logo{
-  color:coral;
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(https://example.com/MaterialIcons-Regular.eot);
+  /* For IE6-8 */
+  src: local('Material Icons'),
+    local('MaterialIcons-Regular'),
+    url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+    url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+    url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
 }
 
-.logo-right{
-    display: flex;
-    align-items:center;
-    margin-left: auto;
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }
-.logo-right p{
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+}
+
+.top {
+  padding: 5% 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.logo {
+  color: coral;
+}
+
+.logo-right {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.logo-right p {
   width: 100px;
   display: inline-block;
 }
-.plus-party-fit{
-  color:coral;
+
+.plus-party-fit {
+  color: coral;
 }
-.navbar-menu{
+
+.navbar-menu {
   display: flex;
   align-items: center;
 }
-.navbar-menu a{
-    margin-right: 5%;
-    text-decoration: none;
-    color:black;
+
+.navbar-menu a {
+  margin-right: 5%;
+  text-decoration: none;
+  color: black;
 }
 </style>

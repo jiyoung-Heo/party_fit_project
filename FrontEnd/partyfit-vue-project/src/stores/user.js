@@ -197,7 +197,7 @@ export const useUserStore = defineStore("user", () => {
   }
 const partyList = ref([])
   const getMyPartyFit = function(){
-    const userId = sessionStorage.getItem('loginUser')
+    const userId = loginUser.value.userId;
     // console.log("store"+ userId)
     axios({
       url: `${REST_USER_API}/myPartyfit/${userId}`,
@@ -208,6 +208,64 @@ const partyList = ref([])
     })
    .then((res)=>{
       partyList.value =res.data
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      
+    })
+
+  }
+
+  const meetList = ref([])
+  const getMyMeet = function(){
+    const userId = loginUser.value.userId;
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/myMeet`,
+      method: "GET",
+      params: {
+        userId : userId,
+      }
+    })
+   .then((res)=>{
+     console.log(res.data)
+     meetList.value =res.data
+    })
+    .catch((err)=>{
+      
+    })
+
+  }
+
+  const articleList = ref([])
+  const getMyArticle = function(){
+    const userId = loginUser.value.userId;
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/myArcticle`,
+      method: "GET",
+      
+    })
+   .then((res)=>{
+    articleList.value =res.data
+      console.log(res.data)
+    })
+    .catch((err)=>{
+      
+    })
+
+  }
+  const commentList = ref([])
+  const getMyComment = function(){
+    const userId = sessionStorage.getItem('loginUser')
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/myComment`,
+      method: "GET",
+      
+    })
+   .then((res)=>{
+    commentList.value =res.data
       console.log(res.data)
     })
     .catch((err)=>{
@@ -232,5 +290,12 @@ const partyList = ref([])
     isValidEmail,
     getMyPartyFit,
     partyList,
+    meetList,
+    getMyMeet,
+    articleList,
+    getMyArticle,
+    commentList,
+    getMyComment,
+
   };
 },{persist:true});
