@@ -1,8 +1,8 @@
 <template>
-    <div class="my-party-fit">
-        나의 partyfit
+    <div class="my-party-fit row">
+       <div class=" fs-4  fw-normal col-12 justify-content-start d-flex">나의 partyfit</div>
         <hr>
-        <div class="container">
+        <div class="container ">
         <div  v-for="(party,index) in store.partyList" :key="index" >
             <div class="party">
                 <img :src=party.introductionImage alt="파티 이미지"/>

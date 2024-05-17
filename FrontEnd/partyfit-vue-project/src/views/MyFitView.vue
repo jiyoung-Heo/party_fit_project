@@ -1,20 +1,21 @@
 <template>
-  <div class="container grid text-center">
-    <div class="row">
-      <div class="col-sm-8">
+  <div class="container grid text-center ">
+    <div class="row" style="height:350px;">
+      <div class="col-8 col-sm-8">
         <TheMyFitHeaderNavVue />
         <CarenderVue />
       </div>
-      <div class="col-sm-4 schedule-list">
+      <div class="col-6  col-sm-4 schedule-list">
         <ReservationVue />
       </div>
     </div>
-    <div class="row">
-      <div class="col-sm-8">
-        
+    
+    <div class="row" style="height:200px;">
+      <div class=" col-4 col-sm-8">
+
         <MyPartyFitVue />
       </div>
-      <div class="col-sm-4">
+      <div class="col-6 col-sm-4">
         <TodoCheckVue />
       </div>
     </div>
@@ -30,8 +31,11 @@ import TodoCheckVue from "@/components/myfit/TodoCheckVue.vue";
 </script>
 
 <style scoped>
- .row .col-sm-8, .col-sm-4{
-  border:1px solid red;
- }
-
+.row .col-sm-8,
+.col-sm-4 {
+  border: 1px solid red;
+}
+.row{
+  padding:10px;
+}
 </style>
