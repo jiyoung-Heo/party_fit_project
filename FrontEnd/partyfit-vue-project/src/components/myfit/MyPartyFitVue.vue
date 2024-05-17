@@ -1,11 +1,11 @@
 <template>
-    <div class="my-party-fit row">
+    <div class="my-party-fit">
        <div class=" fs-4  fw-normal col-12 justify-content-start d-flex">나의 partyfit</div>
         <hr>
         <div class="container ">
         <div  v-for="(party,index) in store.partyList" :key="index" >
-            <div class="party">
-                <img :src=party.introductionImage alt="파티 이미지"/>
+            <div class="party" @click="gopartyPage(party)">
+                <img :src=party.introductionImage alt="파티 이미지" width ="150px"/>
                 <p> {{party.name}}</p>
                 <p> {{party.exerciseCategory}}</p>
 
@@ -19,7 +19,11 @@
 <script setup>
 import { onMounted, ref , watch } from 'vue';
 import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+import { usePartyStore } from '@/stores/party';
 
+const pstore = usePartyStore();
+const router = useRouter();
 const store = useUserStore();
 const partylist = ref([]);
 const insdf = ref("gfsd");
@@ -30,6 +34,11 @@ onMounted(()=>{
 // console.log(store.partyList.value);
 partylist.value = store.partyList.value;
 
+const gopartyPage= function(party){
+    console.log(party.partyId);
+    router.push({name: 'partyfitmain', params: {partyId: party.partyId}});
+    pstore.selectedParty = party;
+}
 </script>
 
 <style scoped>

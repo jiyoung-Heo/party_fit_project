@@ -1,3 +1,7 @@
+drop database partyfit;
+create database partyfit;
+use partyfit;
+
 
 CREATE TABLE article
 (
@@ -83,7 +87,8 @@ CREATE TABLE party
   party_id           INT           NOT NULL AUTO_INCREMENT COMMENT '그룹 pk',
   name               VARCHAR(20)   NOT NULL COMMENT '그룹 이름',
   introduction       VARCHAR(4000) NOT NULL COMMENT '그룹 소개글',
-  introduction_image VARCHAR(1000) NULL     COMMENT '그룹 소개 이미지',
+  introduction_image VARCHAR(4000) NULL     COMMENT '그룹 로고',
+  banner_image       VARCHAR(4000) NULL     COMMENT '그룹 배너 이미지',
   exercise_category  VARCHAR(100)  NOT NULL COMMENT '운동 종류',
   party_type         VARCHAR(1)    NOT NULL DEFAULT '0' COMMENT '그룹종류(0:개인그룹, 1:기업그룹)',
   PRIMARY KEY (party_id)
@@ -213,3 +218,5 @@ ALTER TABLE image
   ADD CONSTRAINT FK_article_TO_image
     FOREIGN KEY (article_id)
     REFERENCES article (article_id);
+
+
