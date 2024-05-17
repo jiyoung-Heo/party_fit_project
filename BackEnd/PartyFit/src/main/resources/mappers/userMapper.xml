@@ -2,45 +2,48 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  <mapper namespace= "com.ssafy.partyfit.model.dao.UserDao">
-  
-  
-  <insert id="insertUser" parameterType="User" >
-  
-  INSERT INTO user(login_id,name,password,email,username,age) VALUES ( #{loginId},#{name},#{password},#{email},#{username},#{age})
-  </insert>
-  
-    <select id ="selectByInfo" parameterType="User" resultType="User">
-  
-		SELECT *
-		FROM user
-		WHERE login_id = #{loginId} AND password = #{password}
-  
-  </select>
-  
-  <update id="updateUserInfo" parameterType="USer">
-  UPDATE user SET username=${username}, email =${email}
-  WHERE user_id=${userId}
-  </update>
-  
-  
-  <select id ="searchById" parameterType="int" resultType="User">
-  
-		SELECT *
-		FROM user
-		WHERE user_id = #{id} 
-		
-  </select>
+<mapper namespace="com.ssafy.partyfit.model.dao.UserDao">
 
-  <select id ="searchByEmail" parameterType="String" resultType="User">
-  
+
+	<insert id="insertUser" parameterType="User">
+
+		INSERT INTO user(login_id,name,password,email,username,age) VALUES (
+		#{loginId},#{name},#{password},#{email},#{username},#{age})
+	</insert>
+
+	<select id="selectByInfo" parameterType="User" resultType="User">
+
 		SELECT *
 		FROM user
-		WHERE email = #{email} 
-	
-  </select>
+		WHERE login_id = #{loginId} AND password =
+		#{password} AND delete_yn ='N';
 
-<select id="selectId" parameterType="String"  >
+	</select>
+
+	<update id="updateUserInfo" parameterType="User">
+		UPDATE user SET username= #{username}, email =${email}, age =${age}
+		WHERE user_id=${userId} AND delete_yn ='N';
+	</update>
+
+
+	<select id="searchById" parameterType="int" resultType="User">
+
+		SELECT *
+		FROM user
+		WHERE user_id = #{id} AND delete_yn ='N';
+
+	</select>
+
+	<select id="searchByEmail" parameterType="String"
+		resultType="User">
+
+		SELECT *
+		FROM user
+		WHERE email = #{email} AND delete_yn ='N';
+
+	</select>
+
+	<select id="selectId" parameterType="String"  >
 		SELECT count(*) FROM user WHERE login_id = #{loginId} AND delete_yn ='N';
 	</select>
 		<select id="selectUsername" parameterType="String"  >
@@ -50,8 +53,5 @@
 		SELECT count(*) FROM user WHERE email = #{email} AND delete_yn ='N';
 	</select>
 	
-
-<update id="deleteUser" parameterType="int">
-update user set delete_yn = "Y" where user_id=#{userId}
-</update>
-  </mapper>
+	
+</mapper>

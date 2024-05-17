@@ -1,19 +1,47 @@
 <template>
     <div>
-        mainpage
-
-        <div id>
-
+        <div class="banner">
             <div v-if="party.bannerImage !== null">
-
                 <img :src=party.bannerImage width="100%" height="160px">
             </div>
             <div v-else>
                 <div style="width:100%; height:160px; text-align: center; font-size: 24px; font-weight: bold; ">
-                    {{ party.name }}</div>
-
+                    {{ party.name }}
+                    </div>
             </div>
         </div>
+        <div class="board">
+           <div class="left">
+            <div class="notice">
+                <p>공지사항</p>
+                <hr>
+                <ul>
+                    <div v-for="(article,index) in store.noticeList.slice(0, 5)" :key="index" >
+                    <li>
+                       <a>{{article.title}}</a>
+                        <a>{{ article.regDate.split('T')[0]}}</a>
+                    </li>
+                    </div>
+                </ul>
+            </div>
+            <div class="hotView">
+                <p>인기글</p>
+                <hr>
+                <ul>
+                    <div v-for="(article,index) in store.hotViewList.slice(0, 5)" :key="index" >
+                    <li>
+                        <a>{{article.title}}</a>
+                        <a>{{ article.viewCount}}</a>
+                    </li>
+                    </div>
+                </ul>
+            </div>
+           </div>
+            <div class="calender">
+                <h1>캘린더</h1>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -30,18 +58,50 @@ const store = usePartyStore();
 const party = ref(store.selectedParty);
 const partylist = ref(store.partyMemberList);
 
+
+
 const loginUser = ref(userstore.loginUser)
 
 
 onMounted(() => {
     // party.value = store.selectedParty
-    store.getMemberList(store.selectedParty.partyId);
+    // store.getMemberList(store.selectedParty.partyId);
+    store.getNoticeList(store.selectedParty.partyId)
+    store.getHotViewList(store.selectedParty.partyId)
 })
 
-const goArticleCreatePage = function () {
-    router.push({ name: 'createArticle', params: { partyId: store.selectedParty.partyId } })
-}
+
 
 </script>
 
-<style scoped></style>
+<style scoped>
+li {
+    display: flex;
+    justify-content: space-arou;
+}
+li a:nth-of-type(2){
+    border: black solid 1px;
+    flex:1;
+    text-align: right;
+}
+li a:nth-of-type(1){
+    border: black solid 1px;
+    flex:2;
+}
+ul{
+    margin: 10px;
+}
+
+.board {
+    display: flex;
+    flex-direction: row;
+}
+.left {
+    flex:1;
+}
+.calender{
+    flex:1;
+    border: black solid 1px;
+    background-color: aquamarine;
+}
+</style>

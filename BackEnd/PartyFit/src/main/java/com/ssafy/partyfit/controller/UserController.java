@@ -59,44 +59,43 @@ public class UserController {
 	
 	// 회원가입 하는 기능
 	@PostMapping("/signup")
-	public ResponseEntity<?> signup(@RequestBody User user,HttpSession session) {
+	public ResponseEntity<?> signup(@RequestBody User user, HttpSession session) {
 		System.out.println("signup");
 		System.out.println("signup" + user);
 		userService.signUp(user);
 		System.out.println("회원가입할때" + session.getAttribute("loginUser"));
-		
+
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
-	//로그인
+
+	// 로그인
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
-		
+
 		HttpStatus status = null;
-		Map<String,Object> result = new HashMap<>();
-		
+		Map<String, Object> result = new HashMap<>();
+
 		System.out.println(user);
-		
+
 		User tmp = userService.login(user);
-		
-		if(tmp.getLoginId() != null ) {
+
+		if (tmp.getLoginId() != null) {
 			result.put("message", "success");
-			result.put("access-token",jwtUtil.createToken(tmp.getUserId()));
-			System.out.println("성공"  + tmp);
+			result.put("access-token", jwtUtil.createToken(tmp.getUserId()));
+			System.out.println("성공" + tmp);
 			session.setAttribute("loginUser", tmp.getUserId());
 			System.out.println("로그인 후 " + session.getAttribute("loginUser"));
 			status = HttpStatus.ACCEPTED;
-		}
-		else {
-			 result.put("message", "fail");
+		} else {
+			result.put("message", "fail");
 			status = HttpStatus.NO_CONTENT;
 		}
-		
+
 		return new ResponseEntity<>(result, status);
 
 	}
-	
-	//로그아웃
+
+	// 로그아웃
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		System.out.println("로그아웃 전 " + session.getAttribute("loginUser"));
@@ -104,35 +103,69 @@ public class UserController {
 		System.out.println(session.getAttribute("loginUser"));
 		return new ResponseEntity<String>("로그아웃완료", HttpStatus.OK);
 	}
-	
-	
-	//회원정보 수정
+
+	// 회원정보 수정
 	@PutMapping("/{userId}")
 	public ResponseEntity<?> updateUserInfo(@RequestBody User user, HttpSession session) {
-		System.out.println("로그아웃전 " + session.getAttribute("loginUser"));
-//		userService.userUpdate(user);
-//		System.out.println("userUpdate" + user);
-//		session.getAttribute("loginUser")
-		System.out.println(session.getAttribute("loginUser"));
-		User tmp = userService.getUserById((int)session.getAttribute("loginUser"));
-		
-		
-		return new  ResponseEntity<User>(tmp, HttpStatus.OK);
+		int result = userService.modifyUser(user);
+		if (result == 0) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+
+	// 이메일로 user 찾기
+	@GetMapping("/find-id")
+	public ResponseEntity<?> findId(@ModelAttribute User user) {
+		System.out.println("아이디 찾기" + user.getEmail() + "name : " + user.getName());
+		User tmp = userService.getUserByEmail(user.getEmail());
+		System.out.println(tmp);
+		if (tmp != null && tmp.getName().equals(user.getName())) {
+			return new ResponseEntity<User>(tmp, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+	}
+
+	// 이메일,아이디로 user 찾기
+	@GetMapping("/find-pw/{email}/{loginId}")
+	public ResponseEntity<?> findPW(@PathVariable("email") String email, @PathVariable("loginId") String loginId,
+			@RequestBody String name) {
+
+		User tmp = userService.getUserByEmail(email);
+		if (tmp != null && tmp.getLoginId().equals(loginId) && tmp.getName().equals(name)) {
+			return new ResponseEntity<User>(tmp, HttpStatus.OK);
+
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+	}
+
+	// UserId만 담겨있는 객체를 주면 User객체 리턴
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getUser(@ModelAttribute User user) {
+		User tmp = userService.getUserById(user.getUserId());
+		System.out.println("getUser  " + tmp);
+		if (tmp != null) {
+			return new ResponseEntity<User>(tmp, HttpStatus.OK);
+		}
+
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
 	}
 	
-	//이메일로 아이디 찾기
-	@GetMapping("/find-id")
-	public ResponseEntity<?> findId(@ModelAttribute User user){
-		System.out.println("아이디 찾기" + user.getEmail() +"name : "+user.getName());
-		User tmp = userService.getUserByEmail(user.getEmail());
-		System.out.println(tmp);
-		if(tmp != null && tmp.getName().equals(user.getName())) {
-			return new ResponseEntity<User>(tmp,HttpStatus.OK);
+	
+	//아이디 중복 체크 
+	@PostMapping("/confirmId")
+	public ResponseEntity<?> confirmId(@RequestBody User user ){
+//		System.out.println(user);
+//		System.out.println("아이디 중복 체크" + userService.selectId(user.getLoginId()) +" : " +user.getLoginId());
+		if(userService.selectId(user.getLoginId())) { //중복되는 아이디 없음
+			System.out.println("성공함");
+			return new ResponseEntity<String>("1",HttpStatus.OK);
 		}
-		
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
+		return new ResponseEntity<String>("0",HttpStatus.OK);
 	}
 	
 	//비밀번호 일치 여부 
@@ -144,8 +177,7 @@ public class UserController {
 			return new ResponseEntity<User>(tmp,HttpStatus.OK);
 			
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		
+		return new ResponseEntity<String>("0",HttpStatus.OK);
 	}
 	
 	// UserId만 담겨있는 객체를 주면 User객체 리턴

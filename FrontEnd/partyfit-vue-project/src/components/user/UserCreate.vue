@@ -72,7 +72,21 @@ const user = ref({
   age: "",
 
 });
+const error = ref(false);
+const error2 = ref(false);
+const error3 = ref(false);
+const isValid = computed(() => {
+  return error.value
+})
+const isValid2 = computed(() => {
+  return error2.value
+})
+const isValid3 = computed(() => {
+  return error3.value
+})
 
+
+const isOK = ref(false)
 
 const createUser = async function () {
   await isIdOK();

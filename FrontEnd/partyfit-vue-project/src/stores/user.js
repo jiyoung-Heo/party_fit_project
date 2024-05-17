@@ -15,7 +15,7 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then(() => {
-        console.log("store" + user)
+        // console.log("store" + user)/
         console.log(user)
         window.alert('회원가입 성공')
         router.push({ name: "home" }); 
@@ -23,7 +23,7 @@ export const useUserStore = defineStore("user", () => {
       .catch((err) => {});
   };
 
-  const loginUser = ref({});
+  
   const loginUserId=ref()
 
   //로그인
@@ -32,7 +32,7 @@ export const useUserStore = defineStore("user", () => {
       loginId: id,
       password: pw,
     };
-    console.log(user);
+    console.log("login" + user);
 
     axios({
       url: `${REST_USER_API}/login`,
@@ -48,6 +48,9 @@ export const useUserStore = defineStore("user", () => {
         loginUserId.value = userId;
         console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
+        router.push({ name: "home" })
+        window.alert('로그인 성공')
+        
         // router.push({name:"home"})
         window.location.reload();
         // window.alert('로그인 성공')
@@ -118,6 +121,7 @@ export const useUserStore = defineStore("user", () => {
     })
   }
 
+  const loginUser = ref({});
   const getUser = async function(userId) {
     try {
       const res = await axios({
@@ -133,6 +137,7 @@ export const useUserStore = defineStore("user", () => {
       window.alert("회원정보 가져오기 실패");
     }
   };
+
 
   //아이디 중복 검사 
   const isValidId = function(loginId){

@@ -28,7 +28,7 @@
             </div>
             <div>
                 <button @click="goUpdatepage">수정</button>
-                <!-- <button @click="getInfo">정보보기 </button> -->
+               
             </div>
         </fieldset>
     </div>
@@ -43,6 +43,8 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useUserStore();
+
+const loginUser = ref()
 
 onMounted(() => {
     store.getUser(sessionStorage.getItem("loginUser"))
