@@ -8,6 +8,12 @@ import com.ssafy.partyfit.model.dto.User;
 
 public interface MeetDao {
 	List<Meet> selectMeet(Map<String, Object> map);
+
 	int insertMeet(Meet meet);
+
 	List<Meet> selectMyMeet(User user);
+	
+	int approveMeet(int meetId);
+	
+	int refuseMeet(int meetId);
 }

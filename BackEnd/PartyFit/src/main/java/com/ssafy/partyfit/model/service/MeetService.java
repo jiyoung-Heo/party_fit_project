@@ -9,6 +9,11 @@ import com.ssafy.partyfit.model.dto.User;
 
 public interface MeetService {
 	List<Meet> showMeet(Map<String, Object> map);
+
 	int makeMeet(Meet meet);
+
 	List<Meet> showMyMeet(User user);
+	
+	int manageCreateMeet(int meetId, boolean isaccept);
+	
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMember;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
+import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 
 import jakarta.servlet.http.HttpSession;
@@ -29,9 +30,13 @@ public class ManagementController {
 	private final int WAIT_TO_JOIN = 0;
 
 	PartyMemberService partymemberService;
+	MeetService meetService;
 
-	public ManagementController(PartyMemberService partymemberService) {
+	public ManagementController(Logger logger, PartyMemberService partymemberService, MeetService meetService) {
+		super();
+		this.logger = logger;
 		this.partymemberService = partymemberService;
+		this.meetService = meetService;
 	}
 
 	@GetMapping("/join")
@@ -53,6 +58,21 @@ public class ManagementController {
 		partyMember.setPartyId(partyId);
 
 		int result = partymemberService.managePartyMember(partyMember, isaccept);
+
+		if (result == 0) {
+			// 업데이트할 데이터가 없다면
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 데이터를 성공적으로 업데이트한 경우
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+
+	@PutMapping("/meet/{meetId}/{isAccept}")
+	public ResponseEntity<?> participationMmeet(@PathVariable("meetId") int meetId,
+			@PathVariable("isAccept") Boolean isaccept) {
+
+		int result = meetService.manageCreateMeet(meetId, isaccept);
 
 		if (result == 0) {
 			// 업데이트할 데이터가 없다면
