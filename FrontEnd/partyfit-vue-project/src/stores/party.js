@@ -89,6 +89,24 @@ export const usePartyStore = defineStore("party", () => {
           })
       }
       
+    // 조회수 순 전체 게시글 조회 -> 일단은 못해서 자유게시판만..  
+    const hotViewList = ref([])
+    const getHotViewList = function(partyId){
+        
+        axios({
+            url: `${REST_USER_API}/${partyId}/article/0`,
+            method: "GET",
+            params: {
+                orderBy: "view_count",
+                orderByDir: "DESC"
+            }
+        }).then(res => {
+            hotViewList.value = res.data
+            console.log(hotViewList.value)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     
 
   return {
@@ -101,5 +119,7 @@ export const usePartyStore = defineStore("party", () => {
     getFreeList,
     introductionList,
     getIntroductionList,
+    hotViewList,
+    getHotViewList,
   };
 },{persist:true});
