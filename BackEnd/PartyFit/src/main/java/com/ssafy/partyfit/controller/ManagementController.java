@@ -15,26 +15,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMember;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 
-import jakarta.servlet.http.HttpSession;
-
 @RestController
 @RequestMapping("/party/{partyId}/management")
 public class ManagementController {
-	Logger logger = LoggerFactory.getLogger(getClass());
+	Logger logger = LoggerFactory.getLogger(ManagementController.class);
+	
 	private final int WAIT_TO_JOIN = 0;
 
 	PartyMemberService partymemberService;
 	MeetService meetService;
 
-	public ManagementController(Logger logger, PartyMemberService partymemberService, MeetService meetService) {
+	public ManagementController(PartyMemberService partymemberService, MeetService meetService) {
 		super();
-		this.logger = logger;
 		this.partymemberService = partymemberService;
 		this.meetService = meetService;
 	}
