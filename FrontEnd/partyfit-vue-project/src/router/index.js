@@ -6,7 +6,7 @@ import AllPartyFitView from '@/views/AllPartyFitView.vue'
 import UserView from '@/views/UserView.vue'
 import UserLogin from '@/components/user/UserLogin.vue'
 import UserCreate from '@/components/user/UserCreate.vue'
-import UserDetail from '@/components/user/UserDetail.vue'
+import UserMyPage from '@/components/user/UserMyPage.vue'
 import UserUpdate from '@/components/user/UserUpdate.vue'
 import UserChangePW from '@/components/user/UserChangePW.vue'
 import UserFindLoginId from '@/components/user/UserFindLoginId.vue'
@@ -66,7 +66,7 @@ const router = createRouter({
         {
           path: '/myPage',
           name: "myPage",
-          component: UserDetail,
+          component: UserMyPage,
 
         },
         {
