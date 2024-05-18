@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.PartyMemberDao;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMember;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.User;
 
@@ -30,7 +31,19 @@ public class PartyMemberServiceImpl implements PartyMemberService {
 	@Override
 	public List<Party> showMyParty(User user){
 		return partyMemberDao.selectMyParty(user);
-		
 	}
+
+	@Override
+	public int managePartyMember(PartyMember partyMember, boolean isAccept) {
+		int result;
+		if(isAccept) {
+			result = partyMemberDao.updatePartyMember(partyMember);
+		}else {
+			result = partyMemberDao.deletePartyMember(partyMember);
+		}
+		return result;
+	}
+	
+	
 	
 }

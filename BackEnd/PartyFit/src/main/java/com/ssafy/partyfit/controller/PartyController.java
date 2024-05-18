@@ -24,6 +24,7 @@ import com.ssafy.partyfit.model.dto.ArticleUser;
 import com.ssafy.partyfit.model.dto.Comment;
 import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMemberCount;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
@@ -72,6 +73,22 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<List<Party>>(partyList, HttpStatus.OK);
+		}
+	}
+	
+	/**
+	 * 파티목록 + 인원수 인원수 많은순 정렬 리턴
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/top")
+	public ResponseEntity<?> showPartyAndMemberCountOrderByMemberCount() {
+		List<PartyMemberCount> partyList = partyService.showPartyAndMemberCountOrderByMemberCount();
+		if (partyList == null || partyList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<PartyMemberCount>>(partyList, HttpStatus.OK);
 		}
 	}
 
@@ -406,10 +423,11 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/meet")
-	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @ModelAttribute SearchCondition condition) {
+	@GetMapping("/{partyId}/meet/{status}")
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status, @ModelAttribute SearchCondition condition) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
+		map.put("partyId", status);
 		map.put("condition", condition);
 		List<Meet> meetList = meetService.showMeet(map);
 		if (meetList == null || meetList.size() == 0) {

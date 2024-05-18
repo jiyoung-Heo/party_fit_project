@@ -5,9 +5,11 @@ import java.util.List;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.dto.User;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMemberCount;
 
 public interface PartyDao {
-	List<Party> selectParty(SearchCondition condition);
+	List<Party> selectPartyWithCondition(SearchCondition condition);
+	List<PartyMemberCount> selectPartyWithMemberCount();
 	int insertParty(Party party);
 	
 }

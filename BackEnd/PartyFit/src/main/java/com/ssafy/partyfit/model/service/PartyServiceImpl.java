@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.PartyDao;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMemberCount;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.dto.User;
 
@@ -21,13 +22,18 @@ public class PartyServiceImpl implements PartyService {
 	
 	@Override
 	public List<Party> showParty(SearchCondition condition) {
-		return partyDao.selectParty(condition);
+		return partyDao.selectPartyWithCondition(condition);
 
 	}
 
 	@Override
 	public int makeParty(Party party) {
 		return partyDao.insertParty(party);
+	}
+
+	@Override
+	public List<PartyMemberCount> showPartyAndMemberCountOrderByMemberCount() {
+		return partyDao.selectPartyWithMemberCount();
 	}
 
 }

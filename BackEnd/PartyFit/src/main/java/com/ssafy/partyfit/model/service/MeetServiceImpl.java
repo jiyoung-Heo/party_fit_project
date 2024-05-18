@@ -34,4 +34,15 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.selectMyMeet(user);
 	}
 
+	@Override
+	public int manageCreateMeet(int meetId, boolean isaccept) {
+		int result;
+		if (isaccept) {
+			result = meetDao.approveMeet(meetId);
+		} else {
+			result = meetDao.refuseMeet(meetId);
+		}
+		return result;
+	}
+
 }
