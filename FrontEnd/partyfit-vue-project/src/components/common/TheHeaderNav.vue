@@ -2,7 +2,11 @@
   <div class="container">
     <div class="top">
       <div>
-        <h1><span class="coral-color">party fit</span></h1>
+        <h1>
+          <RouterLink :to="{ name: moveMainPage }" class="coral-color"
+            >party fit</RouterLink
+          >
+        </h1>
       </div>
       <div class="logo-right">
         <p class="plus-party-fit">+party fit</p>
@@ -62,11 +66,13 @@ const loginUser = ref(store.loginUser);
 const isLoggedId = ref(false);
 const accessToken = computed(() => store.accessToken);
 
-onMounted(() => {
-  if (!isLoggedId.value) {
-    router.push({ name: "beforeLoginMain" });
+const moveMainPage = computed(() =>{
+  if(!isLoggedId.value){
+    return 'beforeLoginMain'
   }
-});
+  return 'myFit'
+})
+
 watch(accessToken, async (nv, ov) => {
   await nextTick();
   if (nv == "") {
@@ -93,6 +99,7 @@ const logout = () => {
 .user-info button {
   display: inline-block;
   vertical-align: middle;
+  color: black;
 }
 
 @font-face {
@@ -153,7 +160,6 @@ const logout = () => {
 .logo-right p {
   display: flex;
   margin-right: 10px; /* p 요소 사이의 공간을 설정 */
-
 }
 
 .plus-party-fit {
@@ -167,10 +173,10 @@ const logout = () => {
 
 .navbar-menu a {
   margin-right: 5%;
+  color: black;
 }
 
 a {
   text-decoration: none;
-  color: black;
 }
 </style>
