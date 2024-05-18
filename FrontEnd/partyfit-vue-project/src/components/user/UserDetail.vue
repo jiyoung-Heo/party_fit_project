@@ -1,6 +1,61 @@
 <template>
-    <div class="signup-container">
-        <h1>마이페이지</h1>
+    <div class="container">
+        <p style="font-size: 1.8rem; margin-bottom:40px;">마이페이지</p>
+        <p style="font-size: 1.5rem; margin-bottom:40px;">프로필정보</p>
+        <div class="userInfo">
+
+
+            <!-- <div class="position-relative">
+                <img :src=loginUser.profile alt="프로필이미지" />
+                <span class=" position-absolute bottom-0 end-0  translate-middle badge-lg   text-bg-light rounded-pill">
+                    <i class="bi bi-pencil"></i></span>
+            </div> -->
+
+            <div class="position-relative" style="width: 140px;">
+                <img :src="loginUser.profile" alt="프로필이미지" class="position-relative"  />
+                <span class="position-absolute bottom-0 start-100 ">
+                    <span class="badge rounded-pill ">
+
+            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <i class="bi bi-pencil" style="font-size: 1.8rem; color:black"></i>
+            </button>
+                    </span>
+                </span>
+            </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">프로필 수정</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+            <div>
+<!-- 
+                <button type="button" class="btn btn-light position-relative" style="width : 150px;">
+                    <img :src="loginUser.profile" alt="프로필이미지" class="position-relative" />
+                    <span
+                        class="position-absolute  badge top-0 end-10 translate-middle p-2  border border-dark bg-light  rounded-circle">
+                        <i class="bi bi-pencil" style="font-size: 1.5rem; color: #000;"></i>
+
+                    </span>
+                </button> -->
+            </div>
+
+        </div>
+
+
         <fieldset>
             <div>
                 <label for="loginId">ID</label>
@@ -28,11 +83,10 @@
             </div>
             <div>
                 <button @click="goUpdatepage">수정</button>
-                <!-- <button @click="getInfo">정보보기 </button> -->
             </div>
         </fieldset>
     </div>
-    
+
 </template>
 
 
@@ -40,9 +94,12 @@
 import { useUserStore } from "@/stores/user";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import UserFindLoginId from "./UserFindLoginId.vue";
 
 const router = useRouter();
 const store = useUserStore();
+
+const loginUser = ref(store.loginUser)
 
 onMounted(() => {
     store.getUser(sessionStorage.getItem("loginUser"))
@@ -51,16 +108,15 @@ onMounted(() => {
         })
 })
 
-const loginUser = ref()
-
-watch(loginUser,(newVal,oldVal)=>{
-  user.value = {
-    loginId: newVal.loginId,
-    name: newVal.name,
-    username: newVal.username,
-    password: newVal.password,
-    email: newVal.email,
-    age: newVal.age,}
+watch(loginUser, (newVal, oldVal) => {
+    user.value = {
+        loginId: newVal.loginId,
+        name: newVal.name,
+        username: newVal.username,
+        password: newVal.password,
+        email: newVal.email,
+        age: newVal.age,
+    }
 })
 
 
@@ -69,13 +125,13 @@ const user = ref({
     name: "",
     username: "",
     password: "",
-    email:"",
+    email: "",
     age: "",
 
 });
 
-const goUpdatepage = function () {
-    router.push({ name: "update" })
+const updateProfile = function () {
+   
 }
 
 const changePW = function () {
@@ -85,4 +141,55 @@ const changePW = function () {
 </script>
 
 
-<style scoped></style>
+<style scoped>
+img {
+    width: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+
+}
+
+button{
+border: none;
+}
+
+
+.nav-pills {
+    --bs-nav-pills-border-radius: var(--bs-border-radius);
+    --bs-nav-pills-link-active-color: black;
+    --bs-nav-pills-link-active-bg: ;
+}
+
+.nav {
+    --bs-nav-link-padding-x: 1rem;
+    --bs-nav-link-padding-y: 0.5rem;
+    --bs-nav-link-font-weight: ;
+    --bs-nav-link-color: grey;
+    --bs-nav-link-hover-color: var(--bs-link-hover-color);
+    --bs-nav-link-disabled-color: var(--bs-secondary-color);
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+}
+
+.main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+
+.leftbox {
+    width: 200px;
+    height: 70vh;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.rightbox {
+    flex: 1;
+}
+</style>

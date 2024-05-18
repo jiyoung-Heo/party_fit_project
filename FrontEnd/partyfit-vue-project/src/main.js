@@ -8,9 +8,9 @@ import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
 // import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-
+import "bootstrap"
 import "./assets/css/font.css"
-
+import "bootstrap-icons/font/bootstrap-icons.css"
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

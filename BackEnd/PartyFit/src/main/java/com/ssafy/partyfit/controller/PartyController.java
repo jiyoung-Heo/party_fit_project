@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.Article;
@@ -111,18 +112,18 @@ public class PartyController {
 	 * 파티 내부 게시글 목록 조회
 	 * 
 	 * @param partyId
-	 * @param category
+	 * @param category (0:자유게시판, 1: 가입인사, 2:공지사항, 3:  모임후기) 
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/article/{categoty}")
-	public ResponseEntity<?> showArticle(@PathVariable("partyId") int partyId, @PathVariable("categoty") int category,
+	@GetMapping("/{partyId}/article/{category}")
+	public ResponseEntity<?> showArticle(@PathVariable("partyId") int partyId, @PathVariable("category") int category,
 			@ModelAttribute SearchCondition condition) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("category", category);
 		map.put("partyId", partyId);
 		map.put("condition", condition);
-
+		System.out.println(condition);
 		List<Article> articleList = articleService.showArticle(map);
 
 		if (articleList == null || articleList.size() == 0) {

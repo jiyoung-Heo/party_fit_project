@@ -1,15 +1,16 @@
 <template>
     <div>
-        <nav class="leftbox navbar fixed-left bg-light">
+        <nav class="leftbox fixed-left bg-light">
             <div class="nav-content">
                 <div class="party-info">
                     <p @click="goPartyMainPage">{{ party.name }}</p>
                     <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
-                    <p>참여인원 {{ partylist.length }}명</p>
+                    <p>참여인원 {{ userMember.length }}명</p>
+                    
                 </div>
                 <hr>
                 <div id="profile" class="profile-info">
-                    <p v-if="hasProfile">
+                    <p v-if="loginUser.profile===''">
                         <img :src="loginUser.profile" alt="프로필사진" width="20px">
                     </p>
                     <div v-else>
@@ -48,7 +49,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
@@ -66,6 +67,10 @@ onMounted(() => {
     // party.value = store.selectedParty
     store.getMemberList(store.selectedParty.partyId);
 
+})
+
+const userMember = computed(() => {
+    return partylist.value.filter(member => member.grade === 0);
 })
 
 const goArticleCreatePage = function () {

@@ -74,6 +74,8 @@ const user = ref({
 });
 
 
+const isOK = ref(false)
+
 const createUser = async function () {
   await isIdOK();
   await isUsernameOK();
