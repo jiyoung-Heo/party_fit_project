@@ -12,7 +12,7 @@
         </p>
         
         <div class="user-info">
-          <div v-if="isLoginn">
+          <div v-if="!isLoggedId">
             <RouterLink :to="{ name: 'login' }">로그인</RouterLink> |
             <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink> |
             
@@ -39,37 +39,48 @@
       <RouterLink :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
       <RouterLink :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
     </nav>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   </div>
 
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
 </template>
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue';
 import { useUserStore } from "@/stores/user";
+import { useRouter } from 'vue-router';
 
 const store = useUserStore()
+const router = useRouter()
 const loginUser = ref(store.loginUser)
-const isLogin = ref(true)
+const isLoggedId = ref(false);
+const accessToken = computed(() => store.accessToken);
 
-onMounted(() => {
-
-  loginUser.value = store.loginUser
+onMounted(()=>{
+  if(!isLoggedId.value){
+    router.push({name:'beforeLoginMain'})
+  }
 })
+watch(accessToken, async (nv, ov) => {
+  await nextTick();
+  if (nv == "") {
+    isLoggedId.value = false;
+    router.push({name:'beforeLoginMain'})
+  } else {
+    isLoggedId.value = true;
+  }
+});
 
-const isLoginn = computed(() => {
-  return store.loginUser === ""
-})
+
 const hasProfile = computed(() => {
   return store.loginUser.profile !== null
 })
 
 const logout = () => {
   store.userLogout()
-  isLogin.value = true;
+  isLoggedId.value = false;
 }
 
 </script>

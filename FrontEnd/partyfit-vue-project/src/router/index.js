@@ -19,6 +19,7 @@ import NoticeBoard from '@/components/article/NoticeBoard.vue'
 import MeetList from '@/components/meet/MeetList.vue'
 import MeetCreate from '@/components/meet/MeetCreate.vue'
 import MeetListDetail from '@/components/meet/MeetListDetail.vue'
+import BeforeLoginMainView from '@/views/BeforeLoginMainView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
           path: '/all-party-fit',
           name: 'allPartyFit',
           component: AllPartyFitView
+        },
+        {
+          path: '/main',
+          name: 'beforeLoginMain',
+          component: BeforeLoginMainView,
         },
       ]
     },

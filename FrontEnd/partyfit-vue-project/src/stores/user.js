@@ -25,6 +25,7 @@ export const useUserStore = defineStore("user", () => {
 
   const loginUser = ref({});
   const loginUserId=ref()
+  const accessToken = ref('')
 
   //로그인
   const userLogin = function (id,pw) {
@@ -32,7 +33,7 @@ export const useUserStore = defineStore("user", () => {
       loginId: id,
       password: pw,
     };
-    console.log(user);
+    // console.log(user);
 
     axios({
       url: `${REST_USER_API}/login`,
@@ -40,21 +41,21 @@ export const useUserStore = defineStore("user", () => {
       data: user,
     })
       .then((res) => {
-
+        accessToken.value = 'Bearer '+ res.data["access-token"]
         sessionStorage.setItem('access-token', res.data["access-token"]);
         const token = res.data["access-token"].split('.')
         let userId = JSON.parse(atob(token[1])).userId;
         getUser(userId);
         loginUserId.value = userId;
-        console.log(loginUser.value);
+        // console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
-        // router.push({name:"home"})
-        window.location.reload();
+        router.push({name:"home"})
+        // window.location.reload();
         // window.alert('로그인 성공')
       })
       .catch((error) => {
         // 요청이 실패한 경우에 실행되는 코드
-        console.log(loginUser);
+        // console.log(loginUser);
         window.alert('로그인 실패')
         console.error("로그인 실패 : ", error);
         router.replace("login");
@@ -63,9 +64,19 @@ export const useUserStore = defineStore("user", () => {
 
   //로그아웃
   const userLogout = function () {
-    axios.post(`${REST_USER_API}/logout`).then((res) => {
+    axios({
+      url: `${REST_USER_API}/logout`,
+      method: "POST",
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+        }
+        
+    })
+    .then((res) => {
       // console.log(time);
       loginUser.value = "";
+      loginUserId.value = "";
+      accessToken.value = ''
       sessionStorage.removeItem('access-token');
       sessionStorage.removeItem('loginUser');
       router.push({ name: "home" })
@@ -291,6 +302,6 @@ const partyList = ref([])
     getMyArticle,
     commentList,
     getMyComment,
-
+    accessToken,
   };
 },{persist:true});
