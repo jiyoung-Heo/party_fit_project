@@ -23,6 +23,7 @@ import com.ssafy.partyfit.model.dto.ArticleUser;
 import com.ssafy.partyfit.model.dto.Comment;
 import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMemberCount;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.service.ArticleService;
@@ -71,6 +72,22 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<List<Party>>(partyList, HttpStatus.OK);
+		}
+	}
+	
+	/**
+	 * 파티목록 + 인원수 인원수 많은순 정렬 리턴
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/top")
+	public ResponseEntity<?> showPartyAndMemberCountOrderByMemberCount() {
+		List<PartyMemberCount> partyList = partyService.showPartyAndMemberCountOrderByMemberCount();
+		if (partyList == null || partyList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<PartyMemberCount>>(partyList, HttpStatus.OK);
 		}
 	}
 
