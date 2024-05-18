@@ -6,6 +6,18 @@ import { ref } from "vue";
 const REST_USER_API = `http://localhost:8080/party`;
 
 export const usePartyStore = defineStore("party", () => {
+    const partyList = ref()
+    const getPartyListWithMemberCount = function(condition){
+        axios({
+            url: `${REST_USER_API}/top`,
+            method: "GET"
+        }).then(res => {
+            partyList.value = res.data
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
     const selectedParty = ref()
     const partyMemberList = ref([])
 
@@ -23,10 +35,11 @@ export const usePartyStore = defineStore("party", () => {
             console.log(err)
         })
     }
-
     
 
   return {
+    partyList,
+    getPartyListWithMemberCount,
     selectedParty,
     getMemberList,
     partyMemberList

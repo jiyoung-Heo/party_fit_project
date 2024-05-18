@@ -1,15 +1,15 @@
 <template>
-    <div>
-로그인전화면표출부
-    </div>
+  <div class="container">
+    <TheNonLoginCarousel/>
+    <TheBestPartyFit/>
+  </div>
 </template>
 
-<script>
-    export default {
-        
-    }
+<script setup>
+import TheNonLoginCarousel from '../components/common/TheNonLoginCarousel.vue';
+import TheBestPartyFit from '../components/partyfit/TheBestPartyFit.vue';
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 
 </style>
