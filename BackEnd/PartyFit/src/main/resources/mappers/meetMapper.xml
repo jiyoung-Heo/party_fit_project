@@ -22,7 +22,7 @@
 
 	<select id="selectMyMeet" parameterType="user" resultType="Meet">
 		select * from meet where meet_id IN (select DISTINCT meet_id from
-		meet_member where user_id =#{userId} and delete_yn='N');
+		meet_member where user_id =#{userId})
 	</select>
 
 	<update id="approveMeet" parameterType="int">
