@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.partyfit.model.dto.Article;
@@ -33,7 +32,9 @@ import com.ssafy.partyfit.model.service.LikesService;
 import com.ssafy.partyfit.model.service.MeetService;
 import com.ssafy.partyfit.model.service.PartyMemberService;
 import com.ssafy.partyfit.model.service.PartyService;
+import com.ssafy.partyfit.util.JwtUtil;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
@@ -47,17 +48,22 @@ public class PartyController {
 	private MeetService meetService;
 	private CommentService commentService;
 	private LikesService likesService;
+	private JwtUtil jwtUtil;
+
+	
 
 	public PartyController(PartyService partyService, ArticleService articleService,
 			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService,
-			LikesService likesService) {
+			LikesService likesService, JwtUtil jwtUtil) {
 		super();
+	
 		this.partyService = partyService;
 		this.articleService = articleService;
 		this.partyMemberService = partyMemberService;
 		this.meetService = meetService;
 		this.commentService = commentService;
 		this.likesService = likesService;
+		this.jwtUtil = jwtUtil;
 	}
 
 	/**
@@ -191,7 +197,7 @@ public class PartyController {
 	 * @param condition
 	 * @return
 	 */
-	@GetMapping("/{partyId}/article/{categoty}/{articleId}/{isReload}")
+	@GetMapping("/{partyId}/article/{articleId}/{isReload}")
 	public ResponseEntity<?> showArticleDetail(@PathVariable("articleId") int articleId,
 			@PathVariable("isReload") boolean isReload) {
 		ArticleUser articleUser = articleService.showAtricleDetail(articleId, isReload);
@@ -293,18 +299,20 @@ public class PartyController {
 	 * @return
 	 */
 	@PostMapping("/{partyId}/article/{articleId}/comment")
-	public ResponseEntity<?> addComment(@PathVariable("articleId") int articleId, @RequestBody Comment comment,
-			HttpSession session) {
+	public ResponseEntity<?> addComment(@PathVariable("articleId") int articleId, @RequestBody Comment comment
+	) {
 		// 해당 article 조회해와서 마지막의 topId를 조회해온다.
-		comment.setArticleId(articleId);
-		int userId;
-		try {
-			userId = (int) session.getAttribute("loginUser");
-		} catch (NullPointerException e) {
-			userId = 1;
-		}
-		comment.setUserId(userId);
-
+//		comment.setArticleId(articleId);
+//		int userId;
+//		try {
+//			userId = (int) session.getAttribute("loginUser");
+//		} catch (NullPointerException e) {
+//			userId = 1;
+//		}
+//		comment.setUserId(userId);
+		
+		System.out.println("커맨트" + comment);
+		
 		int result = 0;
 
 		// 제일 상위 depth의 댓글인 경우
@@ -370,8 +378,8 @@ public class PartyController {
 	 * @param session
 	 * @return
 	 */
-	@PutMapping("/{partyId}/article/{articleId}/comment/like")
-	public ResponseEntity<?> clickCommentLikes(@PathVariable("articleId") int articleId, HttpSession session) {
+	@PutMapping("/{partyId}/article/{commentId}/comment/like")
+	public ResponseEntity<?> clickCommentLikes(@PathVariable("commentId") int commentId, HttpSession session) {
 		int userId;
 		try {
 			userId = (int) session.getAttribute("loginUser");
@@ -382,7 +390,7 @@ public class PartyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("tableName", "comment_likes");
 		map.put("userId", userId);
-		map.put("targetId", articleId);
+		map.put("targetId", commentId);
 		
 		int result = likesService.clickLikes(map);
 		
@@ -394,6 +402,36 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
+	
+	/**
+	 * 코멘트 좋아요 했는지 여부
+	 * @param articleId
+	 * @param session
+	 * @return
+	 */
+	@GetMapping("/{partyId}/article/{commentId}/comment/like")
+	public ResponseEntity<?> isCommentLikes(@PathVariable("commentId") int commentId, HttpServletRequest  request ) {
+		String userId;
+		String token = request.getHeader("Authorization");
+		userId = jwtUtil.getUserId(token);
+		System.out.println(userId);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("tableName", "comment_likes");
+		map.put("userId", userId);
+		map.put("targetId", commentId);
+		
+		int result = likesService.isLike(map);
+		
+		if (result == 0) {
+			// 좋아요 안눌려있으면 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} else {
+			// 좋아요 눌렸으면
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+	}
+	
 
 	/**
 	 * 파티 내부 멤버 조회하기

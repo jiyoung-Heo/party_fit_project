@@ -17,5 +17,6 @@ public class Comment {
 	private int userId;
 	private int articleId;
 	private int likesCount;
-	
+	private String username;
+	private String profile;
 }

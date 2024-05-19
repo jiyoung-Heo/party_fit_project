@@ -22,6 +22,7 @@ import MeetCreate from '@/components/meet/MeetCreate.vue'
 import MeetListDetail from '@/components/meet/MeetListDetail.vue'
 import BeforeLoginMainView from '@/views/BeforeLoginMainView.vue'
 import { useUserStore } from '@/stores/user'
+import ArticleDetail from '@/components/article/ArticleDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -125,10 +126,19 @@ const router = createRouter({
               component: ArticleCreate,
             },
             {
+              path: '/partyfit/article/:articleId',
+              name: 'articleDetail',
+              component: ArticleDetail,
+              props: true,
+            },
+
+
+            {
               path: '/partyfit/:partyId/freeboard',
               name: 'freeboard',
               component: FreeBoard,
             },
+
             {
               path: '/partyfit/:partyId/introductionboard',
               name: 'introductionboard',
