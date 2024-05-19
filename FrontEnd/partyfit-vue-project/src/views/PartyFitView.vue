@@ -1,7 +1,6 @@
 <template>
     <div>
 
-        <TheHeaderNav />
         <hr>
         <div class="container">
             <div class="main">
