@@ -21,6 +21,7 @@ import MeetList from '@/components/meet/MeetList.vue'
 import MeetCreate from '@/components/meet/MeetCreate.vue'
 import MeetListDetail from '@/components/meet/MeetListDetail.vue'
 import BeforeLoginMainView from '@/views/BeforeLoginMainView.vue'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,11 +35,32 @@ const router = createRouter({
           path: '/my-fit',
           name: 'myFit',
           component: MyFitView,
+          beforeEnter: (to, from, next) => {
+            const store = useUserStore();
+            console.log(store.accessToken)
+            if (store.accessToken !== "" && store.accessToken !=="Bearer undefined") {
+              next() 
+            } else {
+              
+              window.alert("로그인하시오")
+              next({ name: 'login' })
+            }
+          }
         },
         {
           path: '/my-party-fit',
           name: 'myPartyFit',
           component: MyPartyFitView,
+          beforeEnter: (to, from, next) => {
+            const store = useUserStore();
+            console.log(store.accessToken)
+              if (store.accessToken !== "" && store.accessToken !=="Bearer undefined") {
+              next() 
+            } else {
+              window.alert("로그인하시오")
+              next({ name: 'login' })
+            }
+          }
         },
         {
           path: '/all-party-fit',
