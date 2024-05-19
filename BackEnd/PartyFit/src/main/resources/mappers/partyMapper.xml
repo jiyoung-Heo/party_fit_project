@@ -9,7 +9,7 @@
 		(
 		select
 		p.party_id, p.name, p.introduction, p.introduction_image
-		, p.banner_image, p.exercise_category , count(m.party_member_id) as member_count
+		, p.banner_image, p.reg_date, p.mod_date, p.exercise_category , count(m.party_member_id) as member_count
 		from party p left join party_member m on p.party_id = m.party_id 
 		group by p.party_id 
 		) party
