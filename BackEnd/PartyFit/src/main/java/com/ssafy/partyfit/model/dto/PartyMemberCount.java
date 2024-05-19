@@ -12,6 +12,7 @@ public class PartyMemberCount {
 	private String introductionImage;
 	private Date regDate;
 	private Date modDate;
+	private int maxHeadcount;
 	private String exerciseCategory;
 	private String partyType;
 	private int memberCount;

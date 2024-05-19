@@ -13,6 +13,7 @@ public class Party {
 	private String bannerImage; 
 	private Date regDate;
 	private Date modDate;
+	private int maxHeadcount;
 	private String exerciseCategory;
 	private String partyType;
 }

@@ -2365,7 +2365,7 @@
         "comment": "가입 정원",
         "dataType": "INT",
         "default": "",
-        "options": 0,
+        "options": 8,
         "ui": {
           "keys": 0,
           "widthName": 85,
@@ -2374,7 +2374,7 @@
           "widthDefault": 60
         },
         "meta": {
-          "updateAt": 1716116918320,
+          "updateAt": 1716117381938,
           "createAt": 1716116903703
         }
       }
@@ -3328,7 +3328,7 @@
       {
         "name": 1716116905651,
         "dataType": 1716116908628,
-        "options(notNull)": 1716116905651,
+        "options(notNull)": 1716117381933,
         "options(unique)": 1716116905651,
         "options(autoIncrement)": 1716116905651,
         "default": 1716116905651,
