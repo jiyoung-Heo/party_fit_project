@@ -87,6 +87,7 @@ CREATE TABLE party
   banner_image       VARCHAR(4000) NULL     COMMENT '그룹 배너 이미지',
   reg_date           DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
   mod_date           DATETIME      NULL     COMMENT '수정일',
+  max_headcount      INT           NULL     COMMENT '가입 정원',
   exercise_category  VARCHAR(100)  NOT NULL COMMENT '운동 종류',
   party_type         VARCHAR(1)    NOT NULL DEFAULT '0' COMMENT '그룹종류(0:개인그룹, 1:기업그룹)',
   PRIMARY KEY (party_id)
