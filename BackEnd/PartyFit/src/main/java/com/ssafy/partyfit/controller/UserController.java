@@ -69,21 +69,17 @@ public class UserController {
 
 	// 로그인
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
+	public ResponseEntity<?> login(@RequestBody User user) {
 
 		HttpStatus status = null;
 		Map<String, Object> result = new HashMap<>();
-
-		System.out.println(user);
-
 		User tmp = userService.login(user);
 
-		if (tmp.getLoginId() != null) {
+		if (tmp != null && tmp.getLoginId() != null) {
 			result.put("message", "success");
-			result.put("access-token", jwtUtil.createToken(tmp.getUserId()));
-			System.out.println("성공" + tmp);
-			session.setAttribute("loginUser", tmp.getUserId());
-			System.out.println("로그인 후 " + session.getAttribute("loginUser"));
+			String token = jwtUtil.generateToken(tmp.getUserId() + "");
+			result.put("access-token", token);
+			System.out.println("토큰: "+token);
 			status = HttpStatus.ACCEPTED;
 		} else {
 			result.put("message", "fail");
