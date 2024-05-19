@@ -46,15 +46,10 @@ export const useUserStore = defineStore("user", () => {
         let userId = JSON.parse(atob(token[1])).userId;
         getUser(userId);
         loginUserId.value = userId;
-        // console.log(loginUser.value);
         sessionStorage.setItem('loginUser', userId)
-        router.push({name:"home"})
-        // window.location.reload();
-        // window.alert('로그인 성공')
+        router.push({name:"myFit"})
       })
       .catch((error) => {
-        // 요청이 실패한 경우에 실행되는 코드
-        // console.log(loginUser);
         window.alert('로그인 실패')
         console.error("로그인 실패 : ", error);
         router.replace("login");
@@ -136,7 +131,10 @@ export const useUserStore = defineStore("user", () => {
         method: "GET",
         params: {
           userId: userId,
-        }
+        },
+        headers: {
+          Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+        },
       });
       loginUser.value = res.data;
     }catch (err) {
@@ -211,11 +209,14 @@ const partyList = ref([])
       method: "GET",
       params: {
         userId : userId,
-      }
+      },
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+      },
     })
    .then((res)=>{
       partyList.value =res.data
-      console.log(res.data)
+      // console.log(res.data)
     })
     .catch((err)=>{
       
@@ -232,10 +233,13 @@ const partyList = ref([])
       method: "GET",
       params: {
         userId : userId,
-      }
+      },
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+      },
     })
    .then((res)=>{
-     console.log(res.data)
+    //  console.log(res.data)
      meetList.value =res.data
     })
     .catch((err)=>{
@@ -251,7 +255,9 @@ const partyList = ref([])
     axios({
       url: `${REST_USER_API}/myArcticle`,
       method: "GET",
-      
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+      },
     })
    .then((res)=>{
     articleList.value =res.data
@@ -269,7 +275,9 @@ const partyList = ref([])
     axios({
       url: `${REST_USER_API}/myComment`,
       method: "GET",
-      
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+      },
     })
    .then((res)=>{
     commentList.value =res.data
