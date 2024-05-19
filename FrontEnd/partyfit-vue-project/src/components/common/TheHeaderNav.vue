@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useUserStore } from "@/stores/user";
 import { useRouter } from "vue-router";
 
