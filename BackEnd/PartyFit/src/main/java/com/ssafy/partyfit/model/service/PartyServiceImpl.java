@@ -21,7 +21,7 @@ public class PartyServiceImpl implements PartyService {
 	}
 	
 	@Override
-	public List<Party> showParty(SearchCondition condition) {
+	public List<PartyMemberCount> showParty(SearchCondition condition) {
 		return partyDao.selectPartyWithCondition(condition);
 
 	}
@@ -31,9 +31,5 @@ public class PartyServiceImpl implements PartyService {
 		return partyDao.insertParty(party);
 	}
 
-	@Override
-	public List<PartyMemberCount> showPartyAndMemberCountOrderByMemberCount() {
-		return partyDao.selectPartyWithMemberCount();
-	}
 
 }

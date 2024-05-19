@@ -8,8 +8,7 @@ import com.ssafy.partyfit.model.dto.SearchCondition;
 import com.ssafy.partyfit.model.dto.User;
 
 public interface PartyService {
-	public List<Party> showParty(SearchCondition condition);
-	public List<PartyMemberCount> showPartyAndMemberCountOrderByMemberCount();
+	public List<PartyMemberCount> showParty(SearchCondition condition);
 	public int makeParty(Party party);
 
 }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <div class="logo">
       <h2><span class="coral-color">Best</span> PartyFit</h2>
     </div>
@@ -18,7 +18,6 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ party.name }}</h5>
                   <p class="card-text">
-                    <!-- 카테고리: {{ party.exerciseCategory }} -->
                     {{ party.memberCount }}명 참여 중
                   </p>
                 </div>
@@ -28,7 +27,7 @@
         </div>
       </div>
     </div>
-    밑에는 테스트즁,,
+    <!-- 밑에는 테스트,,
     <div id="partyCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div
@@ -48,7 +47,6 @@
                 <div class="card-body">
                   <h5 class="card-title">{{ party.name }}</h5>
                   <p class="card-text">
-                    <!-- 카테고리: {{ party.exerciseCategory }} -->
                     {{ party.memberCount }}명 참여 중
                   </p>
                 </div>
@@ -75,7 +73,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -83,8 +81,13 @@
 import { usePartyStore } from "@/stores/party";
 import { onMounted } from "vue";
 const partyStore = usePartyStore();
+
 onMounted(() => {
-  partyStore.getPartyListWithMemberCount();
+  const condition = {
+    orderBy: "member_count",
+    orderByDir: "DESC",
+  }
+  partyStore.getPartyListWithCondition(condition)
 });
 </script>
 

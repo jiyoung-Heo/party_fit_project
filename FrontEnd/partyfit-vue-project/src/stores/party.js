@@ -12,15 +12,18 @@ export const usePartyStore = defineStore(
   () => {
     const useStore = useUserStore();
     const partyList = ref();
-    const getPartyListWithMemberCount = function (condition) {
+    
+    const getPartyListWithCondition = function (condition) {
       axios({
-        url: `${REST_USER_API}/top`,
+        url: `${REST_USER_API}`,
         method: "GET",
+        params: condition,
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       })
         .then((res) => {
+          console.log("success")
           partyList.value = res.data;
         })
         .catch((err) => {
@@ -153,8 +156,8 @@ export const usePartyStore = defineStore(
     };
 
     return {
+      getPartyListWithCondition,
       partyList,
-      getPartyListWithMemberCount,
       selectedParty,
       getMemberList,
       partyMemberList,
