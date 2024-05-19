@@ -50,15 +50,6 @@ const router = createRouter({
           name: 'beforeLoginMain',
           component: BeforeLoginMainView,
         },
-      ]
-    },
-
-
-    {
-      path: '/user',
-      name: 'user',
-      component: MainView,
-      children: [
         {
           path: '/login',
           name: 'login',
@@ -95,59 +86,55 @@ const router = createRouter({
           path: '/findPassword',
           name: 'findPassword',
           component: UserFindPW,
+        },
+        {
+          path: '/partyfit',
+          name: 'partyfit',
+          component: PartyFitView,
+          children: [
+            {
+              path: '/partyfit/:partyId',
+              name: 'partyfitmain',
+              component: PartyMain,
+            },
+            {
+              path: '/partyfit/createArticle/:partyId',
+              name: 'createArticle',
+              component: ArticleCreate,
+            },
+            {
+              path: '/partyfit/:partyId/freeboard',
+              name: 'freeboard',
+              component: FreeBoard,
+            },
+            {
+              path: '/partyfit/:partyId/introductionboard',
+              name: 'introductionboard',
+              component: IntroductionBoard,
+            },
+            {
+              path: '/partyfit/:partyId/noticeboard',
+              name: 'noticeboard',
+              component: NoticeBoard,
+            },
+            {
+              path: '/partyfit/:partyId/meetlist',
+              name: 'meetlist',
+              component: MeetList,
+            },
+            {
+              path: '/partyfit/:partyId/meetdetail',
+              name: 'meetdetail',
+              component: MeetListDetail,
+            },
+            {
+              path: '/partyfit/:partyId/meetcreate',
+              name: 'meetcreate',
+              component: MeetCreate,
+            },
+    
+          ]
         }
-
-
-      ]
-
-    },
-
-    {
-      path: '/partyfit',
-      name: 'partyfit',
-      component: PartyFitView,
-      children: [
-        {
-          path: '/partyfit/:partyId',
-          name: 'partyfitmain',
-          component: PartyMain,
-        },
-        {
-          path: '/partyfit/createArticle/:partyId',
-          name: 'createArticle',
-          component: ArticleCreate,
-        },
-        {
-          path: '/partyfit/:partyId/freeboard',
-          name: 'freeboard',
-          component: FreeBoard,
-        },
-        {
-          path: '/partyfit/:partyId/introductionboard',
-          name: 'introductionboard',
-          component: IntroductionBoard,
-        },
-        {
-          path: '/partyfit/:partyId/noticeboard',
-          name: 'noticeboard',
-          component: NoticeBoard,
-        },
-        {
-          path: '/partyfit/:partyId/meetlist',
-          name: 'meetlist',
-          component: MeetList,
-        },
-        {
-          path: '/partyfit/:partyId/meetdetail',
-          name: 'meetdetail',
-          component: MeetListDetail,
-        },
-        {
-          path: '/partyfit/:partyId/meetcreate',
-          name: 'meetcreate',
-          component: MeetCreate,
-        },
-
       ]
     },
   ]
