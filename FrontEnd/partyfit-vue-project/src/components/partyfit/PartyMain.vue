@@ -10,6 +10,16 @@
                     </div>
             </div>
         </div>
+        {{ inParty }}
+        <div v-if="inParty">
+
+        <button @click ="joinParty">가입하기 </button>
+            <button @click ="leaveParty">탈퇴하기</button>
+        </div>
+        <div v-if="!inParty">
+        <button @click ="joinParty">가입하기 </button>
+            <button @click ="leaveParty">탈퇴하기</button>
+        </div>
         <div class="board">
            <div class="left">
             <div class="notice">
@@ -46,7 +56,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, computed } from 'vue'
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
@@ -56,9 +66,16 @@ const userstore = useUserStore();
 const store = usePartyStore();
 
 const party = ref(store.selectedParty);
-const partylist = ref(store.partyMemberList);
+const partymemberlist = ref(store.partyMemberList);
 
 
+const inParty = computed(() => {
+    if (!userstore || !userstore.loginUser || !partymemberlist || !Array.isArray(partymemberlist.value)) {
+    return false;
+  }
+
+  return partymemberlist.value.some(member => member.userId === userstore.loginUser.userId);
+});
 
 const loginUser = ref(userstore.loginUser)
 
@@ -68,10 +85,19 @@ onMounted(() => {
     // store.getMemberList(store.selectedParty.partyId);
     store.getNoticeList(store.selectedParty.partyId)
     store.getHotViewList(store.selectedParty.partyId)
+    store.getMemberList(store.selectedParty.partyId)
+    // store.inParty(userstore.loginUser.userId)
 })
 
+const joinParty = () => {
+    userstore.partyJoinRequest(store.selectedParty.partyId)
 
+}
 
+const leaveParty = () => {
+    userstore.partyLeaveRequest(store.selectedParty.partyId)
+
+}
 </script>
 
 <style scoped>

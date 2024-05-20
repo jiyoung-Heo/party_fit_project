@@ -5,7 +5,7 @@
                 <div class="party-info">
                     <p @click="goPartyMainPage">{{ party.name }}</p>
                     <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
-                    <p>참여인원 {{ userMember.length }}명</p>
+                    <p>참여인원 {{ party.memberCount }}명</p>
                     
                 </div>
                 <hr>
@@ -38,6 +38,7 @@
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty}}">일정 등록</RouterLink>
+{{partylist}}
                         </li>
                    
                     </ul>
@@ -45,11 +46,10 @@
             </div>
         </nav>
     </div>
-
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref , watch } from 'vue'
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
@@ -62,16 +62,46 @@ const partylist = ref(store.partyMemberList);
 
 const loginUser = ref(userstore.loginUser)
 
-
 onMounted(() => {
     // party.value = store.selectedParty
-    store.getMemberList(store.selectedParty.partyId);
+    // store.getMemberList(store.selectedParty.partyId).then(() => {
+    //     console.log('party member list:', partylist.value);
+    // })
 
+    
 })
 
 const userMember = computed(() => {
-    return partylist.value.filter(member => member.grade === 0);
+  // partylist.value가 배열인지 확인
+  if (!Array.isArray(partylist.value)) {
+    return [];
+  }
+  
+  // grade가 0인 멤버 필터링
+  return partylist.value.filter(member => member.grade === 0);
+});
+
+
+
+const manageMember  = computed(() => {
+      // partylist.value가 배열인지 확인
+  if (!Array.isArray(partylist.value)) {
+    return [];
+  }
+  
+  // grade가 0인 멤버 필터링
+  return partylist.value.filter(member => member.grade === 1);
 })
+
+
+
+// watch(() => store.selectedParty, (newValue, oldValue) => {
+//   party.value = newValue;
+//   store.getMemberList(store.selectedParty.partyId).then(() => {
+//     console.log('party member list:', partylist.value);
+//   });
+// });
+
 
 const goArticleCreatePage = function () {
     router.push({ name: 'createArticle', params: { partyId: store.selectedParty.partyId } })
@@ -135,7 +165,7 @@ const goPartyMainPage = function () {
 .leftbox {
 
     width: 200px;
-    height: 70vh;
+    height: 100%;
     overflow-y: auto;
     flex: 1;
 }
