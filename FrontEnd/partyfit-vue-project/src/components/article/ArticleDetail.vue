@@ -1,20 +1,22 @@
 <template>
   <div>
-    <div class="category"> {{ category }} > </div>
-    <div class="title fs-5" v-if="article">{{ article.title }}</div>
-    <div class="writer d-inline-flex" v-if="writer">
-      <img :src="writer.profile" class="writer-image" />
-      <div> 
-        <p>{{ writer.name }}</p>
-        <p style="font-size: 10px;">{{article.regDate.split('T')[0]}}</p>
+    <button type="button" @click="deleteArticle"> 삭제 </button>
+  
+    <div class="category" @click="goBoard(category)"> {{ category }} > </div>
+     <div class="title fs-5" v-if="article">{{ article.title }}</div>
+    <div class="writer d-inline-flex" v-if="article">
+      <img :src="article.profile" class="writer-image" />
+      <div>
+        <p>{{ article.username }}</p>
+        <p style="font-size: 10px;">{{ article.regDate.split('T')[0] }}</p>
       </div>
     </div>
     <hr>
     <div class="container content" v-if="article">{{ article.content }}</div>
     <hr>
 
-    
-<CommentList :article-id="articleId" />
+
+    <CommentList :article-id="articleId" />
   </div>
 </template>
 
@@ -22,11 +24,12 @@
 <script setup>
 import { ref, onMounted, computed, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useRouter } from 'vue-router';
 import { usePartyStore } from "@/stores/party";
 import { useUserStore } from "@/stores/user";
 import CommentList from "./CommentList.vue";
 
-
+const router = useRouter();
 const store = usePartyStore();
 const route = useRoute();
 const userstore = useUserStore();
@@ -35,17 +38,27 @@ const articleId = ref();
 const article = ref()
 
 const writer = ref();
+
+const deleteArticle = () => {
+  console.log(store.articleDetail.userId+" "+userstore.loginUser.userId)
+  if(store.articleDetail.userId !== userstore.loginUser.userId){
+    alert("본인이 작성한 글만 삭제할 수 있습니다.")
+    return;
+  }
+  store.deleteArticle(articleId.value)
+  goBoard(category.value)
+};
 onMounted(() => {
   articleId.value = route.params.articleId;
   store.getArticleDetail(articleId.value, false).then(() => {
     article.value = store.articleDetail
-    userstore.getUserdetail(store.articleDetail.userId).then(() => {
-      if (userstore.userDetail) {
-  
-        console.log(store.articleDetail.userId)
-      }
-      writer.value = userstore.userdetail
-    })
+    // userstore.getUserdetail(store.articleDetail.userId).then(() => {
+    //   if (userstore.userDetail) {
+
+    //     console.log(store.articleDetail.userId)
+    //   }
+    //   writer.value = userstore.userdetail
+    // })
   }
   )
   // store.getIsLike(1)
@@ -75,6 +88,24 @@ watch(article, (newVal) => {
     newVal.value = "";
   }
 });
+
+const goBoard = function (category) { 
+  console.log(category)
+  if (category) {
+    switch (category) {
+      case "자유게시판":
+        router.push({name: 'freeboard', params: {partyId: store.selectedParty}})
+        break;
+        case "가입인사":
+          router.push({name: 'introductionboard', params: {partyId: store.selectedParty}})
+          break;
+          case "공지사항":
+            router.push( {name: 'noticeboard', params: { partyId: store.selectedParty}})
+        break;
+      default:
+        break;
+    }
+  }}
 </script>
 
 <style scoped>
@@ -83,8 +114,9 @@ watch(article, (newVal) => {
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
-  margin : 5px;
+  margin: 5px;
 }
+
 p {
   margin: 0;
 }
@@ -93,7 +125,7 @@ p {
   color: #ff7f00;
 }
 
-.content{
+.content {
   height: 50vh;
 }
 </style>

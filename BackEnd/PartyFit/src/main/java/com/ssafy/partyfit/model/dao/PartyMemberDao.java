@@ -13,4 +13,5 @@ public interface PartyMemberDao {
 	List<Party> selectMyParty(User user);
 	int updatePartyMember(PartyMember party);
 	int deletePartyMember(PartyMember party);
+	int insertjoinRequest(PartyMember partyMember);
 }

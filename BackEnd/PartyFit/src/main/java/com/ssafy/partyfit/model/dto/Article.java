@@ -20,5 +20,6 @@ public class Article {
     private int meetId;
     private int likesCount;
     private String username;
+    private String profile;
 
 }
