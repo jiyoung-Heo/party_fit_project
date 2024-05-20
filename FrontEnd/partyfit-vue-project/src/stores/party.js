@@ -10,7 +10,7 @@ const REST_USER_API = `http://localhost:8080/party`;
 export const usePartyStore = defineStore("party",() => {
     const useStore = useUserStore();
     const partyList = ref();
-    const getPartyListWithMemberCount = function (condition) {
+    const getPartyListWithCondition = function (condition) {
       axios({
         url: `${REST_USER_API}`,
         method: "GET",
