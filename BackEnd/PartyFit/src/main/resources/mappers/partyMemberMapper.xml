@@ -4,7 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.partyfit.model.dao.PartyMemberDao">
 	<select id="selectPartyMember" resultType="PartyMemberUser" parameterType="map">
-		select u.username, u.age, u.login_id , m.grade, m.status from party_member m, user u 
+		select m.party_member_id, u.user_id, u.username, u.age, u.login_id , m.grade, m.status, m.reg_date from party_member m, user u 
 		where m.party_id = #{partyId} 
 		and m.user_id = u.user_id
 		and m.status = #{status}
