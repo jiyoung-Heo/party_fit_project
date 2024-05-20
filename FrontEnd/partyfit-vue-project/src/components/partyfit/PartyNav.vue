@@ -5,8 +5,8 @@
                 <div class="party-info">
                     <p @click="goPartyMainPage">{{ party.name }}</p>
                     <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
-                    <p>참여인원 {{ party.memberCount }}명</p>
-                    
+                    <p>참여인원 {{ store.partyMemberList.length }}명</p>
+
                 </div>
                 <hr>
                 <div id="profile" class="profile-info">
@@ -40,7 +40,21 @@
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty}}">일정 등록</RouterLink>
 {{store.partyMemberList}}
                         </li>
-                   
+                        {{ store.isManager }}
+                        <div v-if="store.isManager">
+                            <li>
+                                <RouterLink :to="{ name: 'manageRequest', params: { partyId: store.selectedParty.partyId } }">
+                                    가입요청 관리
+                                    {{ store.memberRequestList.length }}
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink :to="{ name: 'manageMember', params: { partyId: store.selectedParty.partyId } }">
+                                   회원 리스트 </RouterLink>
+                            </li>
+                        </div>
+
+
                     </ul>
                 </div>
             </div>

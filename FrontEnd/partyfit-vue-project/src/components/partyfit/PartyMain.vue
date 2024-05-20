@@ -15,7 +15,7 @@
 
             <button @click="leaveParty">탈퇴하기</button>
         </div>
-        <div v-else>
+        <div v-else-if="!store.isManager">
             <button @click="joinParty">가입하기</button>
         </div>
             
@@ -104,7 +104,7 @@ const joinParty = () => {
 
 const leaveParty = () => {
     userstore.partyLeaveRequest(store.selectedParty.partyId)
-
+    store.isjoining = false;
 }
 </script>
 

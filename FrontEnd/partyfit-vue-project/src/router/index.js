@@ -21,6 +21,8 @@ import MeetList from '@/components/meet/MeetList.vue'
 import MeetCreate from '@/components/meet/MeetCreate.vue'
 import MeetListDetail from '@/components/meet/MeetListDetail.vue'
 import BeforeLoginMainView from '@/views/BeforeLoginMainView.vue'
+import memberRequestManage from '@/components/management/memberRequestManage.vue'
+import memberList from '@/components/management/memberList.vue'
 import { useUserStore } from '@/stores/user'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
 
@@ -165,8 +167,19 @@ const router = createRouter({
               component: MeetCreate,
             },
     
+            {
+              path: '/manageRequest/:partyId',
+              name: 'manageRequest',
+              component: memberRequestManage,
+            },
+    
+            {
+              path: '/manageList/:partyId',
+              name: 'manageMember',
+              component: memberList,
+            },
           ]
-        }
+        },
       ]
     },
   ]

@@ -34,41 +34,42 @@ export const usePartyStore = defineStore("party",() => {
     //해당 party의 참여 인원 조회
     const isjoining=ref()
     const isManager=ref()
-    const getMemberList = async function (partyId) {
+    const getMemberList = async function (status) {
      await axios({
-        url: `${REST_USER_API}/${partyId}/member/1`,
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/member/${status}`,
         method: "GET",
-        params: {
-          partyId,
-        },
+        
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       })
         .then((res) => {
           partyMemberList.value = res.data;
-          // console.log(partyMemberList.value)
+          console.log(partyMemberList.value)
           for(let i=0;i<partyMemberList.value.length;i++){
-            if(partyMemberList.value[i].userId===useStore.userId){
-              if(partyMemberList.value[i].grade===0){
-                isjoining.value=true;
+         
+            if(partyMemberList.value[i].userId===useStore.loginUser.userId){
+              console.log("속해있음")
+              if(partyMemberList.value[i].grade===1){
                 console.log("매니져.")
+                isManager.value=true;
                 
               }else{
+                isjoining.value=true;
                 
                 console.log("일반.")
-                isManager.value=true;
               }
               
             }else{
-            
+              
+              console.log("안속해")
               isjoining.value=false;
             }
           }
           
         })
         .catch((err) => {
-          console.log(err);
+          console.log("에러남 " + err);
         });
     };
 
@@ -327,6 +328,58 @@ console.log(res.data)
        
       })
     }
+
+//가입요청 목록
+const memberRequestList = ref([])
+const getMemberRequestList = function() {
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join`,
+    method: "GET",
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+    .then((res) => {
+      memberRequestList.value = res.data;
+      console.log(memberRequestList.value)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//가입 요청 수락
+const approveRequest = function(user) {
+
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/true`,
+    method: "PUT",
+    data: user,
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+  })
+}
+
+//가입 요청 거절
+const rejectRequest = function(user) {
+  
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/false`,
+    method: "PUT",
+    data: user,
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+   
+  })
+}
 
     return {
       makeArticle,

@@ -65,8 +65,8 @@ const filteredPartyList = computed(() => {
 
 const gopartyPage = function(party) {
     console.log(party.partyId)
-    router.push({ name: 'partyfitmain', params: { partyId: 'party.partyId' } });
     partyStore.selectedParty = party;
+    router.push({ name: 'partyfitmain', params: { partyId:  partyStore.selectedParty.partyId } });
     
   };
 

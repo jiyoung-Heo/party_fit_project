@@ -42,7 +42,7 @@ store.isManager = false;
 
 onMounted(()=>{
     // console
-    store.getMemberList(store.selectedParty.partyId)
+    store.getMemberList(store.selectedParty.partyId,1)
     
 
 })

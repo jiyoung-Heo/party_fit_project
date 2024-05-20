@@ -30,8 +30,8 @@
   
   const gopartyPage = function(party) {
     console.log(party.partyId)
-    router.push({ name: 'partyfitmain', params: { partyId: 'party.partyId' } });
     store.selectedParty = party;
+    router.push({ name: 'partyfitmain', params: { partyId: store.selectedParty.partyId } });
   };
   </script>
   
