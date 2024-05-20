@@ -329,6 +329,36 @@ const partyList = ref([])
 
   }
 
+  
+  const partyJoinRequest = function (partyId) {
+    axios({
+      url: `${REST_USER_API}/join/${partyId}/${loginUser.value.userId}`,
+    method: "PUT",
+    headers: {
+      Authorization :accessToken.value,
+  },
+  })
+  .then((res) => {
+    alert("가입 신청")
+  })
+  }
+
+  const partyLeaveRequest = function (partyId) {
+    axios({
+      url: `${REST_USER_API}/join/${partyId}/${loginUser.value.userId}`,
+    method: "DELETE",
+    headers: {
+      Authorization :accessToken.value,
+  },
+  })
+  .then((res) => {
+    alert("탈퇴")
+  })
+  
+  }
+
+
+
   return {
     nonWriteReview,
     getNonWriteReview,
@@ -356,5 +386,8 @@ const partyList = ref([])
     accessToken,
     userdetail,
     getUserdetail,
+    partyJoinRequest,
+    partyLeaveRequest,
+  
   };
 },{persist:true});

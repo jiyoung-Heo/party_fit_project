@@ -20,6 +20,7 @@ import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.Comment;
 import com.ssafy.partyfit.model.dto.Meet;
 import com.ssafy.partyfit.model.dto.Party;
+import com.ssafy.partyfit.model.dto.PartyMember;
 import com.ssafy.partyfit.model.dto.User;
 import com.ssafy.partyfit.model.service.ArticleService;
 import com.ssafy.partyfit.model.service.CommentService;
@@ -247,6 +248,47 @@ public class UserController {
 		}
 	}
 
+	
+	//파티 가입
+	@PutMapping("/join/{partyId}/{userId}")
+	public ResponseEntity<?> joinParty(@PathVariable("partyId") int partyId,@PathVariable("userId") int userId ) {
+		PartyMember partyMember = new PartyMember();
+		partyMember.setGrade("0");
+		partyMember.setStatus("0");
+		partyMember.setPartyId(partyId); 
+		partyMember.setUserId(userId);
+		System.out.println("파티가입신청" + partyMember);
+		int result = partyMemberService.joinRequest(partyMember);
+		
+		if(result == 1) {
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+		
+	}
+	
+	
+	//파티 탈퇴
+	@DeleteMapping("/join/{partyId}/{userId}")
+	public ResponseEntity<?> leaveParty(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId ) {
+		PartyMember partyMember = new PartyMember();
+		
+		partyMember.setPartyId(partyId); //일반인
+		partyMember.setUserId(userId);//가입 대기중
+		System.out.println("탈퇴신청" + partyMember);
+		int result = partyMemberService.leaveRequest(partyMember);
+		
+		if(result == 1) {
+			return new ResponseEntity<>(HttpStatus.OK);
+			
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		
+		
+	}
+	
 	// 회원 탈퇴
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> removeUser(@PathVariable("userId") int userId) {

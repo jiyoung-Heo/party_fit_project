@@ -6,7 +6,7 @@
     <hr />
     <div>
       <div class="row row-cols-1 row-cols-md-4 g-3">
-        <div v-for="(party, index) in partyStore.partyList" :key="party.partyId" >
+        <div v-for="(party, index) in partyStore.partyList" :key="party.partyId" @click="gopartyPage(party)">
           <template v-if="index <4">
             <div class="col">
               <div class="card">
@@ -35,6 +35,7 @@
           :key="party.partyId"
           :class="{ 'carousel-item': true, active: index / 4 === 0 }"
           :data-bs-interval="false"
+          
         >
           <div class="row row-cols-1 row-cols-md-3 g-4">
             <div class="col">
@@ -80,6 +81,10 @@
 <script setup>
 import { usePartyStore } from "@/stores/party";
 import { onMounted } from "vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
 const partyStore = usePartyStore();
 
 onMounted(() => {
@@ -89,6 +94,13 @@ onMounted(() => {
   }
   partyStore.getPartyListWithCondition(condition)
 });
+
+const gopartyPage = function(party) {
+    router.push({ name: 'partyfitmain', params: { partyId: party.partyId } });
+    usePartyStore().selectedParty = party;
+  };
+
+
 </script>
 
 <style scoped>
