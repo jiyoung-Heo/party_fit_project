@@ -309,8 +309,29 @@ const partyList = ref([])
     })
 
   }
+  const nonWriteReview = ref()
+  const getNonWriteReview = function(){
+    const userId = loginUserId.value
+    // console.log("store"+ userId)
+    axios({
+      url: `${REST_USER_API}/review/${userId}`,
+      method: "GET",
+      headers: {
+        Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+      },
+    })
+   .then((res)=>{
+    nonWriteReview.value =res.data
+    })
+    .catch((err)=>{
+      
+    })
+
+  }
 
   return {
+    nonWriteReview,
+    getNonWriteReview,
     createUser,
     userLogin,
     loginUser,

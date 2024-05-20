@@ -45,4 +45,9 @@ public class MeetServiceImpl implements MeetService {
 		return result;
 	}
 
+	@Override
+	public List<Meet> showNonWriteReview(int userId) {
+		return meetDao.selectNonWriteReview(userId);
+	}
+
 }

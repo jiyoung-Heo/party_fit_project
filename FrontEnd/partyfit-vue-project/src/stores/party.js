@@ -194,6 +194,23 @@ export const usePartyStore = defineStore("party",() => {
         });
     };
 
+    const makeArticle = function(data){
+      axios({
+        url: `${REST_USER_API}/${data.partyId}/article/${data.category}`,
+        method: "POST",
+        data: data,
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     //댓글 작성하기 
     const createComment = function (comment,articleId,content,parentId,username,profile,userId,depth) {
 
@@ -241,6 +258,7 @@ console.log(res.data)
     }
 
     return {
+      makeArticle,
       getPartyListWithCondition,
       partyList,
       selectedParty,

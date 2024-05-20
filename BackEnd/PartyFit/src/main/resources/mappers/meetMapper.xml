@@ -24,6 +24,12 @@
 		select * from meet where meet_id IN (select DISTINCT meet_id from
 		meet_member where user_id =#{userId})
 	</select>
+	<select id="selectNonWriteReview" parameterType="int" resultType="Meet">
+		select * from meet where meet_id IN (select DISTINCT meet_id from
+		meet_member where user_id = #{userID}) and end_time
+		&lt;= 
+		now() and meet_id not in(select meet_id from article where category = '3')
+	</select>
 
 	<update id="approveMeet" parameterType="int">
 		update meet set status = '1' where meet_id=#{meetId}

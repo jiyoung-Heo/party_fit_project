@@ -231,6 +231,21 @@ public class UserController {
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
+	
+	/**
+	 * 참여한 모임 중 리뷰작성하지 않은 모임 조회하기
+	 * @param userID
+	 * @return
+	 */
+	@GetMapping("/review/{userId}")
+	public ResponseEntity<?> showNonWriteReview(@PathVariable("userId")int userID) {
+		List<Meet> meetList = meetService.showNonWriteReview(userID);
+		if (meetList == null || meetList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
+		}
+	}
 
 	// 회원 탈퇴
 	@DeleteMapping("/{userId}")

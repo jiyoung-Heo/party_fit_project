@@ -37,6 +37,8 @@ public class SecurityConfig {
 						.requestMatchers("/user/login").permitAll()
 						.requestMatchers("/party/showParty").permitAll()
 						.requestMatchers("/party").permitAll()
+						.requestMatchers("/api/**").permitAll()
+						.requestMatchers("/tui-editor/**").permitAll()
 //						.requestMatchers("/**").permitAll().anyRequest().permitAll())
 						.anyRequest().authenticated())
 				.addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class).build();
