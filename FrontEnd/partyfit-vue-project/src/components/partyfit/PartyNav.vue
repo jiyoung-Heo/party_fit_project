@@ -38,7 +38,7 @@
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty}}">일정 등록</RouterLink>
-{{partylist}}
+{{store.partyMemberList}}
                         </li>
                    
                     </ul>
@@ -58,15 +58,15 @@ const router = useRouter();
 const userstore = useUserStore();
 const store = usePartyStore();
 const party = ref(store.selectedParty);
-const partylist = ref(store.partyMemberList);
 
 const loginUser = ref(userstore.loginUser)
-
+const partylist = ref()
 onMounted(() => {
     // party.value = store.selectedParty
     // store.getMemberList(store.selectedParty.partyId).then(() => {
     //     console.log('party member list:', partylist.value);
     // })
+partylist.value = ref(store.partyMemberList);
 
     
 })
