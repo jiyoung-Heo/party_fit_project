@@ -8,13 +8,19 @@ INSERT INTO user (name, login_id, password, username, email, age, profile, delet
 
 -- 그룹 더미 데이터
 
-INSERT INTO party (name, introduction, introduction_image, banner_image, exercise_category, party_type)
+INSERT INTO party (name, introduction, introduction_image, banner_image, max_headcount, exercise_category, party_type)
 VALUES
-('요가그룹', '요가를 사랑하는 사람들의 모임입니다.', 'https://previews.123rf.com/images/tomi43/tomi432403/tomi43240311354/228343089-logo-design-of-people-doing-yoga-symbol-icon-illustration-vector.jpg', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1q80WOLapeGGdo3Op9pm7sErNaTCj_c9olw&s', '요가', '0'),
-('헬스그룹', '헬스를 좋아하는 사람들의 모임입니다.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11G2J7dHvC-MYI1Tv9NuWoDHcxBPr8Xzfa-Dl3ajM3mVsrmLV07QMR4KopQ&s', 'https://example.com/banner1.jpg', '헬스', '0'),
+('요가그룹', '요가를 사랑하는 사람들의 모임입니다.', 'https://previews.123rf.com/images/tomi43/tomi432403/tomi43240311354/228343089-logo-design-of-people-doing-yoga-symbol-icon-illustration-vector.jpg', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR1q80WOLapeGGdo3Op9pm7sErNaTCj_c9olw&s',20, '요가', '0');
+INSERT INTO party (name, introduction, introduction_image, banner_image, max_headcount, exercise_category, party_type)
+VALUES
+('헬스그룹', '헬스를 좋아하는 사람들의 모임입니다.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT11G2J7dHvC-MYI1Tv9NuWoDHcxBPr8Xzfa-Dl3ajM3mVsrmLV07QMR4KopQ&s', 'https://example.com/banner1.jpg',10, '헬스', '0');
+INSERT INTO party (name, introduction, introduction_image, banner_image, max_headcount, exercise_category, party_type)
+VALUES
 ('필라테스그룹', '필라테스를 즐기는 사람들의 모임입니다.', 'https://previews.123rf.com/images/aryabm/aryabm2402/aryabm240200327/226705451-pilates-logo-vector-body-poses-gymnastics-exercise-yoga-calm-down-template-illustration.jpg',
- 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5v3_YApd7vK9A5HjGnqijUEZyzhtp7y0idQ&s', '필라테스', '0'),
-('클라이밍그룹', '클라이밍을 사랑하는 사람들의 모임입니다.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNIkARNVTA8tiE-oy2yEJrOcD1JGe4SLSdrg&s', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_GDxB0aNWDU_vQsCc-eo0GpjnMmPpZ8VI7A&s', '클라이밍', '0');
+ 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5v3_YApd7vK9A5HjGnqijUEZyzhtp7y0idQ&s',10, '필라테스', '0');
+ INSERT INTO party (name, introduction, introduction_image, banner_image, max_headcount, exercise_category, party_type)
+VALUES
+('클라이밍그룹', '클라이밍을 사랑하는 사람들의 모임입니다.', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNIkARNVTA8tiE-oy2yEJrOcD1JGe4SLSdrg&s', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_GDxB0aNWDU_vQsCc-eo0GpjnMmPpZ8VI7A&s',50, '클라이밍', '0');
 
 
 -- 모임 더미 데이터

@@ -40,8 +40,8 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/party")
 public class PartyController {
-	Logger logger =  LoggerFactory.getLogger(getClass());
-			
+	Logger logger = LoggerFactory.getLogger(getClass());
+
 	private PartyService partyService;
 	private ArticleService articleService;
 	private PartyMemberService partyMemberService;
@@ -74,23 +74,7 @@ public class PartyController {
 	 */
 	@GetMapping("")
 	public ResponseEntity<?> showParty(@ModelAttribute SearchCondition condition) {
-		List<Party> partyList = partyService.showParty(condition);
-		if (partyList == null || partyList.size() == 0) {
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		} else {
-			return new ResponseEntity<List<Party>>(partyList, HttpStatus.OK);
-		}
-	}
-	
-	/**
-	 * 파티목록 + 인원수 인원수 많은순 정렬 리턴
-	 * 
-	 * @param condition
-	 * @return
-	 */
-	@GetMapping("/top")
-	public ResponseEntity<?> showPartyAndMemberCountOrderByMemberCount() {
-		List<PartyMemberCount> partyList = partyService.showPartyAndMemberCountOrderByMemberCount();
+		List<PartyMemberCount> partyList = partyService.showParty(condition);
 		if (partyList == null || partyList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
@@ -118,7 +102,7 @@ public class PartyController {
 	 * 파티 내부 게시글 목록 조회
 	 * 
 	 * @param partyId
-	 * @param category (0:자유게시판, 1: 가입인사, 2:공지사항, 3:  모임후기) 
+	 * @param category  (0:자유게시판, 1: 가입인사, 2:공지사항, 3: 모임후기)
 	 * @param condition
 	 * @return
 	 */
@@ -243,6 +227,7 @@ public class PartyController {
 
 	/**
 	 * 파티 내부 게시글 좋아요 누르기 눌러져 있는 상태라면 해제하기
+	 * 
 	 * @param commentId
 	 * @param comment
 	 * @return
@@ -255,14 +240,14 @@ public class PartyController {
 		} catch (NullPointerException e) {
 			userId = 1;
 		}
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("tableName", "article_likes");
 		map.put("userId", userId);
 		map.put("targetId", articleId);
-		
+
 		int result = likesService.clickLikes(map);
-		
+
 		if (result == 0) {
 			// 업데이트할 데이터가 없다면
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -271,7 +256,6 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-
 
 	/**
 	 * 파티 내부 게시글의 댓글 데이터 가져오기
@@ -371,9 +355,10 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
 	}
-	
+
 	/**
 	 * 코멘트 좋아요 등록, 해제 관련
+	 * 
 	 * @param articleId
 	 * @param session
 	 * @return
@@ -386,14 +371,14 @@ public class PartyController {
 		} catch (NullPointerException e) {
 			userId = 1;
 		}
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("tableName", "comment_likes");
 		map.put("userId", userId);
 		map.put("targetId", commentId);
 		
 		int result = likesService.clickLikes(map);
-		
+
 		if (result == 0) {
 			// 업데이트할 데이터가 없다면
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -462,7 +447,8 @@ public class PartyController {
 	 * @return
 	 */
 	@GetMapping("/{partyId}/meet/{status}")
-	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status, @ModelAttribute SearchCondition condition) {
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status,
+			@ModelAttribute SearchCondition condition) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
 		map.put("partyId", status);
