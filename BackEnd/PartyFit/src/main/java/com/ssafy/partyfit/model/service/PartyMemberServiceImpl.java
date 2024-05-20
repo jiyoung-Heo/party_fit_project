@@ -33,6 +33,7 @@ public class PartyMemberServiceImpl implements PartyMemberService {
 		return partyMemberDao.selectMyParty(user);
 	}
 
+	
 	@Override
 	public int managePartyMember(PartyMember partyMember, boolean isAccept) {
 		int result;
@@ -43,6 +44,18 @@ public class PartyMemberServiceImpl implements PartyMemberService {
 		}
 		return result;
 	}
+
+	@Override
+	public int joinRequest(PartyMember partyMember) {
+		return partyMemberDao.insertjoinRequest(partyMember);
+	}
+
+	@Override
+	public int leaveRequest(PartyMember partyMember) {
+		return partyMemberDao.deletePartyMember(partyMember);
+	}
+
+
 	
 	
 	

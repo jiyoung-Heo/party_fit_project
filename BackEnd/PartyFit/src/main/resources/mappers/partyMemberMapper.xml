@@ -8,6 +8,7 @@
 		where m.party_id = #{partyId} 
 		and m.user_id = u.user_id
 		and m.status = #{status}
+		
 	</select>
 	
 	<select id="selectMyParty" parameterType="User" resultType="Party">
@@ -20,7 +21,11 @@
 		update party_member set status = '1' where user_id=#{userId} and party_id=#{partyId}
 	</update>
 	
-	<delete id="deletePartyMember" parameterType="party">
+	<insert id="insertjoinRequest" parameterType ="PartyMember">
+		insert into party_member(grade,status,user_id,party_id) values (#{grade},#{status},#{userId},#{partyId})
+	</insert>
+	
+	<delete id="deletePartyMember" parameterType="PartyMember">
 		delete from party_member where user_id=#{userId} and party_id=#{partyId}
 	</delete>
 </mapper>

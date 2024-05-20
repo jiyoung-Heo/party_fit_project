@@ -13,4 +13,6 @@ public interface PartyMemberService {
 	List<PartyMemberUser> showPartyMember(Map<String, Object> map);
 	public List<Party> showMyParty(User user);
 	public int managePartyMember(PartyMember partyMember, boolean isAccept);
+	public int joinRequest(PartyMember partyMember);
+	int leaveRequest(PartyMember partyMember);
 }

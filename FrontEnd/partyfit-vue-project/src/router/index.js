@@ -134,18 +134,18 @@ const router = createRouter({
 
 
             {
-              path: '/partyfit/:partyId/freeboard',
+              path: '/partyfit/:partyId/0',
               name: 'freeboard',
               component: FreeBoard,
             },
 
             {
-              path: '/partyfit/:partyId/introductionboard',
+              path: '/partyfit/:partyId/1',
               name: 'introductionboard',
               component: IntroductionBoard,
             },
             {
-              path: '/partyfit/:partyId/noticeboard',
+              path: '/partyfit/:partyId/2',
               name: 'noticeboard',
               component: NoticeBoard,
             },
