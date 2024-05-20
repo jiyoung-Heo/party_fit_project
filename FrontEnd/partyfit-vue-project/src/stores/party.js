@@ -7,13 +7,10 @@ import { useUserStore } from "@/stores/user";
 
 const REST_USER_API = `http://localhost:8080/party`;
 
-export const usePartyStore = defineStore(
-  "party",
-  () => {
+export const usePartyStore = defineStore("party",() => {
     const useStore = useUserStore();
     const partyList = ref();
-    
-    const getPartyListWithCondition = function (condition) {
+    const getPartyListWithMemberCount = function (condition) {
       axios({
         url: `${REST_USER_API}`,
         method: "GET",
@@ -84,15 +81,15 @@ export const usePartyStore = defineStore(
 
     // 자유게시판글 조회 최신순
     const freeList = ref([]);
-    const getFreeList = function (partyId) {
+    const getFreeList = function (partyId,orderBy,orderByDir) {
       axios({
         url: `${REST_USER_API}/${partyId}/article/0`,
         method: "GET",
         params: {
           partyId: partyId,
           category: 0,
-          orderBy: "reg_date",
-          orderByDir: "DESC",
+          orderBy: orderBy,
+          orderByDir: orderByDir,
         },
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
@@ -155,6 +152,94 @@ export const usePartyStore = defineStore(
         });
     };
 
+    //isReload : false - 조회수 +1,
+    const articleDetail = ref();
+    const getArticleDetail = async function (articleId,isReload) {
+        await axios({
+            url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/${isReload}`,
+            method: "GET",
+            params: {
+              partyId: selectedParty.value.partyId,
+           
+              articleId : articleId,
+              isReload : isReload,
+
+            },
+            headers: {
+              Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+            },
+          })
+          .then((res)=>{
+            articleDetail.value = res.data;
+          })
+
+    }
+
+    //댓글리스트 가져오기 
+    const commentList = ref([]);
+    const getCommentList = function(articleId) {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
+        method: "GET",
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          commentList.value = res.data;
+          // console.log(commentList.value);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    //댓글 작성하기 
+    const createComment = function (comment,articleId,content,parentId,username,profile,userId,depth) {
+
+      axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
+      method: "POST",
+      headers: {
+        Authorization : useStore.accessToken,
+    },
+    data: {
+      articleId: articleId,
+        content: content,
+        parentId: parentId,
+        username: username,
+        profile:profile,
+        userId:userId,
+        depth: depth
+    },})
+    .then((res) => {
+console.log(res.data)
+    })
+    .catch((err) => {
+      console.log(comment);
+
+
+    });
+  }
+
+    const IsLike = ref(false);
+    const getIsLike = function (commentId) {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${commentId}/comment/like`,
+        method: "GET",
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+      .then((res) => {
+        IsLike.value = true;
+        console.log(IsLike.value)
+      })
+      .catch((err) => {
+        IsLike.value = false;
+       
+      })
+    }
+
     return {
       getPartyListWithCondition,
       partyList,
@@ -169,6 +254,13 @@ export const usePartyStore = defineStore(
       getIntroductionList,
       hotViewList,
       getHotViewList,
+      articleDetail,
+      getArticleDetail,
+      IsLike,
+      getIsLike,
+      commentList,
+      getCommentList,
+      createComment,
     };
   },
   { persist: true }

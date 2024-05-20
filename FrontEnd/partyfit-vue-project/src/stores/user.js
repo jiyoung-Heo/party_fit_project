@@ -143,6 +143,27 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+  const userdetail = ref({});
+  const getUserdetail = async function(userId) {
+    try {
+      const res = await axios({
+        url: `${REST_USER_API}/${userId}`,
+        method: "GET",
+        params: {
+          userId: userId,
+        },
+        headers: {
+          Authorization: accessToken.value // 헤더에 accessToken을 포함하여 요청
+        },
+      });
+      
+      userdetail.value = res.data;
+    }catch (err) {
+      console.log(err);
+      window.alert("회원정보 가져오기 실패");
+    }
+  }
+
 
   //아이디 중복 검사 
   const isValidId = function(loginId){
@@ -312,5 +333,7 @@ const partyList = ref([])
     commentList,
     getMyComment,
     accessToken,
+    userdetail,
+    getUserdetail,
   };
 },{persist:true});

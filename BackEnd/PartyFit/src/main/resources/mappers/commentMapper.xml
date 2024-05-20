@@ -6,7 +6,7 @@
 		select 
 		c.comment_id, c.content, c.reg_date, c.mod_date,
 		c.parent_id, c.depth, c.seq, c.article_id, 
-		count(l.likes_id) as likesCount
+		count(l.likes_id) as likesCount , u.username,u.profile
 		from comment c left join comment_likes l 
 		on c.comment_id = l.target_id
 		join user u on c.user_id = u.user_id
