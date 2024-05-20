@@ -7,8 +7,8 @@
                 <div  id="leftbox">
                     <PartyNav />
                 </div>
-                <div class="rightbox" id="rightbox">
-                    <RouterView/>
+                <div class="rightbox ms-3 mt-3" id="rightbox">
+                    <RouterView />
 
                 </div>
 
@@ -34,7 +34,16 @@ import { usePartyStore } from '@/stores/party';
 const store = usePartyStore();
 const party = ref();
 
-onMounted(() => {
+onUnmounted(() => {
+store.selectedParty = "";
+store.isjoining = false;
+store.isManager = false;
+})
+
+onMounted(()=>{
+    // console
+    store.getMemberList(store.selectedParty.partyId)
+    
 
 })
 

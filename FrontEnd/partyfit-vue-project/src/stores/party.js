@@ -33,6 +33,8 @@ export const usePartyStore = defineStore(
     const partyMemberList = ref([]);
 
     //해당 party의 참여 인원 조회
+    const isjoining=ref()
+    const isManager=ref()
     const getMemberList = async function (partyId) {
       await axios({
         url: `${REST_USER_API}/${partyId}/member/1`,
@@ -47,6 +49,24 @@ export const usePartyStore = defineStore(
         .then((res) => {
           partyMemberList.value = res.data;
           // console.log(partyMemberList.value)
+          for(let i=0;i<partyMemberList.value.length;i++){
+            if(partyMemberList.value[i].userId===useStore.userId){
+              if(partyMemberList.value[i].grade===0){
+                isjoining.value=true;
+                console.log("매니져.")
+                
+              }else{
+                
+                console.log("일반.")
+                isManager.value=true;
+              }
+              
+            }else{
+            
+              isjoining.value=false;
+            }
+          }
+          
         })
         .catch((err) => {
           console.log(err);
@@ -176,8 +196,10 @@ export const usePartyStore = defineStore(
 
     //댓글리스트 가져오기
     const commentList = ref([]);
-    const getCommentList = function (articleId) {
-      axios({
+
+    const getCommentList = async function(articleId,who) {
+      console.log(articleId+" "+who)
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
         method: "GET",
         headers: {
@@ -210,64 +232,52 @@ export const usePartyStore = defineStore(
         });
     };
 
-    //댓글 작성하기
-    const createComment = function (
-      articleId,
-      content,
-      parentId,
-      username,
-      profile,
-      userId,
-      depth
-    ) {
-      // const createComment = function (comment,articleId) {
-      console.log(articleId);
-      axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
-        method: "POST",
-        headers: {
-          Authorization: useStore.accessToken,
-        },
-        data: {
-          articleId,
-          content,
-          parentId,
-          username,
-          profile,
-          userId,
-          depth,
-        },
-      })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {});
-    };
+    //댓글 작성하기 
+    const createComment = async function (articleId,content,parentId,username,profile,userId,depth) {
+    // const createComment = function (comment) {
+      // console.log(comment);
+      axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
+      method: "POST",
+      headers: {
+        Authorization : useStore.accessToken,
+    },
+    data: {
+      // comment
+      
+      articleId,content,parentId,username,profile,userId,depth
+    },})
+    .then((res) => {
+console.log(res.data)
+    })
+    .catch((err) => {
+ 
+    });
+  }
 
-    // 글 삭제
-    const deleteArticle = function (articleId) {
-      axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}`,
-        method: "DELETE",
-        headers: {
-          Authorization: useStore.accessToken,
-        },
-      })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((response) => {
-          if (response.status === 204) {
-            // 데이터를 삭제했을 경우
-            console.log("Article deleted successfully");
-            // TODO: 추가적인 처리 로직 작성
-          } else if (response.status === 404) {
-            // 삭제할 데이터가 없는 경우
-            console.error("Article not found");
-            // TODO: 추가적인 처리 로직 작성
-          }
-        });
-    };
+// 글 삭제 
+const deleteArticle = function (articleId) {
+  axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}`,
+  method: "DELETE",
+  headers: {
+    Authorization : useStore.accessToken,
+},
+})
+.then((res) => {
+console.log(res.data)
+})
+.catch((response) => {
+  if (response.status === 204) {
+    // 데이터를 삭제했을 경우
+    console.log('Article deleted successfully');
+    // TODO: 추가적인 처리 로직 작성
+  } else if (response.status === 404) {
+    // 삭제할 데이터가 없는 경우
+    console.error('Article not found');
+    // TODO: 추가적인 처리 로직 작성
+  }
+});
+  
+}
 
     //댓글 삭제
 
@@ -356,6 +366,8 @@ export const usePartyStore = defineStore(
       deleteArticle,
       deleteComment,
       makeMeetRequest,
+      isManager,
+      isjoining,
     };
   },
   { persist: true }

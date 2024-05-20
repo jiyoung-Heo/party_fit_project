@@ -47,7 +47,7 @@ const props = defineProps({
 });
 
 const loadComments = async () => {
-  await store.getCommentList(props.articleId);
+  await store.getCommentList(props.articleId,2);
 };
 
 onMounted(() => {
@@ -84,23 +84,31 @@ const createComment = async (parentId, depth) => {
     userId: userStore.loginUser.userId,
     depth: depth,
   };
-
-  try {
-    await store.createComment(commentData);
-    content.value = '';
-    await loadComments();
-  } catch (error) {
-    console.error('Error creating comment:', error.message);
-  }
+  console.log(userStore.loginUserusername)
+  // try {
+    // await 
+    store.createComment(props.articleId,
+    content.value,
+    parentId,
+     userStore.loginUser.username,
+    userStore.loginUser.profile,
+    userStore.loginUser.userId,
+     depth,
+    );
+  //   content.value = '';
+  //   await loadComments();
+  // } catch (error) {
+  //   console.error('Error creating comment:', error.message);
+  // }
 };
 
-const setCurrent = async () => {
-  await store.getCommentList(props.articleId, 'reg_date', 'DESC');
-};
+// const setCurrent = async () => {
+//   await store.getCommentList(props.articleId, 'reg_date', 'DESC');
+// };
 
-const setOld = async () => {
-  await store.getCommentList(props.articleId, 'reg_date', 'ASC');
-};
+// const setOld = async () => {
+//   await store.getCommentList(props.articleId, 'reg_date', 'ASC');
+// };
 </script>
 
 <style scoped>

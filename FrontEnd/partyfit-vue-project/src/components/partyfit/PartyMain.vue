@@ -7,48 +7,56 @@
             <div v-else>
                 <div style="width:100%; height:160px; text-align: center; font-size: 24px; font-weight: bold; ">
                     {{ party.name }}
-                    </div>
+                </div>
             </div>
         </div>
-        {{ inParty }}
-        <div v-if="inParty">
+     
+        <div v-if="store.isjoining">
 
-        <button @click ="joinParty">가입하기 </button>
-            <button @click ="leaveParty">탈퇴하기</button>
+            <button @click="leaveParty">탈퇴하기</button>
         </div>
-        <div v-if="!inParty">
-        <button @click ="joinParty">가입하기 </button>
-            <button @click ="leaveParty">탈퇴하기</button>
+        <div v-else>
+            <button @click="joinParty">가입하기</button>
         </div>
+            
         <div class="board">
-           <div class="left">
-            <div class="notice">
-                <p>공지사항</p>
-                <hr>
-                <ul>
-                    <div v-for="(article,index) in store.noticeList.slice(0, 5)" :key="index" >
-                    <li>
-                       <a>{{article.title}}</a>
-                        <a>{{ article.regDate.split('T')[0]}}</a>
-                    </li>
-                    </div>
-                </ul>
+            <div class="left">
+                <div class="notice">
+                    <p>공지사항</p>
+                    <hr>
+                    <ul>
+                        <div v-for="(article, index) in store.noticeList.slice(0, 5)" :key="index">
+                            <li>
+                                <a>{{ article.title }}</a>
+                                <a>{{ article.regDate.split('T')[0] }}</a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+                <div class="hotView">
+                    <p>인기글</p>
+                    <hr>
+                    <ul>
+                        <div v-for="(article, index) in store.hotViewList.slice(0, 5)" :key="index">
+                            <li>
+                                <a>{{ article.title }}</a>
+                                <a>{{ article.viewCount }}</a>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
             </div>
-            <div class="hotView">
-                <p>인기글</p>
-                <hr>
-                <ul>
-                    <div v-for="(article,index) in store.hotViewList.slice(0, 5)" :key="index" >
-                    <li>
-                        <a>{{article.title}}</a>
-                        <a>{{ article.viewCount}}</a>
-                    </li>
-                    </div>
-                </ul>
-            </div>
-           </div>
+            <div>
             <div class="calender">
                 <h1>캘린더</h1>
+
+            </div>
+            파티 참여자
+            <hr>
+            <div v-for="(member, index) in store.partyMemberList" :key="index">
+            {{ member.username }}
+
+            </div>
             </div>
         </div>
 
@@ -71,10 +79,10 @@ const partymemberlist = ref(store.partyMemberList);
 
 const inParty = computed(() => {
     if (!userstore || !userstore.loginUser || !partymemberlist || !Array.isArray(partymemberlist.value)) {
-    return false;
-  }
+        return false;
+    }
 
-  return partymemberlist.value.some(member => member.userId === userstore.loginUser.userId);
+    return partymemberlist.value.some(member => member.userId === userstore.loginUser.userId);
 });
 
 const loginUser = ref(userstore.loginUser)
@@ -85,7 +93,7 @@ onMounted(() => {
     // store.getMemberList(store.selectedParty.partyId);
     store.getNoticeList(store.selectedParty.partyId)
     store.getHotViewList(store.selectedParty.partyId)
-    store.getMemberList(store.selectedParty.partyId)
+    // store.getMemberList(store.selectedParty.partyId)
     // store.inParty(userstore.loginUser.userId)
 })
 
@@ -105,16 +113,19 @@ li {
     display: flex;
     justify-content: space-arou;
 }
-li a:nth-of-type(2){
+
+li a:nth-of-type(2) {
     border: black solid 1px;
-    flex:1;
+    flex: 1;
     text-align: right;
 }
-li a:nth-of-type(1){
+
+li a:nth-of-type(1) {
     border: black solid 1px;
-    flex:2;
+    flex: 2;
 }
-ul{
+
+ul {
     margin: 10px;
 }
 
@@ -122,11 +133,13 @@ ul{
     display: flex;
     flex-direction: row;
 }
+
 .left {
-    flex:1;
+    flex: 1;
 }
-.calender{
-    flex:1;
+
+.calender {
+    flex: 1;
     border: black solid 1px;
     background-color: aquamarine;
 }

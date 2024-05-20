@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row row-cols-1 row-cols-md-3 g-4">
-      <div v-for="party in filteredPartyList" :key="party.partyId">
+      <div v-for="party in filteredPartyList" :key="party.partyId" @click="gopartyPage(party)">
         <div class="col">
           <div class="card">
             <img
@@ -23,6 +23,9 @@
 <script setup>
 import { usePartyStore } from "@/stores/party";
 import { onMounted, watch, computed } from "vue";
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 const partyStore = usePartyStore();
 onMounted(() => {
   partyStore.getPartyListWithCondition();
@@ -59,6 +62,14 @@ const filteredPartyList = computed(() => {
     }
   })
 })
+
+const gopartyPage = function(party) {
+    console.log(party.partyId)
+    router.push({ name: 'partyfitmain', params: { partyId: 'party.partyId' } });
+    partyStore.selectedParty = party;
+    
+  };
+
 </script>
 
 <style scoped>
