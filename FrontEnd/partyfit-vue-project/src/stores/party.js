@@ -32,6 +32,8 @@ export const usePartyStore = defineStore("party",() => {
     const partyMemberList = ref([]);
 
     //해당 party의 참여 인원 조회
+    const isjoining=ref()
+    const isManager=ref()
     const getMemberList = async function (partyId) {
      await axios({
         url: `${REST_USER_API}/${partyId}/member/1`,
@@ -46,6 +48,24 @@ export const usePartyStore = defineStore("party",() => {
         .then((res) => {
           partyMemberList.value = res.data;
           // console.log(partyMemberList.value)
+          for(let i=0;i<partyMemberList.value.length;i++){
+            if(partyMemberList.value[i].userId===useStore.userId){
+              if(partyMemberList.value[i].grade===0){
+                isjoining.value=true;
+                console.log("매니져.")
+                
+              }else{
+                
+                console.log("일반.")
+                isManager.value=true;
+              }
+              
+            }else{
+            
+              isjoining.value=false;
+            }
+          }
+          
         })
         .catch((err) => {
           console.log(err);
@@ -178,8 +198,9 @@ export const usePartyStore = defineStore("party",() => {
 
     //댓글리스트 가져오기 
     const commentList = ref([]);
-    const getCommentList = function(articleId) {
-      axios({
+    const getCommentList = async function(articleId,who) {
+      console.log(articleId+" "+who)
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
         method: "GET",
         headers: {
@@ -213,15 +234,17 @@ export const usePartyStore = defineStore("party",() => {
     };
 
     //댓글 작성하기 
-    const createComment = function (articleId,content,parentId,username,profile,userId,depth) {
-    // const createComment = function (comment,articleId) {
-      console.log(articleId);
+    const createComment = async function (articleId,content,parentId,username,profile,userId,depth) {
+    // const createComment = function (comment) {
+      // console.log(comment);
       axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
       method: "POST",
       headers: {
         Authorization : useStore.accessToken,
     },
     data: {
+      // comment
+      
       articleId,content,parentId,username,profile,userId,depth
     },})
     .then((res) => {
@@ -329,7 +352,8 @@ console.log(res.data)
       createComment,
       deleteArticle,
       deleteComment,
-
+      isManager,
+      isjoining,
     };
   },
   { persist: true }
