@@ -4,10 +4,11 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user";
 
-
 const REST_USER_API = `http://localhost:8080/party`;
 
-export const usePartyStore = defineStore("party",() => {
+export const usePartyStore = defineStore(
+  "party",
+  () => {
     const useStore = useUserStore();
     const partyList = ref();
     const getPartyListWithCondition = function (condition) {
@@ -20,7 +21,7 @@ export const usePartyStore = defineStore("party",() => {
         },
       })
         .then((res) => {
-          console.log("success")
+          console.log("success");
           partyList.value = res.data;
         })
         .catch((err) => {
@@ -33,7 +34,7 @@ export const usePartyStore = defineStore("party",() => {
 
     //해당 party의 참여 인원 조회
     const getMemberList = async function (partyId) {
-     await axios({
+      await axios({
         url: `${REST_USER_API}/${partyId}/member/1`,
         method: "GET",
         params: {
@@ -81,7 +82,7 @@ export const usePartyStore = defineStore("party",() => {
 
     // 자유게시판글 조회 최신순
     const freeList = ref([]);
-    const getFreeList = function (partyId,orderBy,orderByDir) {
+    const getFreeList = function (partyId, orderBy, orderByDir) {
       axios({
         url: `${REST_USER_API}/${partyId}/article/0`,
         method: "GET",
@@ -155,30 +156,27 @@ export const usePartyStore = defineStore("party",() => {
     //게시글 상세조회
     //isReload : false - 조회수 +1,
     const articleDetail = ref();
-    const getArticleDetail = async function (articleId,isReload) {
-        await axios({
-            url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/${isReload}`,
-            method: "GET",
-            params: {
-              partyId: selectedParty.value.partyId,
-           
-              articleId : articleId,
-              isReload : isReload,
+    const getArticleDetail = async function (articleId, isReload) {
+      await axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/${isReload}`,
+        method: "GET",
+        params: {
+          partyId: selectedParty.value.partyId,
 
-            },
-            headers: {
-              Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
-            },
-          })
-          .then((res)=>{
-            articleDetail.value = res.data;
-          })
+          articleId: articleId,
+          isReload: isReload,
+        },
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      }).then((res) => {
+        articleDetail.value = res.data;
+      });
+    };
 
-    }
-
-    //댓글리스트 가져오기 
+    //댓글리스트 가져오기
     const commentList = ref([]);
-    const getCommentList = function(articleId) {
+    const getCommentList = function (articleId) {
       axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
         method: "GET",
@@ -195,7 +193,7 @@ export const usePartyStore = defineStore("party",() => {
         });
     };
 
-    const makeArticle = function(data){
+    const makeArticle = function (data) {
       axios({
         url: `${REST_USER_API}/${data.partyId}/article/${data.category}`,
         method: "POST",
@@ -205,86 +203,99 @@ export const usePartyStore = defineStore("party",() => {
         },
       })
         .then((res) => {
-          console.log(res)
+          console.log(res);
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    //댓글 작성하기 
-    const createComment = function (articleId,content,parentId,username,profile,userId,depth) {
-    // const createComment = function (comment,articleId) {
+    //댓글 작성하기
+    const createComment = function (
+      articleId,
+      content,
+      parentId,
+      username,
+      profile,
+      userId,
+      depth
+    ) {
+      // const createComment = function (comment,articleId) {
       console.log(articleId);
-      axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
-      method: "POST",
-      headers: {
-        Authorization : useStore.accessToken,
-    },
-    data: {
-      articleId,content,parentId,username,profile,userId,depth
-    },})
-    .then((res) => {
-console.log(res.data)
-    })
-    .catch((err) => {
- 
-    });
-  }
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
+        method: "POST",
+        headers: {
+          Authorization: useStore.accessToken,
+        },
+        data: {
+          articleId,
+          content,
+          parentId,
+          username,
+          profile,
+          userId,
+          depth,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((err) => {});
+    };
 
-// 글 삭제 
-const deleteArticle = function (articleId) {
-  axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}`,
-  method: "DELETE",
-  headers: {
-    Authorization : useStore.accessToken,
-},
-})
-.then((res) => {
-console.log(res.data)
-})
-.catch((response) => {
-  if (response.status === 204) {
-    // 데이터를 삭제했을 경우
-    console.log('Article deleted successfully');
-    // TODO: 추가적인 처리 로직 작성
-  } else if (response.status === 404) {
-    // 삭제할 데이터가 없는 경우
-    console.error('Article not found');
-    // TODO: 추가적인 처리 로직 작성
-  }
-});
-  
-}
+    // 글 삭제
+    const deleteArticle = function (articleId) {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: useStore.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((response) => {
+          if (response.status === 204) {
+            // 데이터를 삭제했을 경우
+            console.log("Article deleted successfully");
+            // TODO: 추가적인 처리 로직 작성
+          } else if (response.status === 404) {
+            // 삭제할 데이터가 없는 경우
+            console.error("Article not found");
+            // TODO: 추가적인 처리 로직 작성
+          }
+        });
+    };
 
-//댓글 삭제 
+    //댓글 삭제
 
-const deleteComment = function (articleId,commentId) {
-  axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
-  method: "DELETE",
-  headers: {
-    Authorization : useStore.accessToken,
-},
-})
-.then((res) => {
-console.log(res.data)
-})
-.catch((response) => {
-  if (response.status === 204) {
-    // 데이터를 삭제했을 경우
-    console.log('Article deleted successfully');
-    // TODO: 추가적인 처리 로직 작성
-  } else if (response.status === 404) {
-    // 삭제할 데이터가 없는 경우
-    console.error('Article not found');
-    // TODO: 추가적인 처리 로직 작성
-  }
-});
-  
-}
+    const deleteComment = function (articleId, commentId) {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: useStore.accessToken,
+        },
+      })
+        .then((res) => {
+          console.log(res.data);
+        })
+        .catch((response) => {
+          if (response.status === 204) {
+            // 데이터를 삭제했을 경우
+            console.log("Article deleted successfully");
+            // TODO: 추가적인 처리 로직 작성
+          } else if (response.status === 404) {
+            // 삭제할 데이터가 없는 경우
+            console.error("Article not found");
+            // TODO: 추가적인 처리 로직 작성
+          }
+        });
+    };
 
-//파티에 속해있는지 여부 
-
+    //파티에 속해있는지 여부
 
     const IsLike = ref(false);
     const getIsLike = function (commentId) {
@@ -295,15 +306,30 @@ console.log(res.data)
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       })
-      .then((res) => {
-        IsLike.value = true;
-        console.log(IsLike.value)
+        .then((res) => {
+          IsLike.value = true;
+          console.log(IsLike.value);
+        })
+        .catch((err) => {
+          IsLike.value = false;
+        });
+    };
+    const makeMeetRequest = function (data, partyId) {
+      axios({
+        url: `${REST_USER_API}/${partyId}/meet`,
+        method: "POST",
+        data: data,
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
       })
-      .catch((err) => {
-        IsLike.value = false;
-       
-      })
-    }
+        .then((res) => {
+          router.push({ name: "partyfitmain", params: { partyId: partyId } });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
     return {
       makeArticle,
@@ -329,7 +355,7 @@ console.log(res.data)
       createComment,
       deleteArticle,
       deleteComment,
-
+      makeMeetRequest,
     };
   },
   { persist: true }
