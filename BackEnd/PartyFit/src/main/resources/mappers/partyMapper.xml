@@ -4,35 +4,29 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.partyfit.model.dao.PartyDao">
 	<select id="selectPartyWithCondition"
-		parameterType="SearchCondition" resultType="Party">
+		parameterType="SearchCondition" resultType="PartyMemberCount">
+		select party.* from 
+		(
 		select
-		party_id, name, introduction, introduction_image, banner_image,
-		exercise_category
-		from party
-		<if test="key != null">
-			where ${key} like concat('%',#{word},'%')
-		</if>
-		<if test="orderBy != null">
-			order by ${orderBy} ${orderByDir}
-		</if>
-	</select>
-	
-	<select id="selectPartyWithMemberCount"
-		resultType="PartyMemberCount">
-		select 
 		p.party_id, p.name, p.introduction, p.introduction_image
-		, p.banner_image, p.exercise_category , count(m.party_member_id) as member_count
+		, p.banner_image, p.reg_date, p.mod_date, p.max_headcount, p.exercise_category , count(m.party_member_id) as member_count
 		from party p left join party_member m on p.party_id = m.party_id 
 		group by p.party_id 
-		order by member_count desc
+		) party
+		<if test="key != null">
+			where party.${key} like concat('%',#{word},'%')
+		</if>
+		<if test="orderBy != null">
+			order by party.${orderBy} ${orderByDir}
+		</if>
 	</select>
 	
 	<insert id="insertParty" parameterType="Party">
 		insert into party(name,
-		introduction, introduction_image, banner_image, exercise_category,
+		introduction, introduction_image, banner_image, max_headcount, exercise_category,
 		party_type)
 		values(#{name}, #{introduction}, #{introductionImage},
-		#{bannerImage},#{exerciseCategory}, #{partyType})
+		#{bannerImage}, #{maxHeadcount}, #{exerciseCategory}, #{partyType})
 	</insert>
 
 

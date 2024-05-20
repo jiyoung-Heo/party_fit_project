@@ -16,4 +16,6 @@ public interface MeetDao {
 	int approveMeet(int meetId);
 	
 	int refuseMeet(int meetId);
+	
+	List<Meet> selectNonWriteReview(int userId);
 }

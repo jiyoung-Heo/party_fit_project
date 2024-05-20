@@ -16,4 +16,6 @@ public interface MeetService {
 	
 	int manageCreateMeet(int meetId, boolean isaccept);
 	
+	List<Meet> showNonWriteReview(int userId);
+	
 }

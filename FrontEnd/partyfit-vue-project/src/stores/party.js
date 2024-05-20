@@ -10,16 +10,17 @@ const REST_USER_API = `http://localhost:8080/party`;
 export const usePartyStore = defineStore("party",() => {
     const useStore = useUserStore();
     const partyList = ref();
-
     const getPartyListWithMemberCount = function (condition) {
       axios({
-        url: `${REST_USER_API}/top`,
+        url: `${REST_USER_API}`,
         method: "GET",
+        params: condition,
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       })
         .then((res) => {
+          console.log("success")
           partyList.value = res.data;
         })
         .catch((err) => {
@@ -194,6 +195,23 @@ export const usePartyStore = defineStore("party",() => {
         });
     };
 
+    const makeArticle = function(data){
+      axios({
+        url: `${REST_USER_API}/${data.partyId}/article/${data.category}`,
+        method: "POST",
+        data: data,
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
     //댓글 작성하기 
     const createComment = function (articleId,content,parentId,username,profile,userId,depth) {
     // const createComment = function (comment,articleId) {
@@ -288,8 +306,9 @@ console.log(res.data)
     }
 
     return {
+      makeArticle,
+      getPartyListWithCondition,
       partyList,
-      getPartyListWithMemberCount,
       selectedParty,
       getMemberList,
       partyMemberList,
