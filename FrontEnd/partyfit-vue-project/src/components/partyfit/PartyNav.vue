@@ -32,19 +32,15 @@
                                 자유게시판</RouterLink>
                         </li>
                         <li>
-                            <RouterLink
-                                :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.partyId } }">가입인사
-                            </RouterLink>
+                            <RouterLink :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.value}}">가입인사</RouterLink>
                         </li>
                         <p class="catagory">일정</p>
                         <li>
-                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId } }">일정 조회
-                            </RouterLink>
+                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.value}}">일정 조회</RouterLink>
                         </li>
                         <li>
-                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.partyId } }">일정
-                                등록</RouterLink>
-
+                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.value}}">일정 등록</RouterLink>
+{
                         </li>
                         {{ store.isManager }}
                         <div v-if="store.isManager">

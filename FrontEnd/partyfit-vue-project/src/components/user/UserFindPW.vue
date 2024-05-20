@@ -1,70 +1,44 @@
 <template>
-    <div class="signup-container">
-
-        <h1>아이디찾기</h1>
-        <div v-if="isFound">
-
-            <fieldset>
-                <div>
-                    <label for="name">이름</label>
-                    <input type="text" id="name" v-model="name" placeholder = "name"/>
-                </div>
-                <div>
-                    <label for="email">이메일</label>
-                    <input type="text" id="email" v-model="email" placeholder = "email"/>
-                </div>
-                <div>
-                    <button @click="findLoginID">아이디 찾기 </button>
-                    <!-- <button @click ="getInfo">정보보기 </button> -->
-                </div>
-                <h2>아이디 : {{store.findedId}} </h2>
-            </fieldset>
-        </div>
-        <div v-else>
-        </div>
-
-
+  <div class="signup-container">
+    <h1>비밀번호찾기</h1>
+    <fieldset>
+      <div>
+        <label for="userId">아이디</label>
+        <input type="text" v-model="userId" placeholder="id" />
+      </div>
+      <div>
+        <label for="name">이름</label>
+        <input type="text" v-model="name" placeholder="name" />
+      </div>
+      <div>
+        <label for="email">이메일</label>
+        <input type="text" v-model="email" placeholder="email" />
+      </div>
+      <div>
+        <button @click="changePassword">회원 조회</button>
+      </div>
+    </fieldset>
     </div>
 </template>
 
 
 <script setup>
 import { useUserStore } from "@/stores/user";
-import { ref, onMounted, computed } from "vue";
+import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const store = useUserStore();
 
+const userId = ref("");
+const name = ref("");
+const email = ref("");
+const reNewPassword = ref("");
+const newPassword = ref("");
 
-onMounted(() => {
-    // console.log(store.loginUser)
-})
-
-const findLoginID = function () {
-    const user = { name : name.value, email : email.value}
-    
-    store.findLoginID(user);
-    
-    // router.push({ name: "findLoginId" });
-    console.log("find  " + store.findedId.value)
-    
-};
-
-const isFound = computed(() => {
-    return store.findedId !== null;
-})
-
-
-
-const findPW = function () {
-  router.push({ name: "findPW" });
-};
-
-const loginUser = store.loginUser;
-
-const name = ref('')
-const email = ref('')
+const changePassword = () => {
+ store.findPw(email.value, userId.value, name.value);
+}
 
 </script>
 

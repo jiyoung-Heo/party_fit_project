@@ -66,6 +66,16 @@ const loginUser = ref(store.loginUser);
 const isLoggedId = ref(false);
 const accessToken = computed(() => store.accessToken);
 
+onMounted(()=>{
+  if (accessToken.value!== "") {
+    isLoggedId.value = true;
+    router.push({ name: "myFit" });
+  } else {
+    isLoggedId.value = false;
+    router.push({ name: "beforeLoginMain" });
+  }
+})
+
 const moveMainPage = computed(() =>{
   if(!isLoggedId.value){
     return 'beforeLoginMain'

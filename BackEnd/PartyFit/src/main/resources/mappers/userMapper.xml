@@ -21,8 +21,8 @@
 	</select>
 
 	<update id="updateUserInfo" parameterType="User">
-		UPDATE user SET username= #{username}, email =${email}, age =${age}
-		WHERE user_id=${userId} AND delete_yn ='N';
+		UPDATE user SET username= #{username}, email =#{email}, age =#{age}, password=#{password}
+		WHERE user_id=#{userId} AND delete_yn ='N';
 	</update>
 
 
