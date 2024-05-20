@@ -35,6 +35,8 @@ public class SecurityConfig {
 						.requestMatchers("/v3/api-docs/**").permitAll()
 						.requestMatchers("/user/signup").permitAll()
 						.requestMatchers("/user/login").permitAll()
+						.requestMatchers("/user/*").permitAll()
+						.requestMatchers("/user/find-pw/**").permitAll()
 						.requestMatchers("/party/showParty").permitAll()
 						.requestMatchers("/party").permitAll()
 						.requestMatchers("/api/**").permitAll()
