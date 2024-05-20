@@ -9,9 +9,9 @@
             <div v-else>
                 <ul>
                     <li v-for="user in memberRequestList" :key="user.userId">
-                        {{ user }}
+                        
                         <p>{{ user.username }} ({{ user.age}}세)</p>
-                        <p>로그인 ID: {{ user.loginId }}</p>
+                        <p>로그인 Id: {{ user.loginId }}</p>
                         <button href="#"  @click="approveRequest(user)">승인</button>
                         <button href="#" @click="rejectRequest(user)">거부</button>
                     </li>

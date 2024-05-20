@@ -1,23 +1,9 @@
 <template>
     <div :key="key">
+        <meetRequestManage/>
 
       <div class="member-request-management">
-          <h1>회원 관리 </h1>
-          <div v-if="store.memberRequestList.length === 0">
-              가입 요청이 없습니다.
-          </div>
-          <div v-else>
-            가입요청
-              <ul>
-                  <li v-for="user in store.memberRequestList" :key="user.userId">
-                  
-                      <p>{{ user.username }} ({{ user.age}}세)</p>
-                      <p>로그인 ID: {{ user.loginId }}</p>
-                      <button href="#"  @click="approveRequest(user)">승인</button>
-                      <button href="#" @click="rejectRequest(user)">거부</button>
-                  </li>
-              </ul>
-          </div>
+<memberRequestManage/>
       </div>
       <table class="table table-hover text-center">
                 <thead>
@@ -26,7 +12,7 @@
                         <th>나이</th>
                         <th>닉네임</th>
                         <th>로그인</th>
-                        <th>파티등록일 </th>
+                        <th>파티등록일</th>
                     </tr>
 
                 </thead>
@@ -70,6 +56,8 @@ import { usePartyStore } from '@/stores/party';
 import { computed, onMounted, ref,watch } from 'vue';
 import ArticleDetail from '../article/ArticleDetail.vue';
 import { useRouter } from "vue-router";
+import memberRequestManage from './memberRequestManage.vue';
+import meetRequestManage from './meetRequestManage.vue';
 const router = useRouter();
 const partyMemberList = computed(() => {return store.memberRequestList});
 const perPage = 12;

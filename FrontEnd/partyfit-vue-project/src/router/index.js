@@ -25,6 +25,7 @@ import memberRequestManage from '@/components/management/memberRequestManage.vue
 import memberList from '@/components/management/memberList.vue'
 import { useUserStore } from '@/stores/user'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
+import PartyArticleList from '@/components/management/managePartyArticleList.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -174,9 +175,14 @@ const router = createRouter({
             },
     
             {
-              path: '/manageList/:partyId',
+              path: '/manageMember/:partyId',
               name: 'manageMember',
               component: memberList,
+            },
+            {
+              path: '/manageArticle/:partyId',
+              name: 'manageArticle',
+              component: PartyArticleList,
             },
           ]
         },
