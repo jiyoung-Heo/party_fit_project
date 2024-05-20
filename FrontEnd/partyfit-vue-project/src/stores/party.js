@@ -31,8 +31,8 @@ export const usePartyStore = defineStore("party",() => {
     const partyMemberList = ref([]);
 
     //해당 party의 참여 인원 조회
-    const getMemberList = function (partyId) {
-      axios({
+    const getMemberList = async function (partyId) {
+     await axios({
         url: `${REST_USER_API}/${partyId}/member/1`,
         method: "GET",
         params: {
@@ -151,6 +151,7 @@ export const usePartyStore = defineStore("party",() => {
         });
     };
 
+    //게시글 상세조회
     //isReload : false - 조회수 +1,
     const articleDetail = ref();
     const getArticleDetail = async function (articleId,isReload) {
@@ -237,7 +238,35 @@ console.log(res.data)
 });
   
 }
+
+//댓글 삭제 
+
+const deleteComment = function (articleId,commentId) {
+  axios({url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
+  method: "DELETE",
+  headers: {
+    Authorization : useStore.accessToken,
+},
+})
+.then((res) => {
+console.log(res.data)
+})
+.catch((response) => {
+  if (response.status === 204) {
+    // 데이터를 삭제했을 경우
+    console.log('Article deleted successfully');
+    // TODO: 추가적인 처리 로직 작성
+  } else if (response.status === 404) {
+    // 삭제할 데이터가 없는 경우
+    console.error('Article not found');
+    // TODO: 추가적인 처리 로직 작성
+  }
+});
   
+}
+
+//파티에 속해있는지 여부 
+
 
     const IsLike = ref(false);
     const getIsLike = function (commentId) {
@@ -280,6 +309,8 @@ console.log(res.data)
       getCommentList,
       createComment,
       deleteArticle,
+      deleteComment,
+
     };
   },
   { persist: true }

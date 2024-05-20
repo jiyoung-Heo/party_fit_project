@@ -32,4 +32,17 @@ public class LikesServiceImpl implements LikesService {
 		return result;
 	}
 
+	@Override
+	public int isLike(Map<String, Object> map) {
+		int isLike = likesDao.isLike(map);
+		if (isLike == 1) {
+			// 데이터가 있는경우 좋아요 눌린것
+		return 1;
+		} 
+		//데이터가 없는경우 좋아요가 안눌린것
+		return 0;
+	}
+	
+	
+
 }
