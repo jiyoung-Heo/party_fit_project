@@ -50,21 +50,23 @@ export const usePartyStore = defineStore(
           for (let i = 0; i < partyMemberList.value.length; i++) {
             console.log(partyMemberList.value[i].userId)
             if (partyMemberList.value[i].userId === useStore.loginUser.userId) {
-              console.log("속해있음")
+              //console.log("속해있음")
+
+            
               if (partyMemberList.value[i].grade === 1) {
-                console.log("매니져.")
+                //console.log("매니져.")
                 isManager.value = true;
                 break;
               } else {
                 isjoining.value = true;
 
-                console.log("일반.")
+                //console.log("일반.")
                 break;
               }
 
             } else {
 
-              console.log("안속해")
+              //console.log("안속해")
               isjoining.value = false;
 
             }

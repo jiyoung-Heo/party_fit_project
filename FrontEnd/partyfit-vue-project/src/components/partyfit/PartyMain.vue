@@ -18,7 +18,7 @@
         <div v-else-if="!store.isManager">
             <button @click="joinParty">가입하기</button>
         </div>
-            
+            {{store.isWaiting}}
         <div class="board">
             <div class="left">
                 <div class="notice">
@@ -106,6 +106,10 @@ const leaveParty = () => {
     userstore.partyLeaveRequest(store.selectedParty.partyId)
     store.isjoining = false;
 }
+
+const isWaiting = computed(() => {
+    return store.memberRequestList.includes(userstore.loginUser);
+})
 </script>
 
 <style scoped>
