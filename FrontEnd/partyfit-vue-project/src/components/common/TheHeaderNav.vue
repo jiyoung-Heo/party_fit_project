@@ -14,7 +14,7 @@
           <span class="material-symbols-outlined"> notifications </span>
         </p>
 
-        <template v-if="!isLoggedId">
+        <template v-if="store.accessToken == ''">
           <p class="user-info">
             <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
           </p>
@@ -23,9 +23,12 @@
           </p>
         </template>
         <template v-else>
-          <a class="user-info"> {{ loginUser.name }} 님 </a>
+          <a class="user-info"> {{ store.loginUser.username }} 님 </a>
           <div v-if="hasProfile" class="user-info">
-            <img :src="loginUser.profile" alt="프로필사진" width="20px" />
+            <img :src="'/src/assets/user/' + store.loginUser.profile"
+              alt="프로필사진"
+              width="20px"
+            />
           </div>
           <div v-else class="user-info">
             <span class="material-icons">face</span>
@@ -62,34 +65,28 @@ import { useRouter } from "vue-router";
 
 const store = useUserStore();
 const router = useRouter();
-const loginUser = ref(store.loginUser);
-const isLoggedId = ref(false);
 const accessToken = computed(() => store.accessToken);
 
-onMounted(()=>{
-  if (accessToken.value!== "") {
-    isLoggedId.value = true;
-    router.push({ name: "myFit" });
+onMounted(() => {
+  if (store.accessToken !== "") {
+    // router.push({ name: "myFit" });
   } else {
-    isLoggedId.value = false;
     router.push({ name: "beforeLoginMain" });
   }
-})
+});
 
-const moveMainPage = computed(() =>{
-  if(!isLoggedId.value){
-    return 'beforeLoginMain'
+const moveMainPage = computed(() => {
+  if (store.accessToken == "") {
+    return "beforeLoginMain";
   }
-  return 'myFit'
-})
+  return "myFit";
+});
 
 watch(accessToken, async (nv, ov) => {
   await nextTick();
   if (nv == "") {
-    isLoggedId.value = false;
     router.push({ name: "beforeLoginMain" });
   } else {
-    isLoggedId.value = true;
   }
 });
 
@@ -99,7 +96,6 @@ const hasProfile = computed(() => {
 
 const logout = () => {
   store.userLogout();
-  isLoggedId.value = false;
 };
 </script>
 

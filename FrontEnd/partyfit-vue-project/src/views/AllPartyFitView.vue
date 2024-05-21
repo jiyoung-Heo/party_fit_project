@@ -55,13 +55,41 @@ const search = () =>{
 </script>
 
 <style scoped>
-.search {
-  position: relative;
-  width: 300px;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-input {
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.buttons button {
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+
+.buttons button:hover {
+  background-color: #0056b3;
+}
+
+.search {
+  position: relative;
   width: 100%;
+  max-width: 300px; /* 변경 */
+}
+
+input[type="text"] {
+  width: calc(100% - 40px);
   border: 1px solid #bbb;
   border-radius: 8px;
   padding: 10px 12px;
@@ -71,9 +99,34 @@ input {
 img {
   position: absolute;
   width: 17px;
-  top: 10px;
+  top: 50%;
+  transform: translateY(-50%);
   right: 12px;
-  margin: 0;
-	cursor: pointer;
+  cursor: pointer;
+}
+
+.count {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 10px;
+}
+
+select {
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+}
+
+/* 미디어 쿼리 */
+@media screen and (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .buttons button {
+    margin-bottom: 10px;
+  }
 }
 </style>

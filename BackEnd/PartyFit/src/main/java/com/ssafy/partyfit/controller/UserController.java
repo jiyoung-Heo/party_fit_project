@@ -1,9 +1,16 @@
 package com.ssafy.partyfit.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +22,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.Comment;
@@ -81,7 +90,7 @@ public class UserController {
 			result.put("message", "success");
 			String token = jwtUtil.generateToken(tmp.getUserId() + "");
 			result.put("access-token", token);
-			System.out.println("토큰: "+token);
+			System.out.println("토큰: " + token);
 			status = HttpStatus.ACCEPTED;
 		} else {
 			result.put("message", "fail");
@@ -103,12 +112,45 @@ public class UserController {
 
 	// 회원정보 수정
 	@PutMapping("/{userId}")
-	public ResponseEntity<?> updateUserInfo(@RequestBody User user, HttpSession session) {
+	public ResponseEntity<?> updateUserInfo(
+	        @RequestPart("user") User user,
+	        @RequestPart(value = "profile", required = false) MultipartFile profile,
+	        @PathVariable("userId") int userId) {
+		user.setUserId(userId);
+		// 파일 수정으로 들어온 경우
+		if (profile != null && !profile.isEmpty()) {
+			try {
+				String profileImageUrl = saveProfileImage(profile);
+				System.out.println(profileImageUrl);
+				user.setProfile(profileImageUrl);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
 		int result = userService.modifyUser(user);
 		if (result == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+
+	private String saveProfileImage(MultipartFile profile) throws IOException {
+		String projectRoot = System.getProperty("user.dir");
+		// 저장할 경로 설정 (예: 서버의 특정 디렉토리)
+		String uploadDir = projectRoot+"/../../FrontEnd/partyfit-vue-project/src/assets/user";
+        // 이미지 파일을 assets 폴더에 저장
+		System.out.println(uploadDir);
+		File directory = new File(uploadDir);
+	    if (!directory.exists()) {
+	        directory.mkdirs(); // 모든 상위 디렉토리도 생성됨
+	    }
+		String originalFilename = profile.getOriginalFilename();
+		String newFilename = UUID.randomUUID().toString() + "_" + originalFilename;
+		File destinationFile = new File(uploadDir, newFilename);
+		profile.transferTo(destinationFile);
+		// 파일 URL 생성 (예: 서버의 URL을 기준으로 파일 접근 경로 생성)
+		return newFilename;
 	}
 
 	// 이메일로 user 찾기
@@ -233,14 +275,15 @@ public class UserController {
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 참여한 모임 중 리뷰작성하지 않은 모임 조회하기
+	 * 
 	 * @param userID
 	 * @return
 	 */
 	@GetMapping("/review/{userId}")
-	public ResponseEntity<?> showNonWriteReview(@PathVariable("userId")int userID) {
+	public ResponseEntity<?> showNonWriteReview(@PathVariable("userId") int userID) {
 		List<Meet> meetList = meetService.showNonWriteReview(userID);
 		if (meetList == null || meetList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -249,47 +292,43 @@ public class UserController {
 		}
 	}
 
-	
-	//파티 가입
+	// 파티 가입
 	@PutMapping("/join/{partyId}/{userId}")
-	public ResponseEntity<?> joinParty(@PathVariable("partyId") int partyId,@PathVariable("userId") int userId ) {
+	public ResponseEntity<?> joinParty(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId) {
 		PartyMember partyMember = new PartyMember();
 		partyMember.setGrade("0");
 		partyMember.setStatus("0");
-		partyMember.setPartyId(partyId); 
+		partyMember.setPartyId(partyId);
 		partyMember.setUserId(userId);
 		System.out.println("파티가입신청" + partyMember);
 		int result = partyMemberService.joinRequest(partyMember);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			return new ResponseEntity<>(HttpStatus.OK);
-			
+
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		
+
 	}
-	
-	
-	//파티 탈퇴
+
+	// 파티 탈퇴
 	@DeleteMapping("/join/{partyId}/{userId}")
-	public ResponseEntity<?> leaveParty(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId ) {
+	public ResponseEntity<?> leaveParty(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId) {
 		PartyMember partyMember = new PartyMember();
-		
-		partyMember.setPartyId(partyId); //일반인
-		partyMember.setUserId(userId);//가입 대기중
+
+		partyMember.setPartyId(partyId); // 일반인
+		partyMember.setUserId(userId);// 가입 대기중
 		System.out.println("탈퇴신청" + partyMember);
 		int result = partyMemberService.leaveRequest(partyMember);
-		
-		if(result == 1) {
+
+		if (result == 1) {
 			return new ResponseEntity<>(HttpStatus.OK);
-			
+
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		
-		
+
 	}
-	
+
 	// 회원 탈퇴
 	@DeleteMapping("/{userId}")
 	public ResponseEntity<?> removeUser(@PathVariable("userId") int userId) {
