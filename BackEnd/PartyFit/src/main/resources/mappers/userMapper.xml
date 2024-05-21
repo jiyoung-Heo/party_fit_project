@@ -52,6 +52,8 @@
 		<select id="selectEmail" parameterType="String"  >
 		SELECT count(*) FROM user WHERE email = #{email} AND delete_yn ='N';
 	</select>
-	
+	<delete id="deleteUser" parameterType="int">
+		update user set delete_yn='Y' where user_id=#{userId}
+	</delete>
 	
 </mapper>
