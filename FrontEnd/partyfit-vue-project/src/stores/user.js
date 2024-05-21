@@ -41,7 +41,9 @@ export const useUserStore = defineStore(
         data: user,
       })
         .then((res) => {
-          accessToken.value = "Bearer " + res.data["access-token"];
+          if(res.data["access-token"] != undefined){
+            accessToken.value = "Bearer " + res.data["access-token"];
+          }
           sessionStorage.setItem("access-token", res.data["access-token"]);
           const token = res.data["access-token"].split(".");
           let userId = JSON.parse(atob(token[1])).userId;
@@ -52,7 +54,7 @@ export const useUserStore = defineStore(
         })
         .catch((error) => {
           window.alert("로그인 실패");
-          console.error("로그인 실패 : ", error);
+          // console.error("로그인 실패 : ", error);
           router.replace("login");
         });
     };
@@ -83,7 +85,8 @@ export const useUserStore = defineStore(
       const formData = new FormData();
       formData.append('user', new Blob([JSON.stringify(user)], { type: 'application/json' }));
       formData.append('profile', image);
-      console.log("호출!")
+      // console.log("호출!")
+      // console.log(user.profile)
       axios({
         url: `${REST_USER_API}/${user.userId}`,
         method: "PUT",
@@ -93,7 +96,7 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         loginUser.value = res.data
         router.push({ name: "myPage" });
       });
@@ -172,6 +175,7 @@ export const useUserStore = defineStore(
           },
         });
         loginUser.value = res.data;
+        // console.log(loginUser.value)
       } catch (err) {
         console.log(err);
         window.alert("회원정보 가져오기 실패");
@@ -226,7 +230,7 @@ export const useUserStore = defineStore(
           data: { username: username },
         }).then((res) => {
           // console.log(res.data)
-          console.log(res.data == "1");
+          // console.log(res.data == "1");
           if (res.data == "1") {
             resolve(true);
           } else {
@@ -369,6 +373,31 @@ export const useUserStore = defineStore(
       });
     };
 
+    const userLeaveRequest = function () {
+      axios({
+        url: `${REST_USER_API}/${loginUser.value.userId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: accessToken.value,
+        },
+      }).then((res) => {
+        console.log("dddd")
+      });
+    };
+    function $reset() {
+      loginUser.value = {}
+      loginUserId.value = ''
+      accessToken.value = ''
+      nonWriteReview.value = ''
+      articleList.value = [];
+      commentList.value = [];
+      meetList.value = [];
+      partyList.value = [];
+      findedId.value=''
+      userdetail.value={}
+      findPwFindUser.value=null
+    }
+
     return {
       nonWriteReview,
       getNonWriteReview,
@@ -401,6 +430,8 @@ export const useUserStore = defineStore(
       findPw,
       findPwFindUser,
       changePassword,
+      userLeaveRequest,
+      $reset,
     };
   },
   { persist: true }
