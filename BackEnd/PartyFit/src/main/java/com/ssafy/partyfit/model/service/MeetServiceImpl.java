@@ -50,4 +50,21 @@ public class MeetServiceImpl implements MeetService {
 		return meetDao.selectNonWriteReview(userId);
 	}
 
+	@Override
+	public int meetMemberCount(int meetId) {
+		return meetDao.meetMemberCount(meetId);
+	}
+
+	@Override
+	public int joinRequest(Map<String, Object> map) {
+		return meetDao.joinRequest(map);
+	}
+
+	@Override
+	public List<User> showMeetMember(int meetId) {
+		return meetDao.selectMeetMember(meetId);
+	}
+	
+	
+
 }

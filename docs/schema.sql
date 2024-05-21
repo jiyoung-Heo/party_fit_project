@@ -66,6 +66,7 @@ CREATE TABLE meet
   start_time    DATETIME      NOT NULL COMMENT '시작날짜, 시간',
   end_time      DATETIME      NOT NULL COMMENT '끝나는 날짜, 시간',
   status        VARCHAR(1)    NOT NULL DEFAULT '0' COMMENT '모집상태(0: 승인대기중, 1:모집중, 2:정원마감)',
+  delete_yn     VARCHAR(1)    NOT NULL DEFAULT 'N' COMMENT '삭제여부',
   party_id      INT           NOT NULL COMMENT '그룹 pk',
   PRIMARY KEY (meet_id)
 ) COMMENT 'partyFit 내부 모임';

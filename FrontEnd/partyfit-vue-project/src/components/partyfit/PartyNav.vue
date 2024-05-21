@@ -5,12 +5,12 @@
                 <div class="party-info">
                     <p @click="goPartyMainPage">{{ party.name }}</p>
                     <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
-                    <p>참여인원 {{ party.memberCount }}명</p>
-                    
+                    <p>참여인원 {{ store.partyMemberList.length }}명</p>
+
                 </div>
                 <hr>
                 <div id="profile" class="profile-info">
-                    <p v-if="loginUser.profile===''">
+                    <p v-if="loginUser.profile === ''">
                         <img :src="loginUser.profile" alt="프로필사진" width="20px">
                     </p>
                     <div v-else>
@@ -24,10 +24,12 @@
                     <ul class="navbar-nav">
                         <p class="catagory">게시판</p>
                         <li>
-                            <RouterLink :to="{ name: 'noticeboard', params: { partyId: store.selectedParty}}">공지사항</RouterLink>
+                            <RouterLink :to="{ name: 'noticeboard', params: { partyId: store.selectedParty.partyId } }">
+                                공지사항</RouterLink>
                         </li>
                         <li>
-                            <RouterLink :to="{ name: 'freeboard', params: { partyId: store.selectedParty}}">자유게시판</RouterLink>
+                            <RouterLink :to="{ name: 'freeboard', params: { partyId: store.selectedParty.partyId } }">
+                                자유게시판</RouterLink>
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.value}}">가입인사</RouterLink>
@@ -38,9 +40,27 @@
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.value}}">일정 등록</RouterLink>
-{{store.partyMemberList}}
+
                         </li>
-                   
+                        {{ store.isManager }}
+                        <div v-if="store.isManager">
+                            <li>
+                                <RouterLink :to="{ name: 'manageRequest', params: { partyId: store.selectedParty.partyId } }">
+                                    가입요청 관리
+                                    <!-- {{ store.memberRequestList.length }} -->
+                                </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink :to="{ name: 'manageMember', params: { partyId: store.selectedParty.partyId } }">
+                                   회원 리스트 </RouterLink>
+                            </li>
+                            <li>
+                                <RouterLink :to="{ name: 'manageArticle', params: { partyId: store.selectedParty.partyId } }">
+                                   글 관리</RouterLink>
+                            </li>
+                        </div>
+
+
                     </ul>
                 </div>
             </div>
@@ -49,7 +69,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onUnmounted, ref , watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
 import { useRouter } from 'vue-router';
@@ -66,31 +86,31 @@ onMounted(() => {
     // store.getMemberList(store.selectedParty.partyId).then(() => {
     //     console.log('party member list:', partylist.value);
     // })
-partylist.value = ref(store.partyMemberList);
+    partylist.value = ref(store.partyMemberList);
 
-    
+
 })
 
 const userMember = computed(() => {
-  // partylist.value가 배열인지 확인
-  if (!Array.isArray(partylist.value)) {
-    return [];
-  }
-  
-  // grade가 0인 멤버 필터링
-  return partylist.value.filter(member => member.grade === 0);
+    // partylist.value가 배열인지 확인
+    if (!Array.isArray(partylist.value)) {
+        return [];
+    }
+
+    // grade가 0인 멤버 필터링
+    return partylist.value.filter(member => member.grade === 0);
 });
 
 
 
-const manageMember  = computed(() => {
-      // partylist.value가 배열인지 확인
-  if (!Array.isArray(partylist.value)) {
-    return [];
-  }
-  
-  // grade가 0인 멤버 필터링
-  return partylist.value.filter(member => member.grade === 1);
+const manageMember = computed(() => {
+    // partylist.value가 배열인지 확인
+    if (!Array.isArray(partylist.value)) {
+        return [];
+    }
+
+    // grade가 0인 멤버 필터링
+    return partylist.value.filter(member => member.grade === 1);
 })
 
 
@@ -112,14 +132,16 @@ const goPartyMainPage = function () {
 </script>
 
 <style scoped>
-.catagory{
+.catagory {
     text-align: left;
 
 
 }
-.catagory li{
+
+.catagory li {
     color: grey;
 }
+
 .nav-content {
     display: flex;
     flex-direction: column;

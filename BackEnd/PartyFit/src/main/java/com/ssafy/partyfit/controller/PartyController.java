@@ -26,6 +26,7 @@ import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMemberCount;
 import com.ssafy.partyfit.model.dto.PartyMemberUser;
 import com.ssafy.partyfit.model.dto.SearchCondition;
+import com.ssafy.partyfit.model.dto.User;
 import com.ssafy.partyfit.model.service.ArticleService;
 import com.ssafy.partyfit.model.service.CommentService;
 import com.ssafy.partyfit.model.service.LikesService;
@@ -430,7 +431,7 @@ public class PartyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
 		map.put("status", status);
-
+		System.out.println("파티 멤버 조회"+status+" "+partyId);
 		List<PartyMemberUser> partyMemberList = partyMemberService.showPartyMember(map);
 		if (partyMemberList == null || partyMemberList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -447,19 +448,57 @@ public class PartyController {
 	 * @return
 	 */
 	@GetMapping("/{partyId}/meet/{status}")
-	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status,
-			@ModelAttribute SearchCondition condition) {
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status
+			) {
+		System.out.println("내부 모임 조회"+status+" "+partyId);
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
-		map.put("partyId", status);
-		map.put("condition", condition);
+		map.put("status", status);
+		map.put("condition", new SearchCondition());
+		
 		List<Meet> meetList = meetService.showMeet(map);
+		
 		if (meetList == null || meetList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
+			for(int i = 0;i<meetList.size(); i++) {
+			int headcount= meetService.meetMemberCount(meetList.get(i).getMeetId());
+			meetList.get(i).setHeadcount(headcount);
+			if(headcount>= meetList.get(i).getMaxHeadcount()) {
+				meetList.get(i).setStatus(2);
+			}
+			System.out.println(meetList.get(i));
+			}
+			
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
+	
+	
+	/**
+	 * 파티 내부 모임 조회하기
+	 * 
+	 * @param partyId
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/meet/{meetId}/member")
+	public ResponseEntity<?> showMeetMember(@PathVariable("meetId") int meetId) {
+		
+		List<User> memberList = meetService.showMeetMember(meetId);
+		
+		if (memberList == null || memberList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			
+			
+			return new ResponseEntity<List<User>>(memberList, HttpStatus.OK);
+		}
+	}
+	
+	
+	
+	
 
 	/**
 	 * 파티 내부 모임 생성요청
@@ -479,4 +518,31 @@ public class PartyController {
 		}
 	}
 
+
+	/**
+	 * 파티 내부 모임 가입
+	 * 
+	 * @param meetId
+	 * @param meet
+	 * @return
+	 */
+	@PutMapping("/{partyId}/meet/{meetId}/{userId}")
+	public ResponseEntity<?> joinMeetRequest(@PathVariable("userId") int userId,@PathVariable("meetId") int meetId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("meetId", meetId);
+		map.put("userId", userId);
+		System.out.println("가입 신청 함 ");
+		
+		int result = meetService.joinRequest(map);
+		if (result == 0) {
+			System.out.println("가입 신청 완료");
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
+
+	
+	
+	
 }

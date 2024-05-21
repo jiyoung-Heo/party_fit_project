@@ -41,7 +41,7 @@ const writer = ref();
 
 const deleteArticle = () => {
   console.log(store.articleDetail.userId+" "+userstore.loginUser.userId)
-  if(store.articleDetail.userId !== userstore.loginUser.userId){
+  if(store.articleDetail.userId !== userstore.loginUser.userId&&!store.isManager){
     alert("본인이 작성한 글만 삭제할 수 있습니다.")
     return;
   }
@@ -52,6 +52,8 @@ onMounted(() => {
   articleId.value = route.params.articleId;
   store.getArticleDetail(articleId.value, false).then(() => {
     article.value = store.articleDetail
+    console.log(articleId.value)
+    store.getCommentList(articleId.value,1);
     // userstore.getUserdetail(store.articleDetail.userId).then(() => {
     //   if (userstore.userDetail) {
 
@@ -68,7 +70,7 @@ onMounted(() => {
 
 const category = ref();
 watch(article, (newVal) => {
-  console.log(newVal)
+  // console.log(newVal)
   if (newVal) {
     switch (newVal.category) {
       case 0:
@@ -94,13 +96,13 @@ const goBoard = function (category) {
   if (category) {
     switch (category) {
       case "자유게시판":
-        router.push({name: 'freeboard', params: {partyId: store.selectedParty}})
+        router.push({name: 'freeboard', params: {partyId: store.selectedParty.partyId}})
         break;
         case "가입인사":
-          router.push({name: 'introductionboard', params: {partyId: store.selectedParty}})
+          router.push({name: 'introductionboard', params: {partyId: store.selectedParty.partyId}})
           break;
           case "공지사항":
-            router.push( {name: 'noticeboard', params: { partyId: store.selectedParty}})
+            router.push( {name: 'noticeboard', params: { partyId: store.selectedParty.partyId}})
         break;
       default:
         break;

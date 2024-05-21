@@ -96,7 +96,7 @@ onMounted(() => {
 });
 
 const gopartyPage = function(party) {
-    router.push({ name: 'partyfitmain', params: { partyId: party.partyId } });
+    router.push({ name: 'partyfitmain', params: { partyId:  partyStore.selectedParty.partyId} });
     usePartyStore().selectedParty = party;
   };
 

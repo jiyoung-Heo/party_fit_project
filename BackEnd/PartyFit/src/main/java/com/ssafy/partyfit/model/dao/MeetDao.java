@@ -18,4 +18,10 @@ public interface MeetDao {
 	int refuseMeet(int meetId);
 	
 	List<Meet> selectNonWriteReview(int userId);
+
+	int meetMemberCount(int meetId);
+
+	int joinRequest(Map<String, Object> map);
+
+	List<User> selectMeetMember(int meetId);
 }

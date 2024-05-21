@@ -14,5 +14,6 @@ public class Meet {
     private Date endTime;
     private int status;
     private int partyId;
-
+    private int headcount;
+    private String deleteYn;
 }

@@ -35,41 +35,44 @@ export const usePartyStore = defineStore(
     //해당 party의 참여 인원 조회
     const isjoining=ref()
     const isManager=ref()
-    const getMemberList = async function (partyId) {
-      await axios({
-        url: `${REST_USER_API}/${partyId}/member/1`,
+    const getMemberList = async function (status) {
+     await axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/member/${status}`,
         method: "GET",
-        params: {
-          partyId,
-        },
+        
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       })
         .then((res) => {
           partyMemberList.value = res.data;
-          // console.log(partyMemberList.value)
+          console.log(partyMemberList.value)
           for(let i=0;i<partyMemberList.value.length;i++){
-            if(partyMemberList.value[i].userId===useStore.userId){
-              if(partyMemberList.value[i].grade===0){
-                isjoining.value=true;
+         console.log(partyMemberList.value[i].userId)
+            if(partyMemberList.value[i].userId===useStore.loginUser.userId){
+              console.log("속해있음")
+              if(partyMemberList.value[i].grade===1){
                 console.log("매니져.")
-                
+                isManager.value=true;
+                break;
               }else{
+                isjoining.value=true;
                 
                 console.log("일반.")
-                isManager.value=true;
+                break;
               }
               
             }else{
-            
+              
+              console.log("안속해")
               isjoining.value=false;
+              
             }
           }
           
         })
         .catch((err) => {
-          console.log(err);
+          console.log("에러남 " + err);
         });
     };
 
@@ -104,7 +107,7 @@ export const usePartyStore = defineStore(
     const freeList = ref([]);
     const getFreeList = function (partyId, orderBy, orderByDir) {
       axios({
-        url: `${REST_USER_API}/${partyId}/article/0`,
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/0`,
         method: "GET",
         params: {
           partyId: partyId,
@@ -215,6 +218,8 @@ export const usePartyStore = defineStore(
         });
     };
 
+
+    //게시글 작성 
     const makeArticle = function (data) {
       axios({
         url: `${REST_USER_API}/${data.partyId}/article/${data.category}`,
@@ -324,6 +329,8 @@ console.log(res.data)
           IsLike.value = false;
         });
     };
+
+    //모임 생성
     const makeMeetRequest = function (data, partyId) {
       axios({
         url: `${REST_USER_API}/${partyId}/meet`,
@@ -340,6 +347,160 @@ console.log(res.data)
           console.log(err);
         });
     };
+    
+
+
+    //가입요청 목록
+    const memberRequestList = ref([])
+    const getMemberRequestList = function() {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join`,
+        method: "GET",
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+      .then((res) => {
+      console.log("getReq")
+      memberRequestList.value = res.data;
+      console.log(memberRequestList.value)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//가입 요청 수락
+const approveRequest = function(user) {
+
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/true`,
+    method: "PUT",
+    data: user,
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+  })
+}
+
+//가입 요청 거절
+const rejectRequest = function(user) {
+  
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/false`,
+    method: "PUT",
+    data: user,
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+   
+  })
+}
+
+
+// 모임 조회 (0:승인 대기 , 1: 모집중 , 2:정원마감)
+const selectedMeet = ref()
+const meetRequestList = ref([])
+const meetList = ref([])
+const meetFullList = ref([])
+const getMeetList = function(status, condition) {
+  console.log(status)
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${status}`,
+    method: "GET",
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res) => {
+    if(status===0)
+      meetRequestList.value = res.data;
+    else if(status===1)
+      meetList.value = res.data;
+    else if(status===2)
+      meetFullList.value = res.data;
+
+      console.log("getMeet")
+      console.log(meetRequestList.value)
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
+//가입 요청 수락
+const meetapproveRequest = function(meetId) {
+
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/meet/${meetId}/true`,
+    method: "PUT",
+    
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+  })
+}
+
+//가입 요청 거절
+const meetrejectRequest = function(meetId) {
+  
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/management/meet/${meetId}/false`,
+    method: "PUT",
+    
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log(res.data)
+   
+  })
+}
+
+//모임가입신청
+const meetjoinRequest = function(meetId){
+  console.log((meetId) +" " +(useStore.loginUser.userId))
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/${useStore.loginUser.userId}`,
+    method: "PUT",
+
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log("가입신청함")
+    
+  })
+
+}
+
+//모임 내부 멤버 조회 
+const meetMemberList = ref([])
+const getMeetMemberList = function(meetId) {
+  axios({
+    url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/member`,
+    method: "GET",
+
+    headers: {
+      Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+    },
+  })
+  .then((res)=>{
+    console.log("멤버 조회")
+    meetMemberList.value = res.data;
+  })}
+ 
 
     return {
       makeArticle,
@@ -368,6 +529,20 @@ console.log(res.data)
       makeMeetRequest,
       isManager,
       isjoining,
+      getMemberRequestList,
+      approveRequest,
+      rejectRequest,
+      meetRequestList,
+      getMeetList,
+      meetapproveRequest,
+      meetrejectRequest,
+      memberRequestList,
+      meetList,
+      meetFullList,
+      meetjoinRequest,
+      meetMemberList,
+      getMeetMemberList,
+      selectedMeet,
     };
   },
   { persist: true }
