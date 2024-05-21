@@ -25,7 +25,10 @@
         <template v-else>
           <a class="user-info"> {{ loginUser.name }} 님 </a>
           <div v-if="hasProfile" class="user-info">
-            <img :src="loginUser.profile" alt="프로필사진" width="20px" />
+            <img :src="'/src/assets/user/' + store.loginUser.profile"
+              alt="프로필사진"
+              width="20px"
+            />
           </div>
           <div v-else class="user-info">
             <span class="material-icons">face</span>
@@ -66,22 +69,22 @@ const loginUser = ref(store.loginUser);
 const isLoggedId = ref(false);
 const accessToken = computed(() => store.accessToken);
 
-onMounted(()=>{
-  if (accessToken.value!== "") {
+onMounted(() => {
+  if (accessToken.value !== "") {
     isLoggedId.value = true;
     router.push({ name: "myFit" });
   } else {
     isLoggedId.value = false;
     router.push({ name: "beforeLoginMain" });
   }
-})
+});
 
-const moveMainPage = computed(() =>{
-  if(!isLoggedId.value){
-    return 'beforeLoginMain'
+const moveMainPage = computed(() => {
+  if (!isLoggedId.value) {
+    return "beforeLoginMain";
   }
-  return 'myFit'
-})
+  return "myFit";
+});
 
 watch(accessToken, async (nv, ov) => {
   await nextTick();

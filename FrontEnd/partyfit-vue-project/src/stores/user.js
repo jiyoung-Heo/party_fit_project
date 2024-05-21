@@ -79,25 +79,39 @@ export const useUserStore = defineStore(
     };
 
     //회원정보수정
-    const updateUser = function (user) {
+    const updateUser = function (user,image) {
+      const formData = new FormData();
+      formData.append('user', new Blob([JSON.stringify(user)], { type: 'application/json' }));
+      formData.append('profile', image);
+      console.log("호출!")
       axios({
         url: `${REST_USER_API}/${user.userId}`,
         method: "PUT",
-        data: user,
+        data: formData,
+        headers: {
+          'Accept': 'application/json',
+          Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
+        },
       }).then((res) => {
-        window.alert("누가 로그인 돼있는지 ");
         console.log(res.data);
+        loginUser.value = res.data
         router.push({ name: "myPage" });
       });
     };
     const changePassword = function (user) {
+      const formData = new FormData();
+      formData.append('user', new Blob([JSON.stringify(user)], { type: 'application/json' }));
       axios({
         url: `${REST_USER_API}/${user.userId}`,
         method: "PUT",
-        data: user,
+        data: formData,
       }).then((res) => {
         window.alert("비밀번호 변경 완료");
-        router.push({ name: "login" });
+        if(loginUserId.value != ''){
+          router.push({name: "myPage"});
+        }else{
+          router.push({ name: "login" });
+        }
       });
     };
 
