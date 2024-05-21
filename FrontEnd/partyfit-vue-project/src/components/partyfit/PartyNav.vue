@@ -32,14 +32,14 @@
                                 자유게시판</RouterLink>
                         </li>
                         <li>
-                            <RouterLink :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.value}}">가입인사</RouterLink>
+                            <RouterLink :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.partyId}}">가입인사</RouterLink>
                         </li>
                         <p class="catagory">일정</p>
                         <li>
-                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.value}}">일정 조회</RouterLink>
+                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId}}">일정 조회</RouterLink>
                         </li>
                         <li>
-                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.value}}">일정 등록</RouterLink>
+                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.partyId}}">일정 등록</RouterLink>
 
                         </li>
                         {{ store.isManager }}
@@ -89,28 +89,6 @@ onMounted(() => {
     partylist.value = ref(store.partyMemberList);
 
 
-})
-
-const userMember = computed(() => {
-    // partylist.value가 배열인지 확인
-    if (!Array.isArray(partylist.value)) {
-        return [];
-    }
-
-    // grade가 0인 멤버 필터링
-    return partylist.value.filter(member => member.grade === 0);
-});
-
-
-
-const manageMember = computed(() => {
-    // partylist.value가 배열인지 확인
-    if (!Array.isArray(partylist.value)) {
-        return [];
-    }
-
-    // grade가 0인 멤버 필터링
-    return partylist.value.filter(member => member.grade === 1);
 })
 
 

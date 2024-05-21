@@ -42,8 +42,10 @@
 		update article set view_count = view_count +1 where article_id = #{articleId}
 	</update>
 	<select id="selectMyArticle" parameterType="User" resultType="Article">
-		select * from article where user_id=#{userId}
-	
+		
+		select a.article_id, a.title, a.content, a.reg_date, a.mod_date, a.view_count, a.map_json, a.category,
+		a.user_id, a.party_id,a.delete_yn, u.username ,u.profile
+		 from article a right join user u on  a.user_id=#{userId};
 	</select>
 	
 </mapper>
