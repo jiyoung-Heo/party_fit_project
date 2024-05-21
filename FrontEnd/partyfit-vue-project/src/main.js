@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./router";
 import Editor from '@toast-ui/editor';
 import piniaPluginPersistedstate from "pinia-plugin-persistedstate"
+import Swal from 'vue-sweetalert2';
 
 // import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -15,7 +16,7 @@ import "./assets/css/font.css"
 import "bootstrap-icons/font/bootstrap-icons.css"
 //toast-ui
 import '@toast-ui/editor/dist/toastui-editor.css'; // Editor's Style
-
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -27,5 +28,6 @@ app.use(createNaverMap, {
     // category: "ncp", // Optional
     subModules: [], // Optional
 	})
+app.use(Swal)
 
 app.mount("#app");

@@ -21,7 +21,7 @@
 	</select>
 
 	<update id="updateUserInfo" parameterType="User">
-		UPDATE user SET username= #{username}, email =#{email}, age =#{age}, password=#{password}
+		UPDATE user SET username= #{username}, email =#{email}, age =#{age}, password=#{password}, profile=#{profile}
 		WHERE user_id=#{userId} AND delete_yn ='N';
 	</update>
 
@@ -52,6 +52,8 @@
 		<select id="selectEmail" parameterType="String"  >
 		SELECT count(*) FROM user WHERE email = #{email} AND delete_yn ='N';
 	</select>
-	
+	<delete id="deleteUser" parameterType="int">
+		update user set delete_yn='Y' where user_id=#{userId}
+	</delete>
 	
 </mapper>

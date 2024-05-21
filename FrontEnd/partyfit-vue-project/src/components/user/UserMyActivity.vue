@@ -1,4 +1,11 @@
 <template>
+<div>
+    나의 참여내역 탭
+    - 참여중인 파티
+    - 참여예정 모임
+    - 참여완료 모임
+    - 내가 쓴 글 조회 - 누르면 거기로 들어가지기
+
     <div >
 
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
@@ -77,6 +84,10 @@
                 </ul>
             </nav>
         </div>
+
+
+</div>
+</template>
 
 
     </div>
