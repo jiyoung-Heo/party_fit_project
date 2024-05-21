@@ -19,7 +19,7 @@ import IntroductionBoard from '@/components/article/IntroductionBoard.vue'
 import NoticeBoard from '@/components/article/NoticeBoard.vue'
 import MeetList from '@/components/meet/MeetList.vue'
 import MeetCreate from '@/components/meet/MeetCreate.vue'
-import MeetListDetail from '@/components/meet/MeetListDetail.vue'
+import MeetDetail from '@/components/meet/MeetDetail.vue'
 import BeforeLoginMainView from '@/views/BeforeLoginMainView.vue'
 import memberRequestManage from '@/components/management/memberRequestManage.vue'
 import memberList from '@/components/management/memberList.vue'
@@ -158,9 +158,9 @@ const router = createRouter({
               component: MeetList,
             },
             {
-              path: '/partyfit/:partyId/meetdetail',
+              path: '/partyfit/:partyId/:meetId',
               name: 'meetdetail',
-              component: MeetListDetail,
+              component: MeetDetail,
             },
             {
               path: '/partyfit/:partyId/meetcreate',

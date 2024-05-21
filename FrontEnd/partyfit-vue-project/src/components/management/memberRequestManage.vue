@@ -1,9 +1,11 @@
 <template>
       <div :key="key">
 
+        <MeetRequestManage/>
+
         <div class="member-request-management">
             <h1>가입 요청 관리</h1>
-            <div v-if="store.memberRequestList.length === 0">
+            <div v-if="memberRequestList === ''">
                 가입 요청이 없습니다.
             </div>
             <div v-else>
@@ -44,8 +46,8 @@
 <script setup>
 import { usePartyStore } from '@/stores/party';
 import { computed, onMounted, ref,watch } from 'vue';
-import ArticleDetail from '../article/ArticleDetail.vue';
 import { useRouter } from "vue-router";
+import MeetRequestManage from './meetRequestManage.vue';
 const router = useRouter();
 const memberRequestList = computed(() => {return store.memberRequestList});
 const perPage = 12;
@@ -64,7 +66,7 @@ const forceRerender = () => {
 };
 
 const pageCount = computed(() => {
-    return Math.ceil(store.freeList.length / perPage);
+    return Math.ceil(store.memberRequestList.length / perPage);
 });
 
 const clickPage = function (page) {

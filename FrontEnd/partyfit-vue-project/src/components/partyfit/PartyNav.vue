@@ -40,14 +40,14 @@
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.value}}">일정 등록</RouterLink>
-{
+
                         </li>
                         {{ store.isManager }}
                         <div v-if="store.isManager">
                             <li>
                                 <RouterLink :to="{ name: 'manageRequest', params: { partyId: store.selectedParty.partyId } }">
                                     가입요청 관리
-                                    {{ store.memberRequestList.length }}
+                                    <!-- {{ store.memberRequestList.length }} -->
                                 </RouterLink>
                             </li>
                             <li>

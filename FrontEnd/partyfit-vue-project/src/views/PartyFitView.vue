@@ -41,9 +41,12 @@ store.isManager = false;
 })
 
 onMounted(()=>{
-    // console
-    store.getMemberList(store.selectedParty.partyId,1)
-    
+    console.log("in")
+    store.getMemberList(1)
+    store.getMemberRequestList()
+    store.getMeetList(0)
+    store.getMeetList(1)
+    store.getMeetList(2)
 
 })
 

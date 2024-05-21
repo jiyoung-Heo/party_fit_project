@@ -87,7 +87,7 @@
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
 import { computed, onMounted, ref } from 'vue';
-import ArticleDetail from '../article/ArticleDetail.vue';
+
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -100,7 +100,10 @@ const userstore = useUserStore();
 
 
 onMounted(() => {
-    partystore.getFreeList(partystore.selectedParty.partyId, "reg_date", "DESC");
+    // partystore.getFreeList(partystore.selectedParty.partyId, "reg_date", "DESC");
+    // partystore.getMeetList(0)
+    // partystore.getMeetList(1)
+    // partystore.getMeetList(2)
 })
 
 

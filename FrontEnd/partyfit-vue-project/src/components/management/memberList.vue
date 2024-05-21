@@ -1,10 +1,6 @@
 <template>
     <div :key="key">
-        <meetRequestManage/>
 
-      <div class="member-request-management">
-<memberRequestManage/>
-      </div>
       <table class="table table-hover text-center">
                 <thead>
                     <tr>
@@ -66,8 +62,9 @@ const currentPage = ref(1);
 const store = usePartyStore();
 
 onMounted(() => {
-  store.getMemberRequestList()
-  store.getMemberList(1)
+    store.getMemberList(1)
+
+
 })
 
 const key = ref(0);

@@ -240,13 +240,11 @@ export const useUserStore = defineStore(
     };
     const partyList = ref([]);
     const getMyPartyFit = function () {
-      const userId = loginUser.value.userId;
-      // console.log("store"+ userId)
       axios({
-        url: `${REST_USER_API}/myPartyfit/${userId}`,
+        url: `${REST_USER_API}/myPartyfit/${loginUser.value.userId}`,
         method: "GET",
         params: {
-          userId: userId,
+          userId: loginUser.value.userId,
         },
         headers: {
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
