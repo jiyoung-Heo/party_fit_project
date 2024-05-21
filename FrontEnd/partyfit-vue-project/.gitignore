@@ -540,4 +540,4 @@ $RECYCLE.BIN/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,windows,vue,vuejs,vs
 
-.assets/user/*
+.src/assets/user/*
