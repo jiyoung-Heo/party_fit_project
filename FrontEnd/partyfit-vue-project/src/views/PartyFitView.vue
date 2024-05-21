@@ -38,6 +38,7 @@ onUnmounted(() => {
 store.selectedParty = "";
 store.isjoining = false;
 store.isManager = false;
+store.isWaiting = false;
 })
 
 onMounted(()=>{

@@ -240,6 +240,7 @@ export const useUserStore = defineStore(
     };
     const partyList = ref([]);
     const getMyPartyFit = function () {
+      console.log("getmyp"+loginUser.value.userId)
       axios({
         url: `${REST_USER_API}/myPartyfit/${loginUser.value.userId}`,
         method: "GET",
@@ -250,14 +251,14 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       })
-        .then((res) => {
+      .then((res) => {
           partyList.value = res.data;
           // console.log(res.data)
         })
         .catch((err) => {});
-    };
-
-    const meetList = ref([]);
+      };
+      
+      const meetList = ref([]);
     const getMyMeet = function () {
       const userId = loginUser.value.userId;
       // console.log("store"+ userId)
@@ -271,30 +272,37 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       })
-        .then((res) => {
-          //  console.log(res.data)
-          meetList.value = res.data;
-        })
-        .catch((err) => {});
+      .then((res) => {
+        //  console.log(res.data)
+        meetList.value = res.data;
+      })
+      .catch((err) => {});
     };
 
     const articleList = ref([]);
     const getMyArticle = function () {
-      const userId = loginUser.value.userId;
       // console.log("store"+ userId)
+      console.log("getmya"+loginUser.value.userId)
       axios({
-        url: `${REST_USER_API}/myArcticle`,
+        url: `${REST_USER_API}/myArticle`,
         method: "GET",
         headers: {
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
+        params:{
+          userId : loginUser.value.userId
+
+        }
+        
       })
         .then((res) => {
-          articleList.value = res.data;
           console.log(res.data);
+          articleList.value = res.data;
         })
         .catch((err) => {});
     };
+
+
     const commentList = ref([]);
     const getMyComment = function () {
       const userId = sessionStorage.getItem("loginUser");
