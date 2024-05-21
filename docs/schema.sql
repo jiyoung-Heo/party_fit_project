@@ -101,6 +101,7 @@ CREATE TABLE party_member
   status          VARCHAR(1) NULL     DEFAULT '0' COMMENT '상태(0: 가입대기중, 1: 가입승인)',
   user_id         INT        NOT NULL COMMENT 'user pk',
   party_id        INT        NOT NULL COMMENT '그룹 pk',
+  reg_date		 DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (party_member_id)
 ) COMMENT 'partyFit  회원관리';
 
