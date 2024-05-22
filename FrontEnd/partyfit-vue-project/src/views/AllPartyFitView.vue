@@ -10,7 +10,6 @@
           src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" @click="search"
         />
       </div>
-      모집중인 모임 {{partyStore.partyList.length}}개
       <select v-model="selectedOrder">
         <option value="reg_date desc">최신순</option>
         <option value="reg_date asc">오래된순</option>

@@ -117,18 +117,22 @@ public class UserController {
 	        @RequestPart(value = "profile", required = false) MultipartFile profile,
 	        @PathVariable("userId") int userId) {
 		user.setUserId(userId);
+		int result;
 		// 파일 수정으로 들어온 경우
+		
+		System.out.println("---------------"+profile);
 		if (profile != null && !profile.isEmpty()) {
 			try {
 				String profileImageUrl = saveProfileImage(profile);
-				System.out.println(profileImageUrl);
 				user.setProfile(profileImageUrl);
+				result = userService.modifyProfile(user);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+		}else {
+			result = userService.modifyUser(user);
 		}
-		int result = userService.modifyUser(user);
 		if (result == 0) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -232,8 +236,8 @@ public class UserController {
 
 	// 나의 파티핏 조회
 	@GetMapping("/myPartyfit/{userId}")
-	public ResponseEntity<?> showMyParty(@ModelAttribute User user) {
-		List<Party> partyList = partyMemberService.showMyParty(user);
+	public ResponseEntity<?> showMyParty(@PathVariable("userId") int userId) {
+		List<Party> partyList = partyMemberService.showMyParty(userId);
 		System.out.println(partyList);
 		if (partyList == null || partyList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -296,19 +300,32 @@ public class UserController {
 	@PutMapping("/join/{partyId}/{userId}")
 	public ResponseEntity<?> joinParty(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId) {
 		PartyMember partyMember = new PartyMember();
-		partyMember.setGrade("0");
-		partyMember.setStatus("0");
 		partyMember.setPartyId(partyId);
 		partyMember.setUserId(userId);
-		System.out.println("파티가입신청" + partyMember);
 		int result = partyMemberService.joinRequest(partyMember);
 
 		if (result == 1) {
 			return new ResponseEntity<>(HttpStatus.OK);
-
 		}
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+	}
+	
+	// 해당 파티에 가입요청중인지, 가입되어있는지 아닌지 체크
+	@GetMapping("/join/{partyId}/{userId}")
+	public ResponseEntity<?> selectStatus(@PathVariable("partyId") int partyId, @PathVariable("userId") int userId) {
+		PartyMember partyMember = new PartyMember();
+		partyMember.setPartyId(partyId);
+		partyMember.setUserId(userId);
+		PartyMember obj = partyMemberService.selectStatus(partyMember);
+		int result = 0;
+		if(obj == null) {
+			result = 100;
+		}else{
+			result = Integer.parseInt(obj.getStatus());
+		}
+
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
 	}
 
 	// 파티 탈퇴

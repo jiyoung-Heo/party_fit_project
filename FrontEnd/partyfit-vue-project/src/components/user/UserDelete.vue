@@ -13,9 +13,11 @@ import { useUserStore } from "@/stores/user";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
+import { usePartyStore } from "@/stores/party";
 
 const router = useRouter();
 const store = useUserStore();
+const partyStore = usePartyStore();
 const isSame = ref(true);
 
 onMounted(() => {});
@@ -42,6 +44,7 @@ const deleteUser = () => {
             console.log("test")
             //회원탈퇴진행
             store.$reset();
+            partyStore.$reset()
             router.push({name:'home'})
         });
       }

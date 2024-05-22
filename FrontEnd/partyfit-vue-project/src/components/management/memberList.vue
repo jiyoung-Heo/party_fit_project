@@ -51,10 +51,11 @@
 import { usePartyStore } from '@/stores/party';
 import { computed, onMounted, ref,watch } from 'vue';
 import ArticleDetail from '../article/ArticleDetail.vue';
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import memberRequestManage from './memberRequestManage.vue';
 import meetRequestManage from './meetRequestManage.vue';
 const router = useRouter();
+const route = useRoute();
 const partyMemberList = computed(() => {return store.memberRequestList});
 const perPage = 12;
 const currentPage = ref(1);
@@ -62,9 +63,7 @@ const currentPage = ref(1);
 const store = usePartyStore();
 
 onMounted(() => {
-    store.getMemberList(1)
-
-
+    store.getMemberList(route.params.partyId, 1)
 })
 
 const key = ref(0);
