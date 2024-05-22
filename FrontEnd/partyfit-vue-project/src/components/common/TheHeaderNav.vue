@@ -1,20 +1,33 @@
 <template>
-  <div class="container">
-    <div class="top">
-      <div>
-        <h1>
-          <RouterLink :to="{ name: moveMainPage }" class="coral-color"
-            >party fit</RouterLink
-          >
-        </h1>
-      </div>
-      <div class="logo-right">
-        <p class="plus-party-fit">+party fit</p>
-        <p>
-          <span class="material-symbols-outlined"> notifications </span>
-        </p>
+  <div class="container1 d-flex">
+    <div class="top ">
 
-        <template v-if="store.accessToken == null || store.accessToken == ''">
+
+      <h1>
+        <RouterLink :to="{ name: moveMainPage }" class="coral-color">party fit</RouterLink>
+      </h1>
+
+      <nav class="navbar-menu">
+        <!-- routerlink로 수정 -->
+        <RouterLink class="navbar-link" :to="{ name: 'myFit' }">나의 운동</RouterLink>
+        <RouterLink class="navbar-link" :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
+        <RouterLink class="navbar-link" :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
+      </nav>
+    </div>
+    <div>
+
+      <div class="animated-text">
+        <p class="plus-party-fit" :class="{ animated: isAnimating }">+party fit</p>
+        <p class="material-symbols-outlined" :class="{ animated: isAnimating }">notifications</p>
+
+      </div>
+    </div>
+    <div class="box">
+
+      <div class="user-card">
+
+        <div class="user-info">
+          <template v-if="store.accessToken == null || store.accessToken == ''">
           <p class="user-info">
             <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
           </p>
@@ -40,22 +53,13 @@
           |
           <button class="user-info" @click="logout">로그아웃</button>
         </template>
+        </div>
       </div>
     </div>
-    <nav class="navbar-menu">
-      <!-- routerlink로 수정 -->
-      <RouterLink :to="{ name: 'myFit' }">나의 운동</RouterLink>
-      <RouterLink :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
-      <RouterLink :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
-    </nav>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   </div>
 </template>
 
@@ -99,15 +103,254 @@ const logout = () => {
   store.userLogout();
   router.push({ name: "beforeLoginMain" });
 };
+
+const isAnimating = ref(false);
+
+// Animate notifications and party fit text every 2 seconds
+setInterval(() => {
+  isAnimating.value = !isAnimating.value;
+}, 2000);
+
 </script>
 
 <style scoped>
-.user-info a,
-.user-info div,
-.user-info button {
-  display: inline-block;
-  vertical-align: middle;
+.container1 {
+  /* display : inline; */
+  position: relative;
+  padding: 0px 40px;
+  width: 1300px;
+  margin: 0 auto;
+
+}
+
+
+
+
+.user-info {
+  display: flex;
+  align-items: start;
+  gap: 10px;
+}
+
+.box {
+  position: absolute;
+  bottom: 0;
+  right: 120px;
+}
+
+.user-card {
+  position : static;
+  right: 100px;
+  bottom: 0;
+  display: flex ;
+
+  align-items: center;
+  gap: 10px;
+  height: 120px;
+  /* 최대값으로 설정 */
+  width: 370px;
+  border: 1px solid rgb(169, 169, 169);
+  /* 로고의 테두리 */
+  border-radius: 5px;
+  /* user-card에서 가져온 속성 */
+  background-color: #fff;
+  padding: 20px;
+  /* user-card에서 가져온 속성 */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.my-page-link:hover {
+  color: lightcoral;
+}
+
+.box1:hover {
+  transform: translateY(100px) translateX(-10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.username {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profile img {
+  width: 5em;
+  height: 5em;
+  border-radius: 50%;
+}
+
+.profile .material-icons {
+  font-size: 40px;
+}
+
+.user-actions {
+
+  display: flex;
+  gap: 10px;
+}
+
+.my-page-link {
+  
+  z-index:1;
+  bottom:20px;
+  position:absolute;
   color: black;
+  text-decoration: none;
+  font-size: 20px;
+  transition: color 0.3s ease;
+  margin: 5px;
+  margin-top: 5px;
+}
+
+.sign {
+  position: absolute;
+  left : 200px;
+  z-index : 1;
+  font-size : 20px;
+  width:100px;
+  transition: color 0.1s, transform 0.1s;
+}
+.login{
+  position: absolute;
+  left : 100px;
+  z-index : 1;
+  font-size : 20px;
+  width:100px;
+  transition: color 0.1s, transform 0.1s;
+}
+.sign a, .login a{
+  color : black;
+
+}
+.user-{
+  
+}
+.user-  a{
+}
+
+.row>* {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  /* padding-right: calc(var(--bs-gutter-x)* .5); */
+  /* padding-left: calc(var(--bs-gutter-x)* .5); */
+  margin-top: var(--bs-gutter-y);
+}
+
+.logout-button {
+  position:absolute;
+  bottom:20px;
+  pointer-events: auto;
+  right: 20px;
+  padding: 5px 10px;
+  background-color: #ececec;
+  border: none;
+  color: rgb(0, 0, 0);
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  z-index:2;
+}
+
+.logout-button:hover {
+  background-color: #ffc379;
+}
+
+
+.animated-text {
+  display: flex;
+  align-items: center;
+}
+
+.plus-party-fit,
+.material-symbols-outlined {
+  font-size: 18px;
+  margin: 0;
+  padding: 5px;
+  transition: transform 1s ease, opacity 0.3s ease;
+}
+
+.animated-text .plus-party-fit.animated,
+.animated-text .material-symbols-outlined.animated {
+  transform: scale(1.05);
+  opacity: 0.8;
+}
+
+.plus-party-fit {
+  color: coral;
+}
+
+.top {
+  padding-top: 30px;
+  padding-bottom: 0px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: space-around;
+  flex: 3;
+}
+
+.top h1 {
+  margin-bottom: 50px;
+  /* 여기에 간격을 추가합니다 */
+}
+
+.navbar-menu {
+  display: flex;
+  margin-bottom: 0px;
+
+  text-align: center;
+  z-index: 1;
+  /* width: 1200px; */
+  /* margin:auto; */
+}
+
+.navbar-menu a {
+  text-align: center;
+  color: black;
+  width: 180px;
+  transition: color 0.1s, transform 0.1s;
+  font-size: 20px;
+}
+
+.navbar-menu a:hover {
+  color: black;
+}
+
+.navbar-menu .navbar-link {
+
+  color: black;
+  padding: 20px 0px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.navbar-menu .navbar-link:hover,
+.navbar-menu .navbar-link.router-link-active {
+  color: black;
+  transform: scale(1.05) translateY(3px);
+  border-color: #f8f9fa;
+  border-top: 1px solid rgb(116, 116, 116);
+  /* 상단 테두리 */
+  border-left: 1px solid rgb(116, 116, 116);
+  /* 좌측 테두리 */
+  border-right: 1px solid rgb(116, 116, 116);
+  /* 우측 테두리 */
+  border-bottom: 1px solid #f8f9fa;
+  /* 하단 테두리 */
+  /* transform 속성 합치기 */
+  background-color: #f8f9fa;
+  z-index: 1;
+}
+
+a {
+  text-decoration: none;
+  
 }
 
 @font-face {
@@ -115,7 +358,6 @@ const logout = () => {
   font-style: normal;
   font-weight: 400;
   src: url(https://example.com/MaterialIcons-Regular.eot);
-  /* For IE6-8 */
   src: local("Material Icons"), local("MaterialIcons-Regular"),
     url(https://example.com/MaterialIcons-Regular.woff2) format("woff2"),
     url(https://example.com/MaterialIcons-Regular.woff) format("woff"),
@@ -127,7 +369,6 @@ const logout = () => {
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
-  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -135,16 +376,9 @@ const logout = () => {
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
-
-  /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
   text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
   -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
   font-feature-settings: "liga";
 }
 
@@ -152,39 +386,12 @@ const logout = () => {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
 
-.top {
-  padding: 3% 0;
-  display: flex;
-  justify-content: flex-start;
-}
 
-.logo-right {
-  position: relative;
-  display: flex;
-  margin-left: auto;
-  align-items: center;
-}
 
-.logo-right p {
-  display: flex;
-  margin-right: 10px; /* p 요소 사이의 공간을 설정 */
-}
-
-.plus-party-fit {
-  color: coral;
-}
-
-.navbar-menu {
-  display: flex;
-  align-items: center;
-}
-
-.navbar-menu a {
-  margin-right: 5%;
-  color: black;
-}
-
-a {
-  text-decoration: none;
+@media (max-width: 1350px) {
+  .container1 {
+    padding: 0px 40px;
+    width: 95%;
+  }
 }
 </style>

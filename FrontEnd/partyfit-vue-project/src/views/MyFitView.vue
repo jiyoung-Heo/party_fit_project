@@ -35,21 +35,19 @@ onMounted(() => {
 
 <style scoped>
 .container {
-  padding: 20px;
-  background-color: #f8f9fa;
+  padding: 5%;
 }
 
 .row {
+  display: flex;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .col-12 {
   padding: 10px;
+  box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
-}
+
 </style>

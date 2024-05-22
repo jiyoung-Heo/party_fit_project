@@ -58,6 +58,7 @@ import UserDetail from "./UserDetail.vue";
 import UserMyActivity from "./UserMyActivity.vue";
 import UserDelete from "./UserDelete.vue";
 
+
 </script>
 
 
@@ -101,6 +102,8 @@ import UserDelete from "./UserDelete.vue";
     justify-content: space-between;
 
 }
+
+
 
 
 </style>
