@@ -78,11 +78,12 @@ const gopartyPage = function(party) {
 
 </script>
 
+
 <style scoped>
 .fit-image {
   width: 100%;
   height: auto;
-  object-fit: cover; /* 이미지가 비율을 유지하면서 카드에 맞게 조정됩니다. */
-  max-height: 200px; /* 이미지의 최대 높이를 지정할 수 있습니다. */
+  object-fit: cover;
+  max-height: 200px;
 }
 </style>
