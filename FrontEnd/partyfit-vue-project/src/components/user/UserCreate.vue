@@ -2,56 +2,36 @@
   <div class="signup-container">
     <h1>회원가입</h1>
     <fieldset>
-      <div>
-        <label for="loginId">ID</label>
-        <input
-          type="text"
-          id="loginId"
-          v-model="user.loginId"
-          placeholder="아이디"
-        />
+      <div class="input-group">
+        <label for="loginId">아이디</label> :
+        <input type="text" id="loginId" v-model="user.loginId" placeholder="아이디" />
         <p v-if="isValid">{{ errorMsg }}</p>
       </div>
-      <div>
-        <label for="password">PW</label>
-        <input
-          type="password"
-          id="password"
-          v-model="user.password"
-          placeholder="비밀번호"
-        />
+      <div class="input-group">
+        <label for="password">비밀번호</label> :
+        <input type="password" id="password" v-model="user.password" placeholder="비밀번호" />
       </div>
-      <div>
-        <label for="name">이름</label>
+      <div class="input-group">
+        <label for="name">이름</label> :
         <input type="text" id="name" v-model="user.name" placeholder="이름" />
       </div>
-      <div>
-        <label for="username">닉네임</label>
-        <input
-          type="text"
-          id="username"
-          v-model="user.username"
-          placeholder="닉네임"
-        />
+      <div class="input-group">
+        <label for="username">닉네임</label> :
+        <input type="text" id="username" v-model="user.username" placeholder="닉네임" />
         <p v-if="isValid2">{{ errorMsg2 }}</p>
       </div>
-      <div>
-        <label for="age">나이</label>
+      <div class="input-group">
+        <label for="age">나이</label> :
         <input type="number" id="age" v-model="user.age" placeholder="나이" />
       </div>
-      <div>
-        <label for="email">이메일</label>
-        <input
-          type="email"
-          id="email"
-          v-model="user.email"
-          placeholder="example@email.com"
-        />
+      <div class="input-group">
+        <label for="email">이메일</label> :
+        <input type="email" id="email" v-model="user.email" placeholder="example@email.com" />
         <p v-if="isValid3">{{ errorMsg3 }}</p>
       </div>
 
-      <div>
-        <button @click="createUser">등록</button>
+      <div class="input-group">
+        <button class="btn-15 custom-btn" @click="createUser">등록</button>
       </div>
     </fieldset>
   </div>
@@ -236,4 +216,101 @@ const isEmailUQ = async function () {
 </script>
 
 
-<style scoped></style>
+<style scoped>
+
+.input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+h1 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.signup-container {
+  align-items: start;
+  justify-content: left;
+  padding-left: 150px;
+  height: 90vh;
+  background-color: #f7f7f7;
+  max-width: 1300px;
+}
+
+input {
+  margin-left:10px;
+  border: none;
+}
+
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #555;
+  margin-right: 10px;
+  width : 100px;
+}
+
+/* 15 */
+.btn-15 {
+  border: none;
+  z-index: 1;
+}
+
+.btn-15:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #e3fa30e8;
+  border-radius: 5px;
+
+  transition: all 0.3s ease;
+}
+
+.btn-15:hover {
+  color: black;
+}
+
+.btn-15:hover:after {
+  left: 0;
+  width: 100%;
+}
+
+.btn-15:active {
+  top: 2px;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Optional: Adjust based on your design */
+  gap: 10px; /* Optional: Adjust the spacing between elements */
+}
+
+
+.custom-btn {
+   
+  height: 40px;
+  color: black;
+  border-radius: 5px;
+
+  /* font-family: 'Lato', sans-serif; */
+  /* font-weight: 500; */
+  /* font-size: 25px; */
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  /* display: inline-block; */
+  text-decoration: none;
+  outline: none;
+  text-align: start;
+  align-items: center;
+}
+
+</style>

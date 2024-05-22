@@ -1,7 +1,14 @@
 <template>
-    <div>
-        <TheHeaderNav/>
-        <RouterView class="content"/>
+    <div class="main">
+      <h1>
+        <RouterLink :to="{ name: moveMainPage }" class="coral-color">party fit</RouterLink>
+      </h1>
+
+        <TheHeaderNav class="nav-bar"/>
+        <div class="con">
+
+          <RouterView class="content"/>
+        </div>
     </div>
 </template>
 
@@ -10,6 +17,17 @@
 </script>
 
 <style scoped>
+.main {
+  min-height: 100vh; 
+
+
+}
+
+.nav-bar{
+position:sticky;
+top:0px;
+
+}
 * {
   background-color: rgba(255, 208, 251, 0.21); 
 }

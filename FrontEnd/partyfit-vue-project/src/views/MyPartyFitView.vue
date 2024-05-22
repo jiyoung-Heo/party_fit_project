@@ -1,5 +1,5 @@
 <template>
-    <div class="container widget">
+    <div class="widget">
       <div class="header">
         <h3>PARTY FIT</h3>
         <div class="buttons">
@@ -24,6 +24,7 @@
   </template>
   
   <script setup>
+
   import PartyListVue from "@/components/partyfit/PartyListVue.vue";
   import { usePartyStore } from "@/stores/party";
   import { ref, watch } from "vue";
@@ -55,14 +56,15 @@
   </script>
   
   <style scoped>
-  .container.widget {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background: #f8f9fa;
-  border-radius: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+
+.slow .toggle-group{
+  transition : left 0.7s;
+  -webkit-transition: left 0.1s;
 }
+  .widget{
+    padding-left: 150px;
+  }
 
 .header {
   display: flex;

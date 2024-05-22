@@ -102,10 +102,12 @@ button {
 }
 
 .leftbox {
-  width: 200px;
-  height: 70vh;
-  overflow-y: auto;
-  flex: 1;
+    width: 210px;
+    height: 100%;
+    overflow-y: auto;
+    flex: 1;
+    animation: compare 2s infinite alternate;
+    z-index: 1;
 }
 
 .rightbox {
