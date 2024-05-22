@@ -5,7 +5,7 @@
                 <div class="party-info">
                     <p @click="goPartyMainPage">{{ party.name }}</p>
                     <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
-                    <p>참여인원 {{ store.partyMemberList.length }}명</p>
+                    <p>참여인원 {{ store.selectedParty.memberCount }}명</p>
 
                 </div>
                 <hr>

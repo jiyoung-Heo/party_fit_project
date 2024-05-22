@@ -1,15 +1,15 @@
 <template>
   <div class="container grid text-center">
-    <div class="row" style="height: 350px;">
+    <div class="row" style="min-height: auto;">
       <div class="col-12 col-md-8">
-        <TheMyFitHeaderNavVue />
+        <!-- <TheMyFitHeaderNavVue /> -->
         <CarenderVue />
       </div>
       <div class="col-12 col-md-4">
         <ReservationVue />
       </div>
     </div>
-    <div class="row" style="height: 200px;">
+    <div class="row" style="min-height: auto;">
       <div class="col-12 col-md-8">
         <MyPartyFitVue />
       </div>

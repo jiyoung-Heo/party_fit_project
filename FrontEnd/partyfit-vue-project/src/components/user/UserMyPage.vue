@@ -53,17 +53,10 @@
 
 
 <script setup>
-import { useUserStore } from "@/stores/user";
-import { ref, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
 import UserUpdate from "./UserUpdate.vue";
 import UserDetail from "./UserDetail.vue";
 import UserMyActivity from "./UserMyActivity.vue";
 import UserDelete from "./UserDelete.vue";
-
-
-onMounted(() => {
-})
 
 </script>
 

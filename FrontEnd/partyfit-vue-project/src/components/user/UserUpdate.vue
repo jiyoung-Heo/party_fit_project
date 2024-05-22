@@ -1,30 +1,48 @@
 <template>
   <div class="signup-container">
-    <h1>회원정보수정</h1>
-    <div class="position-relative" style="width: 140px">
-      <img
-        :src="`/src/assets/user/${store.loginUser.profile}`"
-        alt="프로필이미지"
-        class="position-relative"
-        style="overflow: hidden"
-      />
-      <span class="position-absolute bottom-0 start-100 pencil-out-circle">
-        <span class="badge" @click="changeImage">
-          <svg
-            class="icon"
-            xmlns="http://www.w3.org/2000/svg"
-            height="40px"
-            viewBox="0 -960 960 960"
-            width="35px"
-            fill="#d8d8d8"
-          >
-            <path
-              d="M186.67-186.67H235L680-631l-48.33-48.33-445 444.33v48.33ZM120-120v-142l559.33-558.33q9.34-9 21.5-14 12.17-5 25.5-5 12.67 0 25 5 12.34 5 22 14.33L821-772q10 9.67 14.5 22t4.5 24.67q0 12.66-4.83 25.16-4.84 12.5-14.17 21.84L262-120H120Zm652.67-606-46-46 46 46Zm-117 71-24-24.33L680-631l-24.33-24Z"
-            />
-          </svg>
+    <p style="font-size: 1.8rem; margin-bottom: 40px">회원정보수정</p>
+
+    <div class="userInfo">
+      <div class="position-relative" style="width: 140px">
+        <template
+          v-if="
+            store.loginUser.profile == null || store.loginUser.profile == ''
+          "
+        >
+          <img
+            :src="`/src/assets/user/user.jpg`"
+            alt="프로필이미지"
+            class="position-relative"
+            style="overflow: hidden"
+          />
+        </template>
+        <template v-else>
+          <img
+            :src="`/src/assets/user/${store.loginUser.profile}`"
+            alt="프로필이미지"
+            class="position-relative"
+            style="overflow: hidden"
+          />
+        </template>
+        <span class="position-absolute bottom-0 start-100 pencil-out-circle">
+          <span class="badge" @click="changeImage">
+            <svg
+              class="icon"
+              xmlns="http://www.w3.org/2000/svg"
+              height="40px"
+              viewBox="0 -960 960 960"
+              width="35px"
+              fill="#d8d8d8"
+            >
+              <path
+                d="M186.67-186.67H235L680-631l-48.33-48.33-445 444.33v48.33ZM120-120v-142l559.33-558.33q9.34-9 21.5-14 12.17-5 25.5-5 12.67 0 25 5 12.34 5 22 14.33L821-772q10 9.67 14.5 22t4.5 24.67q0 12.66-4.83 25.16-4.84 12.5-14.17 21.84L262-120H120Zm652.67-606-46-46 46 46Zm-117 71-24-24.33L680-631l-24.33-24Z"
+              />
+            </svg>
+          </span>
         </span>
-      </span>
+      </div>
     </div>
+
     <fieldset>
       <div>
         <label for="loginId">ID</label>
@@ -126,9 +144,7 @@ const updateUser = async function () {
       });
     });
   } else {
-    // console.log("실 패 ");
   }
-  //   console.log(user.value);
 };
 
 const changePW = function () {
@@ -136,11 +152,17 @@ const changePW = function () {
 };
 
 const changeImage = () => {
+  const image = ref();
+  if (store.loginUser.profile == null || store.loginUser.profile == "") {
+    image.value = "user.jpg";
+  } else {
+    image.value = store.loginUser.profile;
+  }
   Swal.fire({
     title: "프로필 이미지 변경",
     html: `
       <div style="display: flex; flex-direction: column; align-items: center;">
-       기존 <img src="src/assets/user/${store.loginUser.profile}" id="currentImage" style="margin-bottom: 10px; width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
+       기존 <img src="src/assets/user/${image.value}" id="currentImage" style="margin-bottom: 10px; width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
         <input type="file" id="fileInput" accept="image/*" />
        수정 후 <img id="previewImage" style="margin-top: 10px; width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" />
       </div>

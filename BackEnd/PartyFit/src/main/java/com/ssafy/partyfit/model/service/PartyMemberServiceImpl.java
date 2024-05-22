@@ -29,8 +29,8 @@ public class PartyMemberServiceImpl implements PartyMemberService {
 	}
 	
 	@Override
-	public List<Party> showMyParty(User user){
-		return partyMemberDao.selectMyParty(user);
+	public List<Party> showMyParty(int userId){
+		return partyMemberDao.selectMyParty(userId);
 	}
 
 	
@@ -53,6 +53,11 @@ public class PartyMemberServiceImpl implements PartyMemberService {
 	@Override
 	public int leaveRequest(PartyMember partyMember) {
 		return partyMemberDao.deletePartyMember(partyMember);
+	}
+
+	@Override
+	public PartyMember selectStatus(PartyMember partyMember) {
+		return partyMemberDao.selectStatus(partyMember);
 	}
 
 

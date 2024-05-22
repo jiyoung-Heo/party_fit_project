@@ -2,15 +2,20 @@ import router from "@/router";
 import axios from "axios";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { usePartyStore } from "./party";
 
 const REST_USER_API = `http://localhost:8080/user`;
 
 export const useUserStore = defineStore(
   "user",
   () => {
+    const partyStore = usePartyStore();
+    const loginUserId = ref();
+    const accessToken = ref("");
+
     //회원가입
     const createUser = function (user) {
-      console.log(user);
+      // console.log(user);
       axios({
         url: `${REST_USER_API}/signup`,
         method: "POST",
@@ -18,45 +23,44 @@ export const useUserStore = defineStore(
       })
         .then(() => {
           // console.log("store" + user)/
-          console.log(user);
+          // console.log(user);
           window.alert("회원가입 성공");
-          router.push({ name: "home" });
+        })
+        .then(() => {
+          router.push({ name: "login" });
         })
         .catch((err) => {});
     };
 
-    const loginUserId = ref();
-    const accessToken = ref("");
-
     //로그인
-    const userLogin = function (id, pw) {
+    const userLogin = async function (id, pw) {
       const user = {
         loginId: id,
         password: pw,
       };
-
-      axios({
-        url: `${REST_USER_API}/login`,
-        method: "POST",
-        data: user,
-      })
-        .then((res) => {
-          if(res.data["access-token"] != undefined){
-            accessToken.value = "Bearer " + res.data["access-token"];
-          }
-          sessionStorage.setItem("access-token", res.data["access-token"]);
-          const token = res.data["access-token"].split(".");
-          let userId = JSON.parse(atob(token[1])).userId;
-          getUser(userId);
-          loginUserId.value = userId;
-          sessionStorage.setItem("loginUser", userId);
-          router.push({ name: "myFit" });
-        })
-        .catch((error) => {
-          window.alert("로그인 실패");
-          // console.error("로그인 실패 : ", error);
-          router.replace("login");
+      try {
+        const res = await axios({
+          url: `${REST_USER_API}/login`,
+          method: "POST",
+          data: user,
         });
+
+        if (res.data["access-token"] != undefined) {
+          accessToken.value = "Bearer " + res.data["access-token"];
+        }
+        const token = res.data["access-token"].split(".");
+        //토큰에서 id가져오기
+        let userId = JSON.parse(atob(token[1])).userId;
+        //id정보가지고 전체 회원 정보 가져오기
+        await getUser(userId);
+        loginUserId.value = userId;
+
+        router.push({ name: "myFit" });
+      } catch (error) {
+        window.alert("로그인 실패");
+        // console.error("로그인 실패 : ", error);
+        router.replace("login");
+      }
     };
 
     //로그아웃
@@ -68,51 +72,57 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        // console.log(time);
-        loginUser.value = "";
-        loginUserId.value = "";
-        accessToken.value = "";
-        sessionStorage.removeItem("access-token");
-        sessionStorage.removeItem("loginUser");
-        router.push({ name: "home" });
         window.alert("로그아웃");
-        // window.location.reload();
+        $reset();
+        partyStore.$reset();
+        router.push({ name: "home" });
       });
     };
 
     //회원정보수정
-    const updateUser = function (user,image) {
+    const updateUser = function (user, image) {
+      // console.log(user + "," + image);
       const formData = new FormData();
-      formData.append('user', new Blob([JSON.stringify(user)], { type: 'application/json' }));
-      formData.append('profile', image);
-      // console.log("호출!")
-      // console.log(user.profile)
+      formData.append(
+        "user",
+        new Blob([JSON.stringify(user)], { type: "application/json" })
+      );
+      if (image != null && image != undefined) {
+        formData.append("profile", image);
+      }
+      // console.log(image)
       axios({
         url: `${REST_USER_API}/${user.userId}`,
         method: "PUT",
         data: formData,
         headers: {
-          'Accept': 'application/json',
+          Accept: "application/json",
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        // console.log(res.data);
-        loginUser.value = res.data
+        const temp = loginUser.value.profile;
+        loginUser.value = res.data;
+        if (image == null || image == undefined) {
+          loginUser.value.profile = temp;
+        }
         router.push({ name: "myPage" });
       });
     };
     const changePassword = function (user) {
       const formData = new FormData();
-      formData.append('user', new Blob([JSON.stringify(user)], { type: 'application/json' }));
+      formData.append(
+        "user",
+        new Blob([JSON.stringify(user)], { type: "application/json" })
+      );
       axios({
         url: `${REST_USER_API}/${user.userId}`,
         method: "PUT",
         data: formData,
       }).then((res) => {
         window.alert("비밀번호 변경 완료");
-        if(loginUserId.value != ''){
-          router.push({name: "myPage"});
-        }else{
+        if (accessToken.value != null && accessToken.value != "") {
+          router.push({ name: "myPage" });
+        } else {
           router.push({ name: "login" });
         }
       });
@@ -125,7 +135,7 @@ export const useUserStore = defineStore(
 
     const findedId = ref("");
     const findLoginID = function (user) {
-      console.log(user.email);
+      // console.log(user.email);
 
       axios({
         url: `${REST_USER_API}/find-id`,
@@ -145,7 +155,7 @@ export const useUserStore = defineStore(
           window.alert("아이디찾기 실패");
         });
     };
-    const findPwFindUser = ref()
+    const findPwFindUser = ref();
     const findPw = function (email, loginId, name) {
       axios({
         url: `${REST_USER_API}/find-pw/${email}/${loginId}`,
@@ -154,32 +164,34 @@ export const useUserStore = defineStore(
           name: name,
         },
       }).then((res) => {
-        if(res.data.length != 0){
-          findPwFindUser.value = res.data
-          router.push({name:"changePW"})
+        if (res.data.length != 0) {
+          findPwFindUser.value = res.data;
+          router.push({ name: "changePW" });
+        } else {
+          window.alert("일치하는 회원이 없습니다. ");
         }
       });
     };
 
     const loginUser = ref({});
     const getUser = async function (userId) {
-      try {
-        const res = await axios({
-          url: `${REST_USER_API}/${userId}`,
-          method: "GET",
-          params: {
-            userId: userId,
-          },
-          headers: {
-            Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
-          },
+      await axios({
+        url: `${REST_USER_API}/${userId}`,
+        method: "GET",
+        params: {
+          userId: userId,
+        },
+        headers: {
+          Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          loginUser.value = res.data;
+        })
+        .catch((err) => {
+          console.error(err);
+          window.alert("회원정보 가져오기 실패");
         });
-        loginUser.value = res.data;
-        // console.log(loginUser.value)
-      } catch (err) {
-        console.log(err);
-        window.alert("회원정보 가져오기 실패");
-      }
     };
 
     const userdetail = ref({});
@@ -198,7 +210,7 @@ export const useUserStore = defineStore(
 
         userdetail.value = res.data;
       } catch (err) {
-        console.log(err);
+        // console.log(err);
         window.alert("회원정보 가져오기 실패");
       }
     };
@@ -212,7 +224,7 @@ export const useUserStore = defineStore(
           data: { loginId: loginId },
         }).then((res) => {
           // console.log(res.data)
-          console.log(res.data == "1");
+          // console.log(res.data == "1");
           if (res.data == "1") {
             resolve(true);
           } else {
@@ -247,7 +259,7 @@ export const useUserStore = defineStore(
           data: { email: email },
         }).then((res) => {
           // console.log(res.data)
-          console.log(res.data == "1");
+          // console.log(res.data == "1");
           if (res.data == "1") {
             resolve(true);
           } else {
@@ -257,26 +269,23 @@ export const useUserStore = defineStore(
       });
     };
     const partyList = ref([]);
-    const getMyPartyFit = function () {
-      console.log("getmyp"+loginUser.value.userId)
-      axios({
-        url: `${REST_USER_API}/myPartyfit/${loginUser.value.userId}`,
+
+    const getMyPartyFit = async function () {
+      await axios({
+        url: `${REST_USER_API}/myPartyfit/${loginUserId.value}`,
         method: "GET",
-        params: {
-          userId: loginUser.value.userId,
-        },
         headers: {
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       })
-      .then((res) => {
+        .then((res) => {
           partyList.value = res.data;
           // console.log(res.data)
         })
         .catch((err) => {});
-      };
-      
-      const meetList = ref([]);
+    };
+
+    const meetList = ref([]);
     const getMyMeet = function () {
       const userId = loginUser.value.userId;
       // console.log("store"+ userId)
@@ -290,36 +299,33 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
       })
-      .then((res) => {
-        //  console.log(res.data)
-        meetList.value = res.data;
-      })
-      .catch((err) => {});
+        .then((res) => {
+          //  console.log(res.data)
+          meetList.value = res.data;
+        })
+        .catch((err) => {});
     };
 
     const articleList = ref([]);
     const getMyArticle = function () {
       // console.log("store"+ userId)
-      console.log("getmya"+loginUser.value.userId)
+      // console.log("getmya"+loginUser.value.userId)
       axios({
         url: `${REST_USER_API}/myArticle`,
         method: "GET",
         headers: {
           Authorization: accessToken.value, // 헤더에 accessToken을 포함하여 요청
         },
-        params:{
-          userId : loginUser.value.userId
-
-        }
-        
+        params: {
+          userId: loginUser.value.userId,
+        },
       })
         .then((res) => {
-          console.log(res.data);
+          // console.log(res.data);
           articleList.value = res.data;
         })
         .catch((err) => {});
     };
-
 
     const commentList = ref([]);
     const getMyComment = function () {
@@ -334,7 +340,7 @@ export const useUserStore = defineStore(
       })
         .then((res) => {
           commentList.value = res.data;
-          console.log(res.data);
+          // console.log(res.data);
         })
         .catch((err) => {});
     };
@@ -355,20 +361,44 @@ export const useUserStore = defineStore(
         .catch((err) => {});
     };
 
-    const partyJoinRequest = function (partyId) {
-      axios({
-        url: `${REST_USER_API}/join/${partyId}/${loginUser.value.userId}`,
-        method: "PUT",
-        headers: {
-          Authorization: accessToken.value,
-        },
-      }).then((res) => {
+    const partyStatus = async function(partyId) {
+      try {
+        const res = await axios({
+          url: `${REST_USER_API}/join/${partyId}/${loginUserId.value}`,
+          method: "GET",
+          headers: {
+            Authorization: accessToken.value,
+          },
+        });
+    
+        if (res.data != null || res.data != undefined) {
+          // console.log(res.data);
+          return res.data;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+
+    const partyJoinRequest = async function (partyId) {
+      try {
+        await axios({
+          url: `${REST_USER_API}/join/${partyId}/${loginUserId.value}`,
+          method: "PUT",
+          headers: {
+            Authorization: accessToken.value,
+          },
+        });
         alert("가입 신청");
-      });
+      } catch (error) {
+        console.error(error);
+        // 오류 처리
+      }
     };
 
-    const partyLeaveRequest = function (partyId) {
-      axios({
+    const partyLeaveRequest = async function (partyId) {
+      await axios({
         url: `${REST_USER_API}/join/${partyId}/${loginUser.value.userId}`,
         method: "DELETE",
         headers: {
@@ -387,21 +417,21 @@ export const useUserStore = defineStore(
           Authorization: accessToken.value,
         },
       }).then((res) => {
-        console.log("dddd")
+        // console.log("dddd");
       });
     };
     function $reset() {
-      loginUser.value = {}
-      loginUserId.value = ''
-      accessToken.value = ''
-      nonWriteReview.value = ''
-      articleList.value = [];
-      commentList.value = [];
-      meetList.value = [];
-      partyList.value = [];
-      findedId.value=''
-      userdetail.value={}
-      findPwFindUser.value=null
+      loginUser.value = null;
+      loginUserId.value = null;
+      accessToken.value = null;
+      nonWriteReview.value = null;
+      articleList.value = null;
+      commentList.value = null;
+      meetList.value = null;
+      partyList.value = null;
+      findedId.value = null;
+      userdetail.value = null;
+      findPwFindUser.value = null;
     }
 
     return {
@@ -438,6 +468,7 @@ export const useUserStore = defineStore(
       changePassword,
       userLeaveRequest,
       $reset,
+      partyStatus,
     };
   },
   { persist: true }

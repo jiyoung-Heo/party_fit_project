@@ -1,5 +1,6 @@
 <template>
   <div>
+    모집중인 모임 {{filteredPartyList.length}}개
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div v-for="party in filteredPartyList" :key="party.partyId" @click="gopartyPage(party)">
         <div class="col">
@@ -22,6 +23,7 @@
 
 <script setup>
 import { usePartyStore } from "@/stores/party";
+import { storeToRefs } from "pinia";
 import { onMounted, watch, computed } from "vue";
 import { useRouter } from 'vue-router';
 
@@ -64,9 +66,13 @@ const filteredPartyList = computed(() => {
 })
 
 const gopartyPage = function(party) {
-    console.log(party.partyId)
+    // console.log(party.partyId)
+    //나중에 필요하면 쓰기
     partyStore.selectedParty = party;
-    router.push({ name: 'partyfitmain', params: { partyId:  partyStore.selectedParty.partyId } });
+    console.log(party)
+    //이제 페이지 이동하니까 초기화 시켜버리기 나중에 안헷갈리게
+    partyStore.partyList = null;
+    router.push({ name: 'partyfitmain', params: { partyId: party.partyId } });
     
   };
 

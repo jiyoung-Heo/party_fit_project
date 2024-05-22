@@ -12,6 +12,8 @@ public interface UserService {
 	
 	//회원정보수정하기 
 	public int modifyUser(User user);
+	
+	public int modifyProfile(User user);
 
 	public User getUserById(int id);
 	

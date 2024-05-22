@@ -10,7 +10,8 @@ import com.ssafy.partyfit.model.dto.User;
 
 public interface PartyMemberDao {
 	List<PartyMemberUser> selectPartyMember(Map<String, Object> map);
-	List<Party> selectMyParty(User user);
+	PartyMember selectStatus(PartyMember partyMember);
+	List<Party> selectMyParty(int userId);
 	int updatePartyMember(PartyMember party);
 	int deletePartyMember(PartyMember party);
 	int insertjoinRequest(PartyMember partyMember);

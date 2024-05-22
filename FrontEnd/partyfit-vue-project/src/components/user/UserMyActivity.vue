@@ -85,13 +85,8 @@
             </nav>
         </div>
 
-
 </div>
-</template>
-
-
-    </div>
-
+</div>
 </template>
 
 <script setup>
@@ -157,19 +152,19 @@ const deleteArticle = function (articleId) {
     partystore.deleteArticle(articleId)
     // window.location.reload()
 }
-const isAuth = ref(false)
+// const isAuth = ref(false)
 const hasAuth = function(userId) {
     console.log(userstore.loginUser.userId);
     console.log(userId)
     if(partystore.isManager) {
-        isAuth = true;
+        // isAuth = true;
         return true;
     }
     else if(userId === userstore.loginUser.userId){
-        isAuth = true;
+        // isAuth = true;
         return true;
     }
-     isAuth = false;
+     // isAuth = false;
      console.log(false);
      return false;
 }

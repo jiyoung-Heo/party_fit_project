@@ -2,7 +2,7 @@
   <div class="signup-container">
     <h1>비밀번호 재설정</h1>
     <fieldset>
-      <div v-if="store.loginUserId != ''">
+      <div v-if=" store.accessToken != null && store.accessToken  != ''">
         <label for="changePW">현재 비밀번호</label>
         <input type="password" v-model="nowPW" placeholder="현재 비밀번호" />
       </div>
@@ -50,7 +50,7 @@ const changePW2 = ref("");
 const nowPW = ref("");
 
 const changePassword = function () {
-  if (store.loginUserId != "") {
+  if (store.accessToken != null && store.accessToken != "") {
     if (nowPW.value !== store.loginUser.password) {
       //로그인 된 상태인데 두개가 동일하지 않다면 얼럿띄우기
       alert("현재 비밀번호가 일치하지 않습니다.");

@@ -12,6 +12,8 @@ public interface UserDao {
 	
 	// user 정보수정
 	public int updateUserInfo(User user);
+	
+	public int updateUserProfile(User user);
 
 	public User searchById(int id);
 	

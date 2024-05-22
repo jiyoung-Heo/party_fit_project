@@ -14,7 +14,7 @@
           <span class="material-symbols-outlined"> notifications </span>
         </p>
 
-        <template v-if="store.accessToken == ''">
+        <template v-if="store.accessToken == null || store.accessToken == ''">
           <p class="user-info">
             <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
           </p>
@@ -25,7 +25,8 @@
         <template v-else>
           <a class="user-info"> {{ store.loginUser.username }} 님 </a>
           <div v-if="hasProfile" class="user-info">
-            <img :src="'/src/assets/user/' + store.loginUser.profile"
+            <img
+              :src="'/src/assets/user/' + store.loginUser.profile"
               alt="프로필사진"
               width="20px"
             />
@@ -68,23 +69,23 @@ const router = useRouter();
 const accessToken = computed(() => store.accessToken);
 
 onMounted(() => {
-  if (store.accessToken !== "") {
-    // router.push({ name: "myFit" });
-  } else {
+  if (store.accessToken == null || store.accessToken == "") {
     router.push({ name: "beforeLoginMain" });
+  } else {
+    // router.push({ name: "myFit" });
   }
 });
 
 const moveMainPage = computed(() => {
-  if (store.accessToken == "") {
+  if (store.accessToken == null || store.accessToken == "") {
     return "beforeLoginMain";
   }
   return "myFit";
 });
 
 watch(accessToken, async (nv, ov) => {
-  await nextTick();
-  if (nv == "") {
+  await nextTick(); 
+  if (nv == null || nv == "") {
     router.push({ name: "beforeLoginMain" });
   } else {
   }
@@ -96,6 +97,7 @@ const hasProfile = computed(() => {
 
 const logout = () => {
   store.userLogout();
+  router.push({ name: "beforeLoginMain" });
 };
 </script>
 
