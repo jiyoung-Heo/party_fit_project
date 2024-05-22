@@ -24,35 +24,34 @@
     </div>
     <div class="box">
 
-      <div class="user-card">
+      <div class="user-card"  >
 
         <div class="user-info">
           <template v-if="store.accessToken == null || store.accessToken == ''">
-          <p class="user-info">
-            <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
-          </p>
-          <p class="user-info">
-            <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink>
-          </p>
-        </template>
-        <template v-else>
-          <a class="user-info"> {{ store.loginUser.username }} 님 </a>
-          <div v-if="hasProfile" class="user-info">
-            <img
-              :src="'/src/assets/user/' + store.loginUser.profile"
-              alt="프로필사진"
-              width="20px"
-            />
-          </div>
-          <div v-else class="user-info">
-            <span class="material-icons">face</span>
-          </div>
-          <RouterLink class="user-info" :to="{ name: 'myPage' }"
-            >마이페이지</RouterLink
-          >
-          |
-          <button class="user-info" @click="logout">로그아웃</button>
-        </template>
+            <p class="login">
+              <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
+            </p>
+            <p class="sign">
+              <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink>
+            </p>
+          </template>
+          <template v-else>
+            <div v-if="hasProfile" class="user-info profile ">
+              <img  :src="'/src/assets/user/' + store.loginUser.profile" alt="프로필사진" width="20px" />
+            </div>
+            
+            <div v-else class="profile">
+              <span class="material-icons">face</span>
+            </div>
+            <span class="d-flex row ms-3">
+              <a class="username"> {{ store.loginUser.username }} 님 </a>
+
+              <div class="user-actions">
+                <RouterLink class="my-page-link" :to="{ name: 'myPage' }">마이페이지</RouterLink>
+                <button class="logout-button" @click="logout">로그아웃</button>
+              </div>
+            </span>
+          </template>
         </div>
       </div>
     </div>
@@ -78,6 +77,7 @@ onMounted(() => {
   } else {
     // router.push({ name: "myFit" });
   }
+  AOS.init();
 });
 
 const moveMainPage = computed(() => {
@@ -88,7 +88,7 @@ const moveMainPage = computed(() => {
 });
 
 watch(accessToken, async (nv, ov) => {
-  await nextTick(); 
+  await nextTick();
   if (nv == null || nv == "") {
     router.push({ name: "beforeLoginMain" });
   } else {
@@ -120,7 +120,7 @@ setInterval(() => {
   padding: 0px 40px;
   width: 1300px;
   margin: 0 auto;
-
+  height : 30vh;
 }
 
 
@@ -139,10 +139,10 @@ setInterval(() => {
 }
 
 .user-card {
-  position : static;
+  position: static;
   right: 100px;
   bottom: 0;
-  display: flex ;
+  display: flex;
 
   align-items: center;
   gap: 10px;
@@ -193,10 +193,10 @@ setInterval(() => {
 }
 
 .my-page-link {
-  
-  z-index:1;
-  bottom:20px;
-  position:absolute;
+
+  z-index: 1;
+  bottom: 20px;
+  position: absolute;
   color: black;
   text-decoration: none;
   font-size: 20px;
@@ -207,29 +207,28 @@ setInterval(() => {
 
 .sign {
   position: absolute;
-  left : 200px;
-  z-index : 1;
-  font-size : 20px;
-  width:100px;
+  left: 200px;
+  z-index: 1;
+  font-size: 20px;
+  width: 100px;
   transition: color 0.1s, transform 0.1s;
 }
-.login{
+
+.login {
   position: absolute;
-  left : 100px;
-  z-index : 1;
-  font-size : 20px;
-  width:100px;
+  left: 100px;
+  z-index: 1;
+  font-size: 20px;
+  width: 100px;
   transition: color 0.1s, transform 0.1s;
 }
-.sign a, .login a{
-  color : black;
+
+.sign a,
+.login a {
+  color: black;
 
 }
-.user-{
-  
-}
-.user-  a{
-}
+
 
 .row>* {
   flex-shrink: 0;
@@ -241,8 +240,8 @@ setInterval(() => {
 }
 
 .logout-button {
-  position:absolute;
-  bottom:20px;
+  position: absolute;
+  bottom: 20px;
   pointer-events: auto;
   right: 20px;
   padding: 5px 10px;
@@ -253,7 +252,7 @@ setInterval(() => {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  z-index:2;
+  z-index: 2;
 }
 
 .logout-button:hover {
@@ -292,14 +291,20 @@ setInterval(() => {
   justify-content: space-between;
   align-content: space-around;
   flex: 3;
+  height:28vh;
 }
 
 .top h1 {
   margin-bottom: 50px;
   /* 여기에 간격을 추가합니다 */
 }
+.nav .navbar-menu {
 
+  z-index: 1000;
+}
 .navbar-menu {
+  position: sticky;
+  top:0px;
   display: flex;
   margin-bottom: 0px;
 
@@ -322,7 +327,6 @@ setInterval(() => {
 }
 
 .navbar-menu .navbar-link {
-
   color: black;
   padding: 20px 0px;
   border: 1px solid transparent;
@@ -350,7 +354,7 @@ setInterval(() => {
 
 a {
   text-decoration: none;
-  
+
 }
 
 @font-face {
@@ -393,5 +397,83 @@ a {
     padding: 0px 40px;
     width: 95%;
   }
+
 }
+
+
+@media (max-width: 1200px) {
+
+  
+  .box{
+    position: fixed;
+    right:-400px;
+    top:80px;
+    margin-right: 200px;
+  }
+
+
+  .profile img{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    top : -45px;
+    right: -35px;
+  }
+  
+  .user-info {
+    position: relative;
+  }
+  
+  .user-actions .logout-button{
+    position: absolute;
+    left : 0;
+    
+    width : 100px;
+    z-index: 1;
+    font-size: 15px;
+    top:25px;
+    height:30px;
+  }
+  .username{
+    position : fixed;
+    top : 100px;
+   color: black;
+  }
+  .user-actions .my-page-link{
+    font-size: 15px;
+    position: absolute;
+    left :0;
+    top: -5px;
+    width : 200px;
+    z-index: 1;
+    height: 15px;
+    
+  }
+
+  .login{
+    font-size: 15px;
+    position: absolute;
+    left :0;
+    width : 200px;
+    z-index: 1;
+    height: 15px;
+    font-size: 20px;
+    top: -40px;
+    
+  }
+  
+  .sign{
+    font-size: 15px;
+    position: absolute;
+    left :0;
+    top: 0px;
+    width : 200px;
+    z-index: 1;
+    height: 15px;
+    font-size: 20px;
+    
+  }
+}
+
 </style>

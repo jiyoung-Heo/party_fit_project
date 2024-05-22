@@ -5,7 +5,11 @@
     <div class="party-list">
       <div v-if="partyList == undefined || partyList== '' || partyList.length == 0" class="no-party">
         <p>파티가 없습니다. 파티에 가입해보세요!</p>
-        <button @click="goAllparty">파티 둘러보기 가기</button>
+
+        <button class="btn btn-primary btn-jittery" @click="goAllparty">
+          파티 둘러보기 가기
+        </button>
+
       </div>
       <div v-else
         v-for="party in partyList"
@@ -80,5 +84,63 @@ const goAllparty = function(){
 .party:hover {
   transform: scale(1.05);
 }
+
+.btn {
+  margin: 1rem;
+  border : none;
+  background-color: coral;
+  
+  &-jittery {
+    animation: jittery 4s infinite;
+  }
+  
+}
+
+.btn:hover{
+  background-color: rgba(242, 255, 60, 0.74);
+  
+}
+.btn-jittery {
+  animation: jittery 4s infinite;
+}
+
+
+@keyframes jittery {
+  5%,
+  50% {
+    transform: scale(1);
+  }
+  
+  10% {
+    transform: scale(0.9);
+  }
+  
+  15% {
+    transform: scale(1.15);
+  }
+  
+  20% {
+    transform: scale(1.15) rotate(-5deg);
+    background-color: rgba(255, 180, 40, 0.74);
+  }
+  
+  25% {
+    transform: scale(1.15) rotate(5deg);
+  }
+  
+  30% {
+    transform: scale(1.15) rotate(-3deg);
+  }
+  
+  35% {
+    transform: scale(1.15) rotate(2deg);
+  }
+
+  40% {
+    transform: scale(1.15) rotate(0);
+  }
+}
+
+
 </style>
   

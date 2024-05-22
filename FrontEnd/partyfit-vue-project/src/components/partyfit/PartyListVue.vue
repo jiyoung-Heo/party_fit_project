@@ -1,14 +1,23 @@
 <template>
   <div>
+    
     모집중인 모임 {{filteredPartyList.length}}개
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4" data-aos="fade-down">
       <div v-for="party in filteredPartyList" :key="party.partyId" @click="gopartyPage(party)">
-        <div class="col">
-          <div class="card">
+        <div class="col"  
+        data-aos-easing="ease-out-cubic"
+        data-aos-anchor-placement="top-bottom"
+        
+        data-aos="fade-down"
+        
+        data-aos-duration="800"
+        
+        >
+          <div class="card party ">
             <img
-              :src="party.introductionImage"
-              class="card-img-top fit-image"
-              alt="..."
+            :src="party.introductionImage"
+            class="card-img-top fit-image"
+            alt="..."
             />
             <div class="card-body">
               <h5 class="card-title">{{ party.name }}</h5>
@@ -31,6 +40,7 @@ const router = useRouter();
 const partyStore = usePartyStore();
 onMounted(() => {
   partyStore.getPartyListWithCondition();
+   AOS.init(); 
 });
 
 const props = defineProps({
@@ -80,6 +90,16 @@ const gopartyPage = function(party) {
 
 
 <style scoped>
+.aos-animate {
+  transition-delay: 50ms;
+  pointer-events: auto;
+}
+
+.party:hover{
+  transform: scale(1.1) translateY(3px);
+
+}
+
 .fit-image {
   width: 100%;
   height: auto;

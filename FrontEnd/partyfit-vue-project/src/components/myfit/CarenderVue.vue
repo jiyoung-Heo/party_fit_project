@@ -92,4 +92,17 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+/* 스크롤바 설정*/
+.a::-webkit-scrollbar{
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.a::-webkit-scrollbar-thumb{
+  background-color: rgba(255, 145, 0, 0.452);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px; 
+}
+
 </style> 

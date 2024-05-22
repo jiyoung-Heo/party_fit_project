@@ -25,14 +25,15 @@
 <script setup>
 import PartyListVue from "@/components/partyfit/PartyListVue.vue";
 import { usePartyStore } from "@/stores/party";
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 const partyStore = usePartyStore()
 const selectedOrder = ref("reg_date desc");
-
 const orderBy = ref(selectedOrder.value);
 const isEnd = ref(false);
-
+onMounted (()=>{
+  AOS.init(); 
+})
 watch(selectedOrder, (newOrder) => {
   orderBy.value = newOrder;
 });
@@ -54,11 +55,31 @@ const search = () =>{
 </script>
 
 <style scoped>
+.hovered {
+  transform: translateY(-10px); /* 요소를 위로 이동시켜 튀어나오는 효과 생성 */
+  transition: transform 0.3s ease; /* 부드러운 애니메이션 적용 */
+}
+
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+  overflow-y: auto;
+  
 }
+
+/* 스크롤바 설정*/
+.container::-webkit-scrollbar{
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.container::-webkit-scrollbar-thumb{
+  background-color: rgba(255, 145, 0, 0.452);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px; 
+}
+
 
 .header {
   display: flex;
