@@ -59,7 +59,7 @@ const router = createRouter({
           component: MyPartyFitView,
           beforeEnter: (to, from, next) => {
             const store = useUserStore();
-            console.log(store.accessToken)
+            // console.log(store.accessToken)
               if (store.accessToken !== "" && store.accessToken !=="Bearer undefined") {
               next() 
             } else {
