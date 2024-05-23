@@ -74,14 +74,14 @@ const meetjoinRequest = async function (meetId) {
 const goBoard = function () {
   router.push({
     name: "meetlist",
-    params: { partyId: store.selectedParty.partyId },
+    params: { partyId: store.selectedMeet.partyId },
   });
 };
 
 const isJoin = ref(false);
 
 onMounted(async () => {
-  await store.getMeetMemberList(store.selectedMeet.meetId);
+  await store.getMeetMemberList(store.selectedMeet.partyId,store.selectedMeet.meetId);
 
   isJoin.value = store.meetMemberList.some(
     (member) => member.userId == userstore.loginUserId

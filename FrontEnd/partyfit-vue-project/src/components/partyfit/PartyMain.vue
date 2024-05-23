@@ -73,7 +73,7 @@
         <div class="sticky-header is-sticky">
 
           <div class="calender ">
-            <h1>캘린더 들어갈곳</h1>
+            <PartyCarenderVue/>
           </div>
           <div class="party-members">
             파티 참여자
@@ -90,6 +90,8 @@
   </template>
   
   <script setup>
+  import PartyCarenderVue from "@/components/partyfit/PartyCarenderVue.vue";
+
   import { onMounted, ref, computed } from 'vue';
   import { usePartyStore } from '@/stores/party';
   import { useUserStore } from '@/stores/user';

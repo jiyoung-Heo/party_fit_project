@@ -45,7 +45,7 @@ store.isWaiting = false;
 onMounted(()=>{
     // console.log("in")
     // store.getMemberList(1)
-    store.getMemberRequestList()
+    // store.getMemberRequestList()
     // store.getMeetList(0)
     // store.getMeetList(1)
     // store.getMeetList(2)

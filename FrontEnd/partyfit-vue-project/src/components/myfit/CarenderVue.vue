@@ -43,23 +43,6 @@ const handleEventClick = function (arg) {
     confirmButtonColor: "#ff7f50",
   }).then(async (result) => {
     if (result.isConfirmed) {
-      // console.log(arg.event)
-      // const clickMeet = {
-      //   meetId: arg.event.extendedProps.meetId,
-      //   content: arg.event.extendedProps.content,
-      //   maxHeadcount: arg.event.extendedProps.maxHeadcount,
-      //   partyId: arg.event.extendedProps.partyId,
-      //   status: arg.event.extendedProps.status,
-      //   title: arg.event.title,
-      //   headcount: arg.event.extendedProps.headcount,
-    // private Date startTime;
-    // private Date endTime;
-    // private int headcount;
-    // private String deleteYn;
-      // }
-      // console.log(arg.event.extendedProps.meet)
-      // console.log(partyStore.selectedParty.value)
-      // console.log(arg.event.extendedProps.meet)
       partyStore.getOneParty(arg.event.extendedProps.meet.partyId)
       partyStore.selectedMeet = await arg.event.extendedProps.meet
       router.push({ 

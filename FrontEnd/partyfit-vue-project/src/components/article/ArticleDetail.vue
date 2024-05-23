@@ -1,34 +1,48 @@
 <template>
   <div class="widget-container">
     <div class="widget">
-      <button type="button" class="delete-button" @click="deleteArticle">삭제</button>
-    
+      <template v-if="isDelete">
+        <button type="button" class="delete-button" @click="deleteArticle">
+          삭제
+        </button>
+      </template>
       <div class="category" @click="goBoard(category)">{{ category }} &gt;</div>
       <div class="title fs-5" v-if="article">{{ article.title }}</div>
-      
+
       <div class="writer" v-if="article">
-        <img :src="`/src/assets/user/${article.profile}`" class="writer-image" />
+        <img
+          :src="`/src/assets/user/${article.profile}`"
+          class="writer-image"
+        />
         <div class="writer-info">
           <p>{{ article.username }}</p>
-          <p class="reg-date">{{ article.regDate.split('T')[0] }}</p>
+          <p class="reg-date">{{ article.regDate.split("T")[0] }}</p>
           <p>조회수: {{ article.viewCount }}</p>
         </div>
       </div>
-      <hr/>
-      모임정보    
-      <p v-if="thisMeet && thisMeet.title && thisMeet.startTime && thisMeet.endTime">
+      <hr />
+      모임정보
+      <p
+        v-if="
+          thisMeet && thisMeet.title && thisMeet.startTime && thisMeet.endTime
+        "
+      >
         {{ thisMeet.title }}({{ thisMeet.startTime.split("T")[0]
         }}{{ thisMeet.startTime.split("T")[1].slice(0, 5) }} ~
         {{ thisMeet.endTime.split("T")[0]
         }}{{ thisMeet.endTime.split("T")[1].slice(0, 5) }}):
         {{ thisMeet.headcount }} 명 참여
       </p>
-      <hr>
+      <hr />
 
-      <div class="container content" v-if="article" v-html="compiledMarkdown"></div>
-      
-      <hr>
-      
+      <div
+        class="container content"
+        v-if="article"
+        v-html="compiledMarkdown"
+      ></div>
+
+      <hr />
+
       <CommentList :article-id="articleId" />
     </div>
   </div>
@@ -154,8 +168,7 @@ const goBoard = function (category) {
 const markdownText = ref();
 
 // `marked`를 사용하여 마크다운을 HTML로 변환
-const 
-= computed(() => {
+const compiledMarkdown = computed(() => {
   return marked(markdownText.value);
 });
 </script>
