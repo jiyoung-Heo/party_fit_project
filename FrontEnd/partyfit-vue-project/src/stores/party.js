@@ -379,9 +379,9 @@ export const usePartyStore = defineStore(
     //가입요청 목록
     const memberRequestList = ref([]);
     const isWaiting = ref(false);
-    const getMemberRequestList = function () {
+    const getMemberRequestList = function (partyId) {
       axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join`,
+        url: `${REST_USER_API}/${partyId}/management/join`,
         method: "GET",
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
@@ -529,9 +529,9 @@ export const usePartyStore = defineStore(
 
     //모임 내부 멤버 조회
     const meetMemberList = ref([]);
-    const getMeetMemberList =  async function (meetId) {
+    const getMeetMemberList =  async function (partyId,meetId) {
       await axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/member`,
+        url: `${REST_USER_API}/${partyId}/meet/${meetId}/member`,
         method: "GET",
 
         headers: {

@@ -58,7 +58,7 @@ const currentPage = ref(1);
 const store = usePartyStore();
 
 onMounted(() => {
-    store.getMemberRequestList()
+    store.getMemberRequestList(store.selectedParty.partyId)
 })
 
 const key = ref(0);
@@ -87,13 +87,13 @@ const goBoard = function () {
     name: "manageRequest",
     params: { partyId: store.selectedParty.partyId },
   });
-  store.getMemberRequestList()
+  store.getMemberRequestList(store.selectedParty.partyId)
 
 };
 
 const approveRequest = function (user) {
     store.approveRequest(user);
-    store.getMemberRequestList()
+    store.getMemberRequestList(store.selectedParty.partyId)
     Swal.fire({
     title: "가입 요청을 승인하였습니다.",
     text: "사용자 id: "+user.loginId,
@@ -106,7 +106,7 @@ const approveRequest = function (user) {
 
 const rejectRequest = function (user) {
     store.rejectRequest(user);
-    store.getMemberRequestList()
+    store.getMemberRequestList(store.selectedParty.partyId)
     Swal.fire({
     title: "가입 요청을 거부하였습니다",
     text: "사용자 id: "+user.loginId,

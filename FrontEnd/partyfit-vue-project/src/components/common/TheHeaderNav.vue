@@ -1,4 +1,4 @@
-
+<template>
   <div class="container1 d-flex">
     <div class="top ">
 
@@ -16,13 +16,7 @@
 
 
       <div class="user-info">
-        <template
-          v-if="
-            store.loginUser == null ||
-            store.loginUser == undefined ||
-            store.loginUser == ''
-          "
-        >
+        <template v-if="store.loginUser == null || store.loginUser == undefined || store.loginUser == ''">
             <div class="login-logout">
 
               <p class="login" @click="click">
@@ -83,8 +77,12 @@ const moveMainPage = computed(() => {
   return store.accessToken ? { name: "myFit" } : { name: "beforeLoginMain" };
 });
 
-const click = () => { router.push({ name: "login" }); }
-const signup = () => { router.push({ name: "signup" }); }
+const click = () => {
+  router.push({ name: "login" });
+};
+const signup = () => {
+  router.push({ name: "signup" });
+};
 
 onMounted(() => {
   if (!store.accessToken) {
@@ -117,7 +115,6 @@ const isAnimating = ref(false);
 setInterval(() => {
   isAnimating.value = !isAnimating.value;
 }, 2000);
-
 </script>
 
 <style scoped>
@@ -131,7 +128,7 @@ setInterval(() => {
 
   max-width: 1400px;
   min-width: 1300px;
-  background-image: url('/src/assets/user/back-top2.png');
+  background-image: url("/src/assets/user/back-top2.png");
   background-size: contain;
   /* 배경 이미지를 커버로 채움 */
   background-position: bottom;
@@ -139,10 +136,7 @@ setInterval(() => {
   background-repeat: no-repeat;
   /* 배경 이미지 반복 없음 */
   background-origin: border-box;
-
-
 }
-
 
 .user-info {
   display: flex;
@@ -179,8 +173,6 @@ setInterval(() => {
 
 .my-page-link:hover {
   color: lightcoral;
-
-
 }
 
 .box1:hover {
@@ -198,7 +190,6 @@ setInterval(() => {
   position: absolute;
   top: 20px;
   left: 110px;
-
 }
 
 .profile img {
@@ -208,18 +199,14 @@ setInterval(() => {
   object-fit: cover;
 }
 
-
 .profile .material-icons {
   font-size: 40px;
 }
 
 .user-actions {
-
   display: flex;
   gap: 10px;
 }
-
-
 
 .sign {
   position: absolute;
@@ -231,7 +218,6 @@ setInterval(() => {
   text-align: center;
   padding: 15px;
   background-color: pink;
-  ;
   color: black;
   transform: scale(1.05) translateY(-3px);
   border-color: #f8f9fa;
@@ -263,11 +249,9 @@ setInterval(() => {
 .sign a,
 .login a {
   color: black;
-
 }
 
-
-.row>* {
+.row > * {
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -287,7 +271,6 @@ setInterval(() => {
   text-decoration: none;
   transition: color 0.3s ease;
   height: 30px;
-
 }
 
 .logout-button {
@@ -309,9 +292,6 @@ setInterval(() => {
   background-color: #ffc379;
 }
 
-
-
-
 .plus-party-fit,
 .material-symbols-outlined {
   font-size: 18px;
@@ -319,8 +299,6 @@ setInterval(() => {
   padding: 5px;
   transition: transform 1s ease, opacity 0.3s ease;
 }
-
-
 
 .top {
   padding-top: 50px;
@@ -338,9 +316,11 @@ setInterval(() => {
   /* 여기에 간격을 추가합니다 */
 }
 
-.nav .navbar-menu {}
+.nav .navbar-menu {
+}
 
-.navbar-menu * {}
+.navbar-menu * {
+}
 
 .navbar-menu {
   position: sticky;
@@ -358,8 +338,7 @@ setInterval(() => {
   position: sticky;
   top: 0px;
   height: 200px;
-  background-color: #E8E8E8;
-
+  background-color: #e8e8e8;
 }
 
 .navbar-menu a {
@@ -413,7 +392,6 @@ setInterval(() => {
   z-index: 1;
 }
 
-
 .navbar-menu .index3:hover,
 .navbar-menu .index3.router-link-active {
   color: black;
@@ -431,10 +409,8 @@ setInterval(() => {
   z-index: 1;
 }
 
-
 a {
   text-decoration: none;
-
 }
 
 @font-face {
@@ -447,7 +423,6 @@ a {
     url(https://example.com/MaterialIcons-Regular.woff) format("woff"),
     url(https://example.com/MaterialIcons-Regular.ttf) format("truetype");
 }
-
 
 .material-icons {
   font-family: "Material Icons";
@@ -470,7 +445,6 @@ a {
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
 }
-
 
 /* @media (max-width: 1411px) {
   .container1 {
@@ -501,14 +475,13 @@ a {
     width: 370px;
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-border:black solid 0.5px;
+    border: black solid 0.5px;
     background-color: white;
     border-radius: 5px;
   }
 
-  
-.login-logout{
-  position: absolute;
+  .login-logout {
+    position: absolute;
     right: 50px;
     top: -160px;
     display: flex;
@@ -518,13 +491,12 @@ border:black solid 0.5px;
     width: 370px;
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-   
+
     border-radius: 5px;
-} 
+  }
 }
 
 @media (max-width: 1350px) {
-
   .user-card {
     position: absolute;
     right: 50px;
@@ -540,8 +512,8 @@ border:black solid 0.5px;
     border-radius: 5px;
   }
 
-  .login-logout{
-  position: absolute;
+  .login-logout {
+    position: absolute;
     right: 0px;
     top: 70px;
     display: flex;
@@ -551,15 +523,14 @@ border:black solid 0.5px;
     width: 370px;
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-   
+
     border-radius: 5px;
-} 
+  }
   .container1 {
     padding: 0px 40px;
   }
 
   .info-card {
-
     height: 120px;
     /* 최대값으로 설정 */
     width: 370px;
@@ -571,16 +542,12 @@ border:black solid 0.5px;
     background-color: #baa439a1;
   }
 
-
   .box {
     position: fixed;
     right: -300px;
     top: 80px;
     margin-right: 200px;
   }
-
-
-
 
   .user-info {
     position: relative;
@@ -613,11 +580,9 @@ border:black solid 0.5px;
     transition: color 0.3s ease;
     margin: 5px;
     margin-top: 5px;
-
   }
 
   .login {
-
     font-size: 15px;
     position: absolute;
     left: 0;
@@ -630,7 +595,6 @@ border:black solid 0.5px;
     margin: 0px;
     padding: 8px;
     text-align: left;
-
   }
 
   .sign {
@@ -647,7 +611,5 @@ border:black solid 0.5px;
     font-size: 20px;
     border-radius: 5px;
   }
-
-
 }
 </style>
