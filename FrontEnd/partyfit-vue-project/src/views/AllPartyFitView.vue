@@ -12,7 +12,12 @@
       <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" @click="search"
         class="search-icon" />
     </div>
-    <p class="count">모집중인 모임 {{ partyStore.partyList.length }}개</p>
+    <div v-if="partyStore.partyList == null">
+      <p class="count">모집중인 모임 0개</p>
+    </div>
+    <div v-else>
+      <p class="count">모집중인 모임 {{ partyStore.partyList.length }}개</p>
+    </div>
     <select v-model="selectedOrder" class="form-select mb-3">
       <option value="reg_date desc">최신순</option>
       <option value="reg_date asc">오래된순</option>
