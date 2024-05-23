@@ -1,11 +1,14 @@
 <template>
-  <div :key="key">
+  <div class="">
 
     <h2>meet 승인 요청 목록</h2>
-    <table>
+    <hr>
+    <div class="board">
+
+    <table class="  table table-hover text-center">
 
       <thead>
-        <tr>
+        <tr style="font-weight:normal;">
           <th>모임명</th>
           <!-- <th>내용</th> -->
           <th>현재 인원</th>
@@ -34,23 +37,8 @@
                   </tr>
       </tbody>
     </table>
+    </div>
 
-    <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center">
-        <li class="page-item">
-          <a class="page-link" @click.prevent="currentPage--" :class="{ disabled: currentPage <= 1 }" href="#">&lt;</a>
-        </li>
-        <li class="page-item" :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
-          <a class="page-link" href="#" @click.prevent="clickPage(page)">{{
-            page
-          }}</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" @click.prevent="currentPage++" :class="{ disabled: currentPage >= pageCount }"
-            href="#">&gt;</a>
-        </li>
-      </ul>
-    </nav>
   </div>
 
 
@@ -65,7 +53,7 @@ import meetRequestManage from './meetRequestManage.vue';
 
 const router = useRouter();
 const meetRequestList = computed(() => { return store.meetRequestList });
-const perPage = 12;
+const perPage = 6;
 const currentPage = ref(1);
 
 const store = usePartyStore();
@@ -107,6 +95,23 @@ const goMeetManageDetail = (meet)=>{
 </script>
 
 <style scoped>
+.board{
+  height:30vh;
+  overflow-y: auto;
+}
+
+/* 스크롤바 설정*/
+.board::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.board::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 145, 0, 0.269);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px;
+}
+
 .input-group {
   max-width: 700px;
   display: flex;

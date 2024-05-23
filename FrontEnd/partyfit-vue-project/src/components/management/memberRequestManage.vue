@@ -1,42 +1,36 @@
 <template>
-      <div :key="key">
+      <div class="memberrequestmanage">
 
-        <MeetRequestManage/>
-
+        <MeetRequestManage />
+        <br>
+<hr>
+<br>
         <div class="member-request-management">
-            <h1>가입 요청 관리</h1>
+            <h2>가입 요청 관리</h2>
+            <br>
             <div v-if="memberRequestList === ''">
                 가입 요청이 없습니다.
             </div>
-            <div v-else>
-                <ul>
-                    <li v-for="user in memberRequestList" :key="user.userId">
+            <div v-else  class="">
+                <div class="d-flex row head">
+
+                <div>닉네임(나이) </div>
+                <div>로그인 ID </div>
+                <div></div>
+                
+                </div>
+                    <div class="list fs-4" v-for="user in memberRequestList" :key="user.userId">
                         
-                        <p>{{ user.username }} ({{ user.age}}세)</p>
-                        <p>로그인 Id: {{ user.loginId }}</p>
+                        <div>{{ user.username }} ({{ user.age}}세)</div>
+                        <div>{{ user.loginId }}</div>
+                        <div class="btn"> 
+
                         <button href="#"  @click="approveRequest(user)">승인</button>
                         <button href="#" @click="rejectRequest(user)">거부</button>
-                    </li>
-                </ul>
+                        </div>
+                    </div>
             </div>
         </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination d-flex justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" @click.prevent="currentPage--" :class="{ disabled: currentPage <= 1 }"
-                        href="#">&lt;</a>
-                </li>
-                <li class="page-item" :class="{ active: currentPage === page }" v-for="page in pageCount" :key="page">
-                    <a class="page-link" href="#" @click.prevent="clickPage(page)">{{
-                        page
-                    }}</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link" @click.prevent="currentPage++" :class="{ disabled: currentPage >= pageCount }"
-                        href="#">&gt;</a>
-                </li>
-            </ul>
-        </nav>
     </div>
 
 
@@ -123,40 +117,71 @@ const rejectRequest = function (user) {
 </script>
 
 <style scoped>
-.input-group {
-    max-width: 700px;
+.btn {
+    flex:1;
+display:flex;
+flex-direction: row;
+justify-content: space-around;
+align-items:center;
+}
+button{
+    align-items:center;
+    width:80px;
+    height:40px;
+    justify-content: center;
+}
+.head{
+    align-items:center;
     display: flex;
-    justify-content: space-between;
-
+    flex-direction: row;
+    justify-content: space-around;
+    
 }
 
-.input-group>.form-control,
-.input-group>.form-floating,
-.input-group>.form-select {
+.head  div{
+    flex:1;
+    justify-content: space-around;
+    align-items:center;
+    text-align: center;
+    
+}
+.list {
+    display: flex;
+    flex-direction: row;
+    align-items:center;
+    text-align: center;
+}
+.list div{
+    flex:2;
+    align-items:center;
+}
+
+.member-request-management{
+    height:30vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+/* 스크롤바 설정*/
+.member-request-management::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.member-request-management::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 145, 0, 0.452);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px;
+}
+
+.memberrequestmanage{
     position: relative;
-    flex: 6 auto;
-    width: 1%;
-    min-width: 0;
-
+  align-items: start;
+  justify-content: left;
+  padding-left: 70px;
+  height: 90vh;
+  max-width: 1300px;
 }
 
-.form-control {
-    flex: 6;
-}
 
-.btn-warning {
-    flex: 1;
-}
-
-.input-group button {
-    background-color: #ff7f00;
-    border: none;
-    color: white;
-    margin-left: 10px;
-}
-
-.input-group p {
-    color: #ff7f00;
-
-}
 </style>

@@ -1,6 +1,12 @@
 <template>
-  <div :key="key">
-    <table class="table table-hover text-center">
+  <div class="board">
+    <h2>
+
+    회원리스트
+    </h2>
+    <br>
+    <div class="table-responsive"> 
+    <table class=" table table-hover text-center">
       <thead>
         <tr>
           <th>이름</th>
@@ -10,7 +16,7 @@
           <th>파티등록일</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="list">
         <tr v-for="user in store.partyMemberList" :key="user.userId">
           <td>{{ user.name }}</td>
           <td>{{ user.age }}</td>
@@ -22,38 +28,7 @@
       </tbody>
     </table>
 
-    <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center">
-        <li class="page-item">
-          <a
-            class="page-link"
-            @click.prevent="currentPage--"
-            :class="{ disabled: currentPage <= 1 }"
-            href="#"
-            >&lt;</a
-          >
-        </li>
-        <li
-          class="page-item"
-          :class="{ active: currentPage === page }"
-          v-for="page in pageCount"
-          :key="page"
-        >
-          <a class="page-link" href="#" @click.prevent="clickPage(page)">{{
-            page
-          }}</a>
-        </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            @click.prevent="currentPage++"
-            :class="{ disabled: currentPage >= pageCount }"
-            href="#"
-            >&gt;</a
-          >
-        </li>
-      </ul>
-    </nav>
+  </div>
   </div>
 </template>
 
@@ -98,37 +73,38 @@ const rejectRequest = async function (user) {
 </script>
 
 <style scoped>
-.input-group {
-  max-width: 700px;
-  display: flex;
-  justify-content: space-between;
+.board {
+  align-items: start;
+  justify-content: left;
+  padding-left: 40px;
+  height: 60vh;
+}
+.table-responsive {
+  max-height: 55vh;
+  overflow-y: auto;
 }
 
-.input-group > .form-control,
-.input-group > .form-floating,
-.input-group > .form-select {
-  position: relative;
-  flex: 6 auto;
-  width: 1%;
-  min-width: 0;
+/* 테이블 헤더와 바디의 너비를 고정하여 가로 스크롤을 방지 */
+.table {
+  width: 100%;
 }
 
-.form-control {
-  flex: 6;
+.list {
+  max-width: 1300px;
+  overflow-y: scroll;
 }
 
-.btn-warning {
-  flex: 1;
+
+/* 스크롤바 설정*/
+.table-responsive::-webkit-scrollbar {
+  width: 5px;
 }
 
-.input-group button {
-  background-color: #ff7f00;
-  border: none;
-  color: white;
-  margin-left: 10px;
+/* 스크롤바 막대 설정*/
+.table-responsive::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 145, 0, 0.452);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px;
 }
 
-.input-group p {
-  color: #ff7f00;
-}
 </style>

@@ -3,7 +3,7 @@
         <nav class="leftbox fixed-left bg-light">
             <div class="nav-content">
                 <div class="party-info">
-                    <p @click="goPartyMainPage">{{ store.selectedParty.name }}</p>
+                    <p class="fs-4 mt-2" @click="goPartyMainPage">{{ store.selectedParty.name }}</p>
                     <img :src="store.selectedParty.introductionImage" alt="헬스장 이미지" width="150px">
                     <p>참여인원 {{ store.selectedParty.memberCount }}명</p>
 
@@ -156,6 +156,7 @@ const goPartyMainPage = function () {
 .nav-links {
     width: 100%;
 }
+
 
 .write-button {
     height: 50px;

@@ -4,7 +4,7 @@
         <div class="party-main">
             <div class="main">
                 <div id="left" @mouseenter="isHovered = true" @mouseleave="isHovered = false" :class="{ 'hovered': isHovered}" >
-            <div v-if="isHovered" id="leftbox" class="leftbox">
+            <div v-if="isHovered" id="leftbox" class="leftbox" :class="{ 'hovered': isHovered}">
                         <PartyNav />
                     </div>
                 </div>
