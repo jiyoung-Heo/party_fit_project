@@ -93,7 +93,7 @@ onMounted(async () => {
     if (article.value.profile == null || article.value.profile == "") {
       article.value.profile = "user.jpg";
     }
-    store.getCommentList(articleId.value, 1);
+    store.getCommentList(articleId.value);
     isDelete.value =
       store.articleDetail.userId == userstore.loginUser.userId ||
       store.isManager;

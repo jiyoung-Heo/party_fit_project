@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ssafy.partyfit.model.dto.Article;
 import com.ssafy.partyfit.model.dto.Meet;
+import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.PartyMember;
 import com.ssafy.partyfit.model.dto.User;
 
@@ -30,5 +31,7 @@ public interface MeetService {
 	Meet selectMeetData(int meetId);
 
 	List<User> showMeetMember(int meetId);
+	
+	List<Meet> selectAllMeetForUser(int userId);
 
 }
