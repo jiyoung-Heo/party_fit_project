@@ -200,6 +200,7 @@ const performSearch = (cate) => {
   max-width: 700px;
   display: flex;
   justify-content: space-between;
+  text-align: center;;
 }
 
 .input-group > .form-control,

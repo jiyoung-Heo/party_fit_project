@@ -223,6 +223,7 @@ margin-left: 100px;
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
+  width:400px;
 }
 
 .note {
@@ -250,7 +251,7 @@ li{
   display: flex;
 }
 .party-members li a{
-  flex:3;
+  flex:2;
   border: none;
 }
 li span{
@@ -266,7 +267,7 @@ li span{
 }
 
 .right {
-  flex: 1;
+  flex: 2;
  
 }
 
@@ -277,6 +278,7 @@ li span{
   border: 1px solid #ccc;
   border-radius: 5px;
   background-color: #fff;
+  
 
 }
 .calender {

@@ -81,7 +81,6 @@ const gopartyPage = function(party) {
 
 .party-name {
   margin-bottom: 0.5rem; /* 그룹명과 멤버 수 사이의 간격을 줍니다. */
-  font-weight: bold;
   font-size: 1.2rem; /* 그룹명의 글자 크기를 조정합니다. */
   color: #333; /* 그룹명 글자 색상을 지정합니다. */
 }

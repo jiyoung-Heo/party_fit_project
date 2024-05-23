@@ -184,7 +184,6 @@ setInterval(() => {
 
 .username {
   font-size: 1.4em;
-  font-weight: bold;
   margin-bottom: 10px;
   color: black;
   position: absolute;
