@@ -86,7 +86,7 @@
   
   <style scoped>
   .carousel-inner {
-    height: 30vh; /* 높이를 뷰포트 높이의 50%로 설정 */
+    height: 60vh; /* 높이를 뷰포트 높이의 50%로 설정 */
   }
   
   .carousel-item {

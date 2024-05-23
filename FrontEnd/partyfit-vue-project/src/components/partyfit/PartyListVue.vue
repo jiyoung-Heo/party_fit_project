@@ -1,14 +1,23 @@
 <template>
   <div>
+    
     모집중인 모임 {{filteredPartyList.length}}개
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-3 g-4" data-aos="fade-down">
       <div v-for="party in filteredPartyList" :key="party.partyId" @click="gopartyPage(party)">
-        <div class="col">
-          <div class="card">
+        <div class="col"  
+        data-aos-easing="ease-out-cubic"
+        data-aos-anchor-placement="top-bottom"
+        
+        data-aos="fade-down"
+        
+        data-aos-duration="800"
+        
+        >
+          <div class="card party ">
             <img
-              :src="party.introductionImage"
-              class="card-img-top fit-image"
-              alt="..."
+            :src="party.introductionImage"
+            class="card-img-top fit-image"
+            alt="..."
             />
             <div class="card-body">
               <h5 class="card-title">{{ party.name }}</h5>
@@ -31,6 +40,7 @@ const router = useRouter();
 const partyStore = usePartyStore();
 onMounted(() => {
   partyStore.getPartyListWithCondition();
+   AOS.init(); 
 });
 
 const props = defineProps({
@@ -78,11 +88,28 @@ const gopartyPage = function(party) {
 
 </script>
 
+
 <style scoped>
+.aos-animate {
+  transition-delay: 50ms;
+  pointer-events: auto;
+}
+
+.party:hover{
+  transform: scale(1.1) translateY(-15px);
+  transition: all 0.3s ease;
+  
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
+  
+}
+.party{
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+}
 .fit-image {
   width: 100%;
   height: auto;
-  object-fit: cover; /* 이미지가 비율을 유지하면서 카드에 맞게 조정됩니다. */
-  max-height: 200px; /* 이미지의 최대 높이를 지정할 수 있습니다. */
+  object-fit: cover;
+  max-height: 200px;
 }
 </style>

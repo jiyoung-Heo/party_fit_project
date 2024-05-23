@@ -19,12 +19,12 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 //toast-ui
 import "@toast-ui/editor/dist/toastui-editor.css"; // Editor's Style
 import "sweetalert2/dist/sweetalert2.min.css";
-
+import "@fullcalendar/core"
 const app = createApp(App);
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
 app.use(pinia);
-app.use(router);
+app.use(router); 
 app.use(createNaverMap, {
   clientId: "g6ctjn17no", // Required
   // category: "ncp", // Optional

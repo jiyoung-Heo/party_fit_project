@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="user-detail">
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
@@ -65,6 +65,12 @@ const store = useUserStore();
 
 
 <style scoped>
+.user-detail{
+  align-items: start;
+  justify-content: left;
+  padding-left: 100px;
+  max-width: 1300px;
+}
 img {
   width: 200px;
   border-radius: 50%;
@@ -102,10 +108,12 @@ button {
 }
 
 .leftbox {
-  width: 200px;
-  height: 70vh;
-  overflow-y: auto;
-  flex: 1;
+    width: 210px;
+    height: 100%;
+    overflow-y: auto;
+    flex: 1;
+    animation: compare 2s infinite alternate;
+    z-index: 1;
 }
 
 .rightbox {

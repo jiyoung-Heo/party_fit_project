@@ -40,6 +40,11 @@ const meetList = computed(() => store.meetList);
 </script>
   
   <style scoped>
+
+  hr{
+      border: 0;
+      border-top: 3px double #8c8c8c;
+  }
 .reservation {
   background-color: white;
   padding: 20px;
@@ -66,7 +71,25 @@ const meetList = computed(() => store.meetList);
 
 .meet-list {
   margin-top: 10px;
+  width: 250px;
+  height : 50vh;
+  white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
+  text-overflow: ellipsis; /* 넘치는 부분을 ... 으로 표시 */
+  overflow-y: auto;
 }
+
+/* 스크롤바 설정*/
+.meet-list::-webkit-scrollbar{
+  width: 5px;
+}
+
+/* 스크롤바 막대 설정*/
+.meet-list::-webkit-scrollbar-thumb{
+  background-color: rgba(255, 145, 0, 0.452);
+  /* 스크롤바 둥글게 설정    */
+  border-radius: 10px; 
+}
+
 
 .meet {
   text-align: left;

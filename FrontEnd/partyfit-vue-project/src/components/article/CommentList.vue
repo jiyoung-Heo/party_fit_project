@@ -1,11 +1,7 @@
 <template>
   <div>
-    <!-- <div class="like"> -->
-      <!-- <a>❤️</a> 좋아요 댓글 <a>{{ store.commentList.length }}</a> -->
-    <!-- </div> -->
     <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
       <div class="flex-auto flex-shrink-0">
-        <!-- {{ props.articleId }} -->
         <p>댓글</p>
       </div>
     </div>
@@ -97,31 +93,42 @@ const createComment = async (parentId, depth) => {
 
 </script>
 
+
 <style scoped>
-.like {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin-bottom: 10px;
+.comment-item {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-left: 1px solid #ccc;
 }
 
-.input-group {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
+.commenter-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
 }
 
-.input-group .form-control {
-  flex: 1;
+.commenter-username {
+  font-weight: bold;
+  margin-right: 5px;
 }
 
-.input-group .btn-light {
+.comment-content {
+  margin-top: 5px;
+  white-space: pre-wrap; /* Wrap long content */
+}
+
+.btn-light {
   background-color: #ff7f00;
   border: none;
   color: white;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-.input-group .btn-light:hover {
+.btn-light:hover {
   background-color: #e06900;
 }
 </style>

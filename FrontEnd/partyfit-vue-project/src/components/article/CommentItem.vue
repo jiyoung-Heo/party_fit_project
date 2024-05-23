@@ -251,12 +251,57 @@ const deleteComment = (commentId) => {
 };
 </script>
 
+
+
 <style scoped>
+.comment-item {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
 .writer-image {
   width: 30px;
   height: 30px;
   border-radius: 50%;
   object-fit: cover;
   margin: 5px;
+}
+
+.reply-button {
+  font-size: 10px;
+  margin-left: 15px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+.reply-button:hover {
+  text-decoration: underline;
+}
+
+.btn-light {
+  background-color: #ff7f00;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.btn-light:hover {
+  background-color: #e06900;
+}
+
+.form-control {
+  flex: 1;
+}
+
+.child-comments {
+  margin-top: 10px;
+  padding-left: 20px; /* 들여쓰기 설정 */
+}
+
+.divider {
+  border-top: 1px solid #ccc;
+  margin-top: 10px;
 }
 </style>

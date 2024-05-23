@@ -3,18 +3,18 @@
     <div class="row" style="min-height: auto;">
       <div class="col-12 col-md-8">
         <!-- <TheMyFitHeaderNavVue /> -->
-        <CarenderVue />
+        <CarenderVue  class="hovered"/>
       </div>
       <div class="col-12 col-md-4">
-        <ReservationVue />
+        <ReservationVue  class="hovered"/>
       </div>
     </div>
     <div class="row" style="min-height: auto;">
       <div class="col-12 col-md-8">
-        <MyPartyFitVue />
+        <MyPartyFitVue  />
       </div>
-      <div class="col-12 col-md-4">
-        <TodoCheckVue />
+      <div class="col-12 col-md-4 ">
+        <TodoCheckVue  />
       </div>
     </div>
   </div>
@@ -31,22 +31,26 @@ import { onMounted } from "vue";
 </script>
 
 <style scoped>
-.container {
-  padding: 20px;
-  background-color: #f8f9fa;
-}
 
+
+.hovered{
+  transition: 0.3s transform ;
+}
+.hovered:hover{
+  transform: scale(1.05);
+  z-index:99;
+
+}
 .row {
+  display: flex;
   margin-bottom: 20px;
+  flex-wrap: wrap;
 }
 
 .col-12 {
   padding: 10px;
+  box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-  }
-}
+
 </style>

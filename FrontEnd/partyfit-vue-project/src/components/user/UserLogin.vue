@@ -3,20 +3,22 @@
     <h1>로그인</h1>
     <fieldset>
       <div class="input-group">
-        <label for="id">ID</label>
+        <label for="id">아이디 : </label>
         <input type="text" id="id" v-model="loginId" />
       </div>
+      <hr>
       <div class="input-group">
-        <label for="password">PW</label>
+        <label  for=" password">비밀번호 : </label>
         <input type="password" id="password" v-model="password" />
       </div>
-      <div>
-        <button @click="userLogin" class="login-button">로그인</button>
+      <hr>
+      <div class="btns" style="display: inline">
+        <p>📌<a @click="userLogin" class=" custom-btn btn-15"> 로그인</a></p>
+
+        <p>👍 <RouterLink class="custom-btn btn-15" :to="{ name: 'findLoginId' }">아이디찾기</RouterLink></p>
+        <p>✔️ <RouterLink class="custom-btn btn-15" :to="{ name: 'findPassword' }">비밀번호찾기</RouterLink></p>
       </div>
-      <div class="link-group">
-        <RouterLink :to="{ name: 'findLoginId' }">아이디찾기</RouterLink> |
-        <RouterLink :to="{ name: 'findPassword' }">비밀번호찾기</RouterLink>
-      </div>
+
     </fieldset>
   </div>
 </template>
@@ -40,31 +42,42 @@ const userLogin = function () {
 
 <style scoped>
 .login-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #f7f7f7;
-  font-family: 'Arial', sans-serif;
+  align-items: start;
+  justify-content: left;
+  padding: 150px;
+  height: 90vh;
+  max-width: 1300px;
 }
+hr{
+  margin: 0;
+    color: inherit;
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: .25;
+}
+
+.btns p a{
+padding:5px;
+}
+
+.btns p{
+  margin-top:20px;
+}
+
 
 h1 {
   margin-bottom: 20px;
   color: #333;
 }
 
-fieldset {
+input {
   border: none;
-  padding: 20px;
-  width: 300px;
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
 }
 
 .input-group {
-  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 15px;
 }
 
 label {
@@ -72,51 +85,71 @@ label {
   margin-bottom: 5px;
   font-weight: bold;
   color: #555;
+  margin-right: 10px;
+
 }
 
-input[type="text"],
-input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 
-input[type="text"]:focus,
-input[type="password"]:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
 
-.login-button {
-  width: 100%;
-  padding: 10px;
+
+/* 15 */
+.btn-15 {
   border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+  z-index: 1;
 }
 
-.login-button:hover {
-  background-color: #0056b3;
+.btn-15:after {
+  position: absolute;
+  content: "";
+  width: 0;
+  height: 100%;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  background-color: #dcca00b8;
+  border-radius: 5px;
+
+  transition: all 0.3s ease;
 }
 
-.link-group {
-  margin-top: 10px;
-  text-align: center;
+.btn-15:hover {
+  color: black;
 }
 
-RouterLink {
-  color: #007bff;
-  text-decoration: none;
+.btn-15:hover:after {
+  left: 0;
+  width: 100%;
 }
 
-RouterLink:hover {
-  text-decoration: underline;
+.btn-15:active {
+  top: 2px;
+}
+
+.btns {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Optional: Adjust based on your design */
+  gap: 10px; /* Optional: Adjust the spacing between elements */
+}
+
+.custom-btn {
+  
+    height: 40px;
+    color: black;
+    border-radius: 5px;
+ 
+    /* font-family: 'Lato', sans-serif; */
+    /* font-weight: 500; */
+    /* font-size: 25px; */
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    /* display: inline-block; */
+    text-decoration: none;
+    outline: none;
+    text-align: start;
+    align-items: center;
+
 }
 </style>

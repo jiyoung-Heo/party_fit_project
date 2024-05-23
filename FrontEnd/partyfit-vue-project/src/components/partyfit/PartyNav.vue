@@ -22,7 +22,7 @@
                 <hr>
                 <div class="nav-links">
                     <ul class="navbar-nav">
-                        <p class="catagory">게시판</p>
+                        <p class="catagory"><a>게시판</a></p>
                         <li>
                             <RouterLink :to="{ name: 'noticeboard', params: { partyId: store.selectedParty.partyId } }">
                                 공지사항</RouterLink>
@@ -38,6 +38,8 @@
                             <RouterLink :to="{ name: 'reviewboard', params: { partyId: store.selectedParty.partyId}}">모임후기</RouterLink>
                         </li>
                         <p class="catagory">일정</p>
+                        <p></p>
+                        <p class="catagory"><a>일정</a></p>
                         <li>
                             <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId}}">일정 조회</RouterLink>
                         </li>
@@ -108,21 +110,45 @@ const goPartyMainPage = function () {
 </script>
 
 <style scoped>
-.catagory {
+.catagory a {
+    background-color : rgba(255, 235, 192, 0.842);
+    padding:3px 10px;
+    display: inline-block;
+    z-index:99;
+    
+}
+.catagory{
+
     text-align: left;
+}
 
+.navbar-nav , .navbar-nav p{
+    margin-left: 10px;
+}
+
+
+
+.navbar-nav a {
+    text-align: left;
+    text-decoration: none;
+    color: black;
 
 }
 
-.catagory li {
-    color: grey;
+.navbar-nav li{
+    text-align: left;
+    text-decoration: none;
+    margin-left : 30px;
+    margin:3px 20px;
 }
+
 
 .nav-content {
+    height:100%;
+    top:0px;
     display: flex;
     flex-direction: column;
     width: 100%;
-    align-items: center;
     text-align: center;
 }
 
@@ -161,19 +187,24 @@ const goPartyMainPage = function () {
 }
 
 .leftbox {
-
-    width: 200px;
-    height: 100%;
-    overflow-y: auto;
-    flex: 1;
+    
 }
+/* 스크롤바 설정*/
+.leftbox::-webkit-scrollbar{
+    width: 5px;
+  }
+  
+  /* 스크롤바 막대 설정*/
+  .leftbox::-webkit-scrollbar-thumb{
+    background-color: rgba(255, 145, 0, 0.452);
+    /* 스크롤바 둥글게 설정    */
+    border-radius: 10px; 
+  }
+  
+
 
 .rightbox {
     flex: 1;
-}
-
-* {
-    border: 1px solid red;
 }
 
 .row {
