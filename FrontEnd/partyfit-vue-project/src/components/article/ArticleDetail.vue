@@ -7,6 +7,7 @@
         </button>
       </template>
       <div class="category" @click="goBoard(category)">{{ category }} &gt;</div>
+      
       <div class="title fs-5" v-if="article">{{ article.title }}</div>
 
       <div class="writer" v-if="article">
@@ -42,12 +43,8 @@
       ></div>
 
       <hr />
-      <!-- <NaverMap -->
-  <!-- :locationData="locationData" -->
-  <!-- v-if="article && article.mapJson && article.category === 3" -->
-<!-- /> -->
-<div id="map" style="width: 100%; height: 400px;"></div>
 
+      <div id="map" style="width: 100%; height: 400px;"></div>
       <CommentList :article-id="articleId" />
     </div>
   </div>
@@ -76,6 +73,7 @@ const writer = ref();
 const isDelete = ref(false);
 
 const deleteArticle = () => {
+  // console.log(store.articleDetail.userId + " " + userstore.loginUser.userId);
   if (
     store.articleDetail.userId !== userstore.loginUser.userId &&
     !store.isManager
@@ -93,11 +91,13 @@ const deleteArticle = () => {
 const locationData = ref();
 const mapContainer = document.getElementById('map');
 
+
 onMounted(async () => {
   articleId.value = route.params.articleId;
   await store.getArticleDetail(articleId.value, false).then(() => {
     article.value = store.articleDetail;
     if (!article.value.profile) {
+      
       article.value.profile = "user.jpg";
     }
     store.getCommentList(articleId.value);
@@ -105,7 +105,6 @@ onMounted(async () => {
       store.articleDetail.userId == userstore.loginUser.userId ||
       store.isManager;
     markdownText.value = store.articleDetail.content;
-
     if (article.value.meetId) {
       store.getOneMeet(article.value.meetId).then((meet) => {
         thisMeet.value = meet;
@@ -157,6 +156,7 @@ const initializeMap = () => {
     // console.error("Container map not found or location data is missing");
   }
 };
+
 
 const category = ref();
 watch(article, (newVal) => {
@@ -224,6 +224,7 @@ const compiledMarkdown = computed(() => {
   return marked(markdownText.value);
 });
 </script>
+
 
 <style scoped>
 .widget-container {

@@ -1,7 +1,7 @@
 <template>
-    <div >
+    <div class="board" >
 
-        <div class="input-group mb-3 ">
+        <div class="input-group mb-3 " style="margin-left:50px">
             <div class ="input-group">
 
             <input type="text" class="form-control me-4" placeholder="검색어를 입력해주세요" v-model="searchQuery" />
@@ -26,7 +26,6 @@
         </div>
 
         <div class="container">
-            <!-- <BoardSearchInput /> -->
             <table class="table table-hover text-center">
                 <thead>
                     <tr>
@@ -124,7 +123,7 @@ const setOld = function () {
 }
 
 const goArticleCreate = function () {
-    router.push({ name: 'articleCreate', params: { category: "모임후기" } })
+    router.push({ name: 'createArticle', params: { partyId: store.selectedParty.partyId } })
 }
 const searchQuery = ref("");
 const performSearch = () =>{
@@ -134,11 +133,22 @@ const performSearch = () =>{
 </script>
 
 <style scoped>
+.board{
+    align-items: start;
+  justify-content: left;
+  padding-left: 40px;
+  height: 90vh;
+  max-width: 1300px;
+
+}
 .input-group {
     max-width: 700px;
     display: flex;
     justify-content: space-between;
 
+}
+.input-group .btn-warning{
+    border-radius: 5px;
 }
 
 .input-group>.form-control,

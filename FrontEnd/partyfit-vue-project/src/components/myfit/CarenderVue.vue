@@ -89,6 +89,7 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
 /* 스크롤바 설정*/
 .a::-webkit-scrollbar {
   width: 5px;

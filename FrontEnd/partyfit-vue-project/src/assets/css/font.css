@@ -1,9 +1,34 @@
-* {
-  font-family: "Noto Sans KR", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 600;
+
+@font-face {
+   font-family:'NeoDunggeunmo';
+
+  src: url('/assets/font/neodgm.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-feature-settings: "calt" off;
+}
+
+@font-face {
+  font-family: "Galmuri14", sans-serif;
+  src: url('/assets/font/Galmuri11-Bold.woff2') format('woff2');
+  font-weight: 700;
   font-style: normal;
 }
+
+body {
+  font-family:'NeoDunggeunmo';
+  
+  font-optical-sizing: auto;
+  font-weight:normal;
+  font-style: normal;
+}
+
 .coral-color {
   color: coral;
+}
+
+:root {
+--main-color :coral;
+
+--backgound-color : #f8f9fa;
 }

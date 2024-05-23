@@ -1,28 +1,45 @@
 <template>
-  <div :key="key">
-    <h2>모임 목록</h2>
+   <div class="board" >
+   
+    <div class="input-group mb-3 " style="margin-left:50px">
+            <div class ="input-group">
 
-    <button @click="category(1)">모집 중</button>
-    <button @click="category(2)">정원 마감</button>
+            <input type="text" class="form-control me-4" placeholder="검색어를 입력해주세요" v-model="searchQuery" />
+            <button class="btn-warning" @click="performSearch()">검색</button>
+            </div>
+            <p @click ="goArticleCreate">+ 글 작성하기</p>
+        </div>
+        <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+            <div class="flex-auto flex-shrink-0">
+                <h3>meet</h3>
+                <p>관심 있는 meet에 참여해보세요!</p>
+            </div>
+            <div
+                class="gh-header-actions mt-0 mb-3 mb-md-2 ml-1 flex-md-order-1 flex-shrink-0 d-flex flex-items-center gap-1">
 
-    <table>
-      <thead>
-        <tr>
-          <th>모임명</th>
-          <!-- <th>내용</th> -->
-          <th>현재 인원</th>
-          <th>정원</th>
-          <th>시작시간</th>
-          <th>끝나는시간</th>
-          <!-- <th>모집중</th> -->
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="meet in meets"
-          :key="meet.meetId"
-          @click="goMeetDetail(meet)"
-        >
+
+                <a class="dropdown-item" @click="setCurrent()">최신순</a>
+                <a class="dropdown-item" @click="setOld()">오래된순</a>
+
+
+            </div>
+        </div>
+
+        <div class="container">
+            <table class="table table-hover text-center">
+                <thead>
+                    <tr>
+                        <!-- <th></th> -->
+                        <th>meet</th>
+                        <th>현재인원</th>
+                        <th>정원</th>
+                        <th>시작시간</th>
+                        <th>끝나는시간</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                  <tr v-for="meet in meets" :key="meet.meetId" @click="goMeetDetail(meet)">
           <td>{{ meet.title }}</td>
           <!-- <td>{{ meet.content }} </td> -->
           <td>{{ meet.headcount }}</td>
@@ -35,47 +52,31 @@
             {{ meet.endTime.split("T")[0] }}
             {{ meet.endTime.split("T")[1].slice(0, 5) }}
           </td>
-          <!-- <td> <p v-if="meet.status === 1">모집중</p>
-            <p v-if="meet.status === 2">정원마감</p> </td> -->
+                    </tr>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination d-flex justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" @click.prevent="currentPage--" :class="{ disabled: currentPage <= 1 }"
+                            href="#">&lt;</a>
+                    </li>
+                    <li class="page-item" :class="{ active: currentPage === page }" v-for="page in pageCount"
+                        :key="page">
+                        <a class="page-link" href="#" @click.prevent="clickPage(page)">{{
+                            page
+                            }}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" @click.prevent="currentPage++"
+                            :class="{ disabled: currentPage >= pageCount }" href="#">&gt;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
 
-          <!-- <button @click="meetjoinRequest(meet.meetId)">가입신청</button> -->
-        </tr>
-      </tbody>
-    </table>
 
-    <nav aria-label="Page navigation">
-      <ul class="pagination d-flex justify-content-center">
-        <li class="page-item">
-          <a
-            class="page-link"
-            @click.prevent="currentPage--"
-            :class="{ disabled: currentPage <= 1 }"
-            href="#"
-            >&lt;</a
-          >
-        </li>
-        <li
-          class="page-item"
-          :class="{ active: currentPage === page }"
-          v-for="page in pageCount"
-          :key="page"
-        >
-          <a class="page-link" href="#" @click.prevent="clickPage(page)">{{
-            page
-          }}</a>
-        </li>
-        <li class="page-item">
-          <a
-            class="page-link"
-            @click.prevent="currentPage++"
-            :class="{ disabled: currentPage >= pageCount }"
-            href="#"
-            >&gt;</a
-          >
-        </li>
-      </ul>
-    </nav>
-  </div>
+    </div>
 </template>
   
   <script setup>
@@ -122,39 +123,53 @@ const goMeetDetail = function (meet) {
   router.push({ name: "meetdetail", params: { meetId: meet.meetId } });
 };
 </script>
-  
-  <style scoped>
+ 
+<style scoped>
+.board{
+    align-items: start;
+  justify-content: left;
+  padding-left: 40px;
+  height: 90vh;
+  max-width: 1300px;
+
+}
 .input-group {
-  max-width: 700px;
-  display: flex;
-  justify-content: space-between;
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+
+}
+.input-group .btn-warning{
+    border-radius: 5px;
 }
 
-.input-group > .form-control,
-.input-group > .form-floating,
-.input-group > .form-select {
-  position: relative;
-  flex: 6 auto;
-  width: 1%;
-  min-width: 0;
+.input-group>.form-control,
+.input-group>.form-floating,
+.input-group>.form-select {
+    position: relative;
+    flex: 6 auto;
+    width: 1%;
+    min-width: 0;
+
 }
 
 .form-control {
-  flex: 6;
+    flex: 6;
 }
 
 .btn-warning {
-  flex: 1;
+    flex: 1;
 }
 
 .input-group button {
-  background-color: #ff7f00;
-  border: none;
-  color: white;
-  margin-left: 10px;
+    background-color: #ff7f00;
+    border: none;
+    color: white;
+    margin-left: 10px;
 }
 
 .input-group p {
-  color: #ff7f00;
+    color :#ff7f00;
+ 
 }
 </style>

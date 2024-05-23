@@ -237,6 +237,8 @@ const isEmailUQ = async function () {
   padding: 150px;
   height: 90vh;
   max-width: 1300px;
+  padding-left: 200px;
+
 }
 
 hr {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-create">
     <select v-model="selectCategory" name="board">
       <option value="0">자유게시판</option>
       <option value="1">가입인사</option>
@@ -36,7 +36,7 @@
     </template>
     <p>내용</p>
     <div id="editor"></div>
-    <button @click="createArticle">게시하기</button>
+    <button class="btn" @click="createArticle">게시하기</button>
   </div>
 </template>
 
@@ -307,6 +307,27 @@ const reSelectLocation = () => {
 </script>
 
 <style scoped>
+.btn{
+  position: absolute;
+  right:0;
+  margin-top:10px;
+
+}
+.article-create{
+  position: relative;
+  align-items: start;
+  justify-content: left;
+  padding-left: 150px;
+  height: 90vh;
+  max-width: 1300px;
+width:900px;
+}
+select{
+  height: 30px;
+  margin-bottom:10px;
+  position : relative;
+  
+}
 /* 이미지 미리보기 컨테이너 */
 .file-upload {
   margin-bottom: 20px;
