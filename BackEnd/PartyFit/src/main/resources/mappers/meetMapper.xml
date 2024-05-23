@@ -40,7 +40,7 @@
 		select * from meet where meet_id IN (select DISTINCT meet_id from
 		meet_member where user_id = #{userID}) and end_time
 		&lt;= 
-		now() and meet_id not in(select meet_id from article where category = '3') and delete_yn='N'
+		now() and meet_id not in(select IFNULL(meet_id,0) from article where category = '3') and delete_yn='N'
 	</select>
 
 	<update id="approveMeet" parameterType="int">
