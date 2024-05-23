@@ -220,10 +220,9 @@ const createReplyComment = async (depth) => {
 
   try {
     await store.createComment(props.articleId, comment);
-
     replyContent.value = ""; // 입력 폼 초기화
     showReplyForm.value = false;
-    $emit("loadComments"); // 댓글 리스트 새로고침
+    // $emit("loadComments"); // 댓글 리스트 새로고침
   } catch (error) {
     console.error("Error creating comment:", error.message);
   }

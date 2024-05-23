@@ -68,6 +68,7 @@ const forceRerender = () => {
 };
 
 const pageCount = computed(() => {
+    if(store.memberRequestList == null) return null
     return Math.ceil(store.memberRequestList.length / perPage);
 });
 

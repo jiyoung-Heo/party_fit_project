@@ -62,11 +62,14 @@ const userstore = useUserStore();
 const articleId = ref();
 
 const deleteMeet = async (meetId) => {
+  console.log(meetId)
   await store.canceljoinRequest(meetId);
   isJoin.value = !isJoin.value;
 };
 
 const meetjoinRequest = async function (meetId) {
+  console.log(meetId)
+
   await store.meetjoinRequest(meetId);
   isJoin.value = !isJoin.value;
 };
@@ -81,11 +84,15 @@ const goBoard = function () {
 const isJoin = ref(false);
 
 onMounted(async () => {
-  await store.getMeetMemberList(store.selectedMeet.partyId,store.selectedMeet.meetId);
-
-  isJoin.value = store.meetMemberList.some(
-    (member) => member.userId == userstore.loginUserId
-  );
+  await store.getMeetMemberList(store.selectedMeet.partyId, store.selectedMeet.meetId);
+  if (Array.isArray(store.meetMemberList)) {
+    isJoin.value = store.meetMemberList.some(
+      (member) => member.userId == userstore.loginUserId
+    );
+  } else {
+    console.error('meetMemberList가 배열이 아닙니다:', store.meetMemberList);
+    isJoin.value = false; // 기본값 설정
+  }
 });
 </script>
   

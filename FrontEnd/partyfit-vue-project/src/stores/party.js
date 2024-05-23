@@ -207,7 +207,7 @@ export const usePartyStore = defineStore(
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         articleDetail.value = res.data;
       });
     };
@@ -216,6 +216,7 @@ export const usePartyStore = defineStore(
     const commentList = ref(null);
 
     const getCommentList = async function (articleId) {
+      // console.log(articleId);
       await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
         method: "GET",
@@ -444,6 +445,27 @@ export const usePartyStore = defineStore(
           if (status === 0) meetRequestList.value = res.data;
           else if (status === 1) meetList.value = res.data;
           else if (status === 2) meetFullList.value = res.data;
+          // console.log('ddd')
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+    const allMeetList = ref()
+    const getAllMeetList = async function () {
+      // console.log(status);
+      await axios({
+        url: `${REST_USER_API}/meet`,
+        method: "GET",
+        params: {
+          userId: useStore.loginUserId,
+        },
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          allMeetList.value = res.data
         })
         .catch((err) => {
           console.log(err);
@@ -497,16 +519,16 @@ export const usePartyStore = defineStore(
 
     //모임가입신청
     const meetjoinRequest = async function (meetId) {
+      console.log("in"+meetId)
       // console.log(meetId + " " + useStore.loginUser.userId);
       await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/${useStore.loginUser.userId}`,
         method: "PUT",
-
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        getMeetMemberList(meetId)
+        getMeetMemberList(selectedParty.value.partyId,meetId)
         // console.log("가입신청함");
       });
     };
@@ -522,7 +544,7 @@ export const usePartyStore = defineStore(
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        getMeetMemberList(meetId)
+        getMeetMemberList(selectedParty.value.partyId,meetId)
         // console.log("가입신청함");
       });
     };
@@ -611,6 +633,8 @@ export const usePartyStore = defineStore(
       canceljoinRequest,
       getOneParty,
       getOneMeet,
+      allMeetList,
+      getAllMeetList,
     };
   },
   { persist: true }

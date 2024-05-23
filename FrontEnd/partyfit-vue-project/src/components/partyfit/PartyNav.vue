@@ -37,8 +37,7 @@
                         <li>
                             <RouterLink :to="{ name: 'reviewboard', params: { partyId: store.selectedParty.partyId}}">모임후기</RouterLink>
                         </li>
-                        <p class="catagory">일정</p>
-                        <p></p>
+
                         <p class="catagory"><a>일정</a></p>
                         <li>
                             <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId}}">일정 조회</RouterLink>
@@ -48,7 +47,7 @@
                         </li>
                         <!-- {{ store.isManager }} -->
                         <div v-if="store.isManager">
-                            <p class="catagory">운영</p>
+                            <p class="catagory"><a>운영</a></p>
                             <li>
                                 <RouterLink :to="{ name: 'manageRequest', params: { partyId: store.selectedParty.partyId } }">
                                     가입요청 관리

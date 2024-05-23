@@ -40,6 +40,7 @@ const handleEventClick = function (arg) {
     if (result.isConfirmed) {
       partyStore.getOneParty(arg.event.extendedProps.meet.partyId);
       partyStore.selectedMeet = await arg.event.extendedProps.meet;
+      // console.log(arg.event.extendedProps.meet.meetId)
       router.push({
         name: "meetdetail",
         params: {
@@ -67,13 +68,14 @@ const calendarOptions = ref({
 });
 
 onMounted(async () => {
-  if (store.meetList != null || store.meetList != undefined) {
-    for (let i = 0; i < store.meetList.length; i++) {
+  partyStore.getMeetList(1,2)
+  if (partyStore.meetList != null || partyStore.meetList != undefined) {
+    for (let i = 0; i < partyStore.meetList.length; i++) {
       userData.value.push({
-        title: store.meetList[i].title,
-        start: store.meetList[i].startTime,
-        end: store.meetList[i].endTime,
-        meet: store.meetList[i],
+        title: partyStore.meetList[i].title,
+        start: partyStore.meetList[i].startTime,
+        end: partyStore.meetList[i].endTime,
+        meet: partyStore.meetList[i],
       });
     }
   }

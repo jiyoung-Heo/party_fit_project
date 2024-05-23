@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.partyfit.model.dto.Meet;
+import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.User;
 
 public interface MeetDao {
@@ -30,4 +31,6 @@ public interface MeetDao {
 
 
 	List<User> selectMeetMember(int meetId);
+	List<Meet> selectAllMeetForUser(int userId);
+
 }
