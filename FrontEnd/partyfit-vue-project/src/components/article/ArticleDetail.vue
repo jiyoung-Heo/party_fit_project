@@ -42,6 +42,11 @@
       ></div>
 
       <hr />
+      <!-- <NaverMap -->
+  <!-- :locationData="locationData" -->
+  <!-- v-if="article && article.mapJson && article.category === 3" -->
+<!-- /> -->
+<div id="map" style="width: 100%; height: 400px;"></div>
 
       <CommentList :article-id="articleId" />
     </div>
@@ -71,7 +76,6 @@ const writer = ref();
 const isDelete = ref(false);
 
 const deleteArticle = () => {
-  // console.log(store.articleDetail.userId + " " + userstore.loginUser.userId);
   if (
     store.articleDetail.userId !== userstore.loginUser.userId &&
     !store.isManager
@@ -86,11 +90,14 @@ const deleteArticle = () => {
   goBoard(category.value);
 };
 
+const locationData = ref();
+const mapContainer = document.getElementById('map');
+
 onMounted(async () => {
   articleId.value = route.params.articleId;
   await store.getArticleDetail(articleId.value, false).then(() => {
     article.value = store.articleDetail;
-    if (article.value.profile == null || article.value.profile == "") {
+    if (!article.value.profile) {
       article.value.profile = "user.jpg";
     }
     store.getCommentList(articleId.value);
@@ -98,17 +105,61 @@ onMounted(async () => {
       store.articleDetail.userId == userstore.loginUser.userId ||
       store.isManager;
     markdownText.value = store.articleDetail.content;
+
+    if (article.value.meetId) {
+      store.getOneMeet(article.value.meetId).then((meet) => {
+        thisMeet.value = meet;
+      });
+    }
+
+    locationData.value = article.value.mapJson;
+    initializeMap();
   });
-  // console.log("test"+article.value.meetId)
-  if (article.value.meetId != null && article.value.meetId != 0) {
-    //해당 meet 정보 가져오기
-    thisMeet.value = await store.getOneMeet(article.value.meetId);
-  }
 });
+
+const initializeMap = () => {
+  locationData.value = JSON.parse(locationData.value);
+  // console.log(locationData.value.mapx);
+  if (
+    locationData.value &&
+    locationData.value.mapx &&
+    locationData.value.mapy
+  ) {
+    const mapOptions = {
+      center: new naver.maps.LatLng(
+        locationData.value.mapy / 1e7,
+        locationData.value.mapx / 1e7
+      ),
+      zoom: 15,
+    };
+    const map = new naver.maps.Map("map", mapOptions);
+    const marker = new naver.maps.Marker({
+      position: new naver.maps.LatLng(
+        locationData.value.mapy / 1e7,
+        locationData.value.mapx / 1e7
+      ),
+      map: map,
+      title: locationData.value.title,
+    });
+    const infoWindow = new naver.maps.InfoWindow({
+      content: `<div style="padding:10px;">${locationData.value.title}</div>`,
+    });
+    infoWindow.open(map, marker);
+
+    naver.maps.Event.addListener(marker, "click", () => {
+      if (infoWindow.getMap()) {
+        infoWindow.close();
+      } else {
+        infoWindow.open(map, marker);
+      }
+    });
+  } else {
+    // console.error("Container map not found or location data is missing");
+  }
+};
 
 const category = ref();
 watch(article, (newVal) => {
-  // console.log(newVal)
   if (newVal) {
     switch (newVal.category) {
       case 0:
@@ -133,7 +184,6 @@ watch(article, (newVal) => {
 });
 
 const goBoard = function (category) {
-  // console.log(category);
   if (category) {
     switch (category) {
       case "자유게시판":
@@ -153,11 +203,13 @@ const goBoard = function (category) {
           name: "noticeboard",
           params: { partyId: store.selectedParty.partyId },
         });
+        break;
       case "모임후기":
         router.push({
           name: "reviewboard",
           params: { partyId: store.selectedParty.partyId },
         });
+        break;
       default:
         break;
     }
@@ -172,7 +224,6 @@ const compiledMarkdown = computed(() => {
   return marked(markdownText.value);
 });
 </script>
-
 
 <style scoped>
 .widget-container {
