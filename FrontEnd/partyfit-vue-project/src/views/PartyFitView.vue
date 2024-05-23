@@ -36,10 +36,10 @@ const party = ref();
 const showLeftBox = ref(false);
 
 onUnmounted(() => {
-    store.selectedParty = "";
-    store.isjoining = false;
-    store.isManager = false;
-    store.isWaiting = false;
+// store.selectedParty = "";
+store.isjoining = false;
+store.isManager = false;
+store.isWaiting = false;
 })
 
 onMounted(()=>{

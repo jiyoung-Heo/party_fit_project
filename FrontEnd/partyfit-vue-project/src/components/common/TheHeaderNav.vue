@@ -1,4 +1,4 @@
-<template>
+
   <div class="container1 d-flex">
     <div class="top ">
 
@@ -16,7 +16,13 @@
 
 
       <div class="user-info">
-        <template v-if="store.accessToken == null || store.accessToken == ''">
+        <template
+          v-if="
+            store.loginUser == null ||
+            store.loginUser == undefined ||
+            store.loginUser == ''
+          "
+        >
             <div class="login-logout">
 
               <p class="login" @click="click">
@@ -48,6 +54,15 @@
         </template>
       </div>
     </div>
+    
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet"
@@ -64,34 +79,31 @@ const store = useUserStore();
 const router = useRouter();
 const accessToken = computed(() => store.accessToken);
 
+const moveMainPage = computed(() => {
+  return store.accessToken ? { name: "myFit" } : { name: "beforeLoginMain" };
+});
+
 const click = () => { router.push({ name: "login" }); }
 const signup = () => { router.push({ name: "signup" }); }
+
 onMounted(() => {
-  if (store.accessToken == null || store.accessToken == "") {
+  if (!store.accessToken) {
     router.push({ name: "beforeLoginMain" });
-  } else {
-    // router.push({ name: "myFit" });
   }
   AOS.init();
 });
 
-const moveMainPage = computed(() => {
-  if (store.accessToken == null || store.accessToken == "") {
-    return "beforeLoginMain";
-  }
-  return "myFit";
-});
-
-watch(accessToken, async (nv, ov) => {
+watch(accessToken, async (newVal) => {
   await nextTick();
-  if (nv == null || nv == "") {
+  if (!newVal) {
     router.push({ name: "beforeLoginMain" });
   } else {
+    router.push({ name: "myFit" }); // 로그인 후 myFit으로 이동
   }
 });
 
 const hasProfile = computed(() => {
-  return store.loginUser.profile !== null;
+  return !!store.loginUser.profile;
 });
 
 const logout = () => {
@@ -435,6 +447,7 @@ a {
     url(https://example.com/MaterialIcons-Regular.woff) format("woff"),
     url(https://example.com/MaterialIcons-Regular.ttf) format("truetype");
 }
+
 
 .material-icons {
   font-family: "Material Icons";

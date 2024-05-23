@@ -5,12 +5,12 @@
 		resultType="Comment">
 		select 
 		c.comment_id, c.content, c.reg_date, c.mod_date,
-		c.parent_id, c.depth, c.seq, c.article_id, 
+		c.parent_id, c.depth, c.seq, c.article_id, c.user_id,c.delete_yn,
 		count(l.likes_id) as likesCount , u.username,u.profile
 		from comment c left join comment_likes l 
 		on c.comment_id = l.target_id
 		join user u on c.user_id = u.user_id
-		where c.delete_yn = 'N' and c.article_id = #{articleId}
+		where c.article_id = #{articleId}
 		group by c.comment_id
 		order by c.parent_id asc, c.depth asc, c.seq asc
 	</select>
@@ -18,10 +18,10 @@
 		resultType="Comment">
 		select c.content, c.reg_date, c.mod_date, c.likes,
 		c.parent_id, c.depth,
-		c.seq, c.article_id
+		c.seq, c.article_id, c.user_id,c.delete_yn
 		from comment c
 		where
-		c.delete_yn = 'N' and c.article_id = #{articleId}
+		c.article_id = #{articleId}
 		order by c.parent_id
 		desc, c.depth desc, c.seq desc
 		limit 1

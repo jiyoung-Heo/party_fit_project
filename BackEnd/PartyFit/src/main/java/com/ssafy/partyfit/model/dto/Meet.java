@@ -16,4 +16,5 @@ public class Meet {
     private int partyId;
     private int headcount;
     private String deleteYn;
+    private int userId;
 }

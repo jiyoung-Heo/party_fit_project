@@ -1,11 +1,12 @@
 <template>
-  <div>
-    <div class="banner">
-      <div v-if="party.bannerImage !== null">
-        <img :src="party.bannerImage" width="100%" height="160px" style="z-index:2;"/>
-      </div>
-      <div v-else>
-        <div style="
+    <div>
+      <div class="banner">
+        <div v-if="party.bannerImage !== null ||party.bannerImage !== ''">
+          <img :src="party.bannerImage" width="100%" height="160px" style="z-index:2;" />
+        </div>
+        <div v-else>
+          <div
+            style="
               width: 100%;
               height: 160px;
               text-align: center;
@@ -33,9 +34,12 @@
         <div class="notice">
           <p> 💡공지사항</p>
           <ul>
+          <div v-if="store.noticeList == null || store.noticeList == undefined || store.noticeList == ''">
+                    등록된 글이 하나도 없습니다.
+                </div>
             <div v-for="(article, index) in store.noticeList" :key="article.articleId">
               <template v-if="index < 5">
-                <li>
+                <li  @click="goArticleDetail(article.articleId)">
                   <div class="note">
                     <div class="note-title">{{ article.title }}</div>
                     <div class="note-date">{{ article.regDate.split('T')[0] }}</div>
@@ -48,9 +52,12 @@
         <div class="hotView">
           <p>🔥인기글</p>
           <ul>
+            <div v-if="store.hotViewList == null || store.hotViewList == undefined || store.hotViewList == ''">
+                    등록된 글이 하나도 없습니다.
+            </div>
             <div v-for="(article, index) in store.hotViewList" :key="article.articleId">
               <template v-if="index < 5">
-                <li>
+                <li @click="goArticleDetail(article.articleId)">
                   <div class="note">
 
                   <div class="note-title">{{ article.title }}</div>
@@ -72,7 +79,7 @@
             파티 참여자
             <ul>
               <li v-for="member in store.partyMemberList" :key="member.partyMemberId">
-                ▪<a>{{ member.username }}</a> <span v-if="member.grade == 1"> 매니저</span> <span v-else> 회원</span>
+                ▪<a>{{ member.username }}</a> <span v-if="member.grade == 1"> 매니저</span> <span v-if="member.grade != 1"> 회원</span>
               </li>
             </ul>
           </div>
@@ -83,48 +90,50 @@
   </template>
   
   <script setup>
-import { onMounted, ref, computed } from 'vue';
-import { usePartyStore } from '@/stores/party';
-import { useUserStore } from '@/stores/user';
-import { useRoute, useRouter } from 'vue-router';
+  import { onMounted, ref, computed } from 'vue';
+  import { usePartyStore } from '@/stores/party';
+  import { useUserStore } from '@/stores/user';
+  import { useRoute, useRouter } from 'vue-router';
+  
+  const route = useRoute();
+  const router = useRouter();
+  const userstore = useUserStore();
+  const store = usePartyStore();
+  
+  const party = ref(store.selectedParty);
+  const partymemberlist = ref(store.partyMemberList);
+  
+  const loginUser = ref(userstore.loginUser);
+  const currentStatus = ref(null);
+  
+  onMounted(async () => {
+    store.getNoticeList(route.params.partyId);
+    store.getHotViewList(route.params.partyId,0);
+    //가입중인원전체조회
+    store.getMemberList(route.params.partyId, 1)
+    currentStatus.value = await userstore.partyStatus(route.params.partyId);
+  });
+  
+  const joinParty = async () => {
+    await userstore.partyJoinRequest(route.params.partyId);
+    currentStatus.value = await userstore.partyStatus(route.params.partyId);
+  };
+  
+  const leaveParty = async () => {
+    await userstore.partyLeaveRequest(store.selectedParty.partyId);
+    currentStatus.value = await userstore.partyStatus(route.params.partyId);
+  };
 
-
-
-const route = useRoute();
-const router = useRouter();
-const userstore = useUserStore();
-const store = usePartyStore();
-
-const party = ref(store.selectedParty);
-const partymemberlist = ref(store.partyMemberList);
-
-
-const loginUser = ref(userstore.loginUser);
-const currentStatus = ref(null);
-
-onMounted(async () => {
-  store.getNoticeList(route.params.partyId);
-  store.getHotViewList(route.params.partyId);
-  //가입중인원전체조회
-  store.getMemberList(route.params.partyId, 1)
-  currentStatus.value = await userstore.partyStatus(route.params.partyId);
-});
-
-const joinParty = async () => {
-  await userstore.partyJoinRequest(route.params.partyId);
-  currentStatus.value = await userstore.partyStatus(route.params.partyId);
-};
-
-const leaveParty = async () => {
-  await userstore.partyLeaveRequest(store.selectedParty.partyId);
-  currentStatus.value = await userstore.partyStatus(route.params.partyId);
-};
-
-const isWaiting = computed(() => {
-  return store.memberRequestList.includes(userstore.loginUser);
-});
-</script>
-
+  const goArticleDetail = function (articleId) {
+    // console.log(articleId);
+    // getArticleDetail(articleId,false)
+    if(currentStatus.value != 1){
+      alert('카페가입자만 조회가능합니다.')
+    }else{
+      router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId } })
+    }
+}
+  </script>
 <style scoped>
 
 .status {
@@ -141,6 +150,7 @@ const isWaiting = computed(() => {
 
 .join-button,
 .leave-button {
+
   
 }
 

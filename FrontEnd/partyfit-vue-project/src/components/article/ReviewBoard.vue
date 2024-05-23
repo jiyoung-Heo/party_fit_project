@@ -11,8 +11,8 @@
         </div>
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
             <div class="flex-auto flex-shrink-0">
-                <h3 class="fw-bold mb-2">가입인사 게시판</h3>
-                <p>가입인사를 할 수 있는 게시판입니다.</p>
+                <h3 class="fw-bold mb-2">리뷰 게시판</h3>
+                <p>모임 리뷰를 작성할 수 있는 게시판입니다.</p>
             </div>
             <div
                 class="gh-header-actions mt-0 mb-3 mb-md-2 ml-1 flex-md-order-1 flex-shrink-0 d-flex flex-items-center gap-1">
@@ -81,7 +81,7 @@
 <script setup>
 import { usePartyStore } from '@/stores/party';
 import { computed, onMounted, ref } from 'vue';
-import ArticleDetail from '../article/ArticleDetail.vue';
+import ArticleDetail from './ArticleDetail.vue';
 import { useRouter } from "vue-router";
 const router = useRouter();
 
@@ -90,7 +90,7 @@ const currentPage = ref(1);
 
 const store = usePartyStore();
 onMounted(() => {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",1);
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3);
 })
 
 
@@ -112,26 +112,24 @@ const currentPageArticleList = computed(() => {
 });
 
 const goArticleDetail = function (articleId) {
-    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId } })
-
-
+    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId:store.selectedParty.partyId } })
 }
 
 const setCurrent = function () {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",1);
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3);
 }
 
 const setOld = function () {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "ASC",1);
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "ASC",3);
 }
 
 const goArticleCreate = function () {
-    router.push({ name: 'articleCreate', params: { category: "가입인사" } })
+    router.push({ name: 'articleCreate', params: { category: "모임후기" } })
 }
 const searchQuery = ref("");
 const performSearch = () =>{
     // console.log('dd')
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",1,'title',searchQuery.value)
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3,'title',searchQuery.value)
 }
 </script>
 
@@ -167,7 +165,6 @@ const performSearch = () =>{
     color: white;
     margin-left: 10px;
 }
-
 
 .input-group p {
     color :#ff7f00;

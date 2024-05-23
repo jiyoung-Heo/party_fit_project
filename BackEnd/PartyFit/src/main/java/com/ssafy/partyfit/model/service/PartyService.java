@@ -10,5 +10,6 @@ import com.ssafy.partyfit.model.dto.User;
 public interface PartyService {
 	public List<PartyMemberCount> showParty(SearchCondition condition);
 	public int makeParty(Party party);
+	PartyMemberCount selectOneParty(int partyId);
 
 }

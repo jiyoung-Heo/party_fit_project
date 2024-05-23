@@ -35,13 +35,13 @@ const store = usePartyStore();
 const userStore = useUserStore();
 const router = useRouter();
 const partyList = ref();
-onMounted(() => {
-  userStore.getMyPartyFit();
+onMounted(async () => {
+  await userStore.getMyPartyFit();
   partyList.value = userStore.partyList;
 });
 
 const gopartyPage = function (party) {
-  console.log(party.partyId);
+  // console.log(party.partyId);
   store.selectedParty = party;
   router.push({
     name: "partyfitmain",

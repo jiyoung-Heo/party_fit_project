@@ -14,15 +14,21 @@ public interface MeetService {
 	int makeMeet(Meet meet);
 
 	List<Meet> showMyMeet(User user);
-	
+
 	int manageCreateMeet(int meetId, boolean isaccept);
-	
+
 	List<Meet> showNonWriteReview(int userId);
-	
+
 	int meetMemberCount(int meetId);
-	
+
 	int joinRequest(Map<String, Object> map);
+
+	int deleteRequest(Map<String, Object> map);
+
+	int lastMeetId();
 	
+	Meet selectMeetData(int meetId);
+
 	List<User> showMeetMember(int meetId);
-	
+
 }

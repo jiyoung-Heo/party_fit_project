@@ -10,6 +10,7 @@ public class PartyMemberCount {
 	private String name;
 	private String introduction;
 	private String introductionImage;
+	private String bannerImage;
 	private Date regDate;
 	private Date modDate;
 	private int maxHeadcount;

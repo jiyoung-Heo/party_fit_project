@@ -119,6 +119,7 @@ onMounted(() => {
 
 
 const pageCount = computed(() => {
+    if(partystore.freeList == null) return null
     return Math.ceil(partystore.freeList.length / perPage);
 });
 
@@ -145,7 +146,7 @@ const setOld = function () {
 const goArticleDetail = function (articleId) {
     console.log(articleId);
     // partystore.getArticleDetail(articleId,0)
-    router.push({ name: 'articleDetail', params: { articleId: articleId } })
+    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId} })
 }
 
 const deleteArticle = function (articleId) {

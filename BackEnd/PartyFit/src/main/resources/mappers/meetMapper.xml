@@ -19,6 +19,10 @@
 	select count(*) from meet_member where meet_id = #{meetId}
 	</select>
 	
+	<select id ="selectMeetData" parameterType = "int" resultType="Meet">
+	select * from meet where meet_id = #{meetId}
+	</select>
+	
 
 	<insert id="insertMeet" parameterType="Meet">
 		insert into meet(title,
@@ -52,7 +56,13 @@
 	insert into meet_member(meet_id, user_id) values (#{meetId},#{userId})
 	</insert>
 	
+	<delete id="deleteRequest" parameterType="map">
+	delete from meet_member where meet_id=#{meetId} and user_id = #{userId}
+	</delete>
 	
+	<select id="lastMeetId" resultType="int">
+		select max(meet_id) from meet
+	</select>
 	<select id="selectMeetMember" parameterType="int" resultType = "User">
 		select  u.user_id,name, username, age, profile, email 
 		from meet_member, user u where u.user_id = meet_member.user_id and meet_id=#{meetId}; 

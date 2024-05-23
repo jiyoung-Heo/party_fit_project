@@ -5,9 +5,9 @@ const REST_SEARCH_API = 'http://localhost:8080/api'
 export const useLocationStore = defineStore(
   "location",
   () => {
-    const locationList = ref([])
-    const findLocation = function (text) {
-      axios({
+    const locationList = ref()
+    const findLocation = async function (text) {
+      await axios({
         url: `${REST_SEARCH_API}/getLocations`,
         method: "GET",
         params: {
@@ -23,6 +23,7 @@ export const useLocationStore = defineStore(
             location.mapId = index;
           });
           locationList.value = res.data.items
+          // console.log(locationList.value)
         })
         .catch((err) => {
           console.log(err);

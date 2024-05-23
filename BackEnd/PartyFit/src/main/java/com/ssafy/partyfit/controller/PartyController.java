@@ -82,6 +82,23 @@ public class PartyController {
 			return new ResponseEntity<List<PartyMemberCount>>(partyList, HttpStatus.OK);
 		}
 	}
+	
+	/**
+	 * 파티목록
+	 * 
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}")
+	public ResponseEntity<?> oneParty(@PathVariable("partyId") int partyId) {
+		PartyMemberCount partyList = partyService.selectOneParty(partyId);
+		if (partyList == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<PartyMemberCount>(partyList, HttpStatus.OK);
+		}
+	}
+
 
 	/**
 	 * 파티 만들기
@@ -295,8 +312,8 @@ public class PartyController {
 //			userId = 1;
 //		}
 //		comment.setUserId(userId);
-		
-		System.out.println("커맨트" + comment);
+		comment.setArticleId(articleId);
+//		System.out.println("커맨트" + comment);
 		
 		int result = 0;
 
@@ -311,11 +328,12 @@ public class PartyController {
 			comment.setDepth(comment.getDepth() + 1);
 			result = commentService.addComment(comment, false);
 		}
+		List<Comment> commentList = commentService.showComment(articleId);
 
 		if (result == 0) {
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<>(HttpStatus.CREATED);
+			return new ResponseEntity<List<Comment>>(commentList,HttpStatus.CREATED);
 		}
 	}
 
@@ -327,16 +345,13 @@ public class PartyController {
 	 * @return
 	 */
 	@PutMapping("/{partyId}/article/{articleId}/comment/{commentId}")
-	public ResponseEntity<?> modifyComment(@PathVariable("commentId") int commentId, @RequestBody Comment comment) {
+	public ResponseEntity<?> modifyComment(@PathVariable("articleId") int articleId, @PathVariable("commentId") int commentId, @RequestBody Comment comment) {
 		comment.setCommentId(commentId);
-		int result = commentService.modifyComment(comment);
-		if (result == 0) {
-			// 업데이트할 데이터가 없다면
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			// 데이터를 성공적으로 업데이트한 경우
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
+		commentService.modifyComment(comment);
+		List<Comment> commentList = commentService.showComment(articleId);
+
+		return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+
 	}
 
 	/**
@@ -346,15 +361,12 @@ public class PartyController {
 	 * @return
 	 */
 	@DeleteMapping("/{partyId}/article/{articleId}/comment/{commentId}")
-	public ResponseEntity<?> removeComment(@PathVariable("commentId") int commentId) {
-		int result = commentService.removeComment(commentId);
-		if (result == 0) {
-			// 삭제할 데이터가 없다면
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		} else {
-			// 데이터를 삭제했을 경우
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
+	public ResponseEntity<?> removeComment(@PathVariable("articleId") int articleId, @PathVariable("commentId") int commentId) {
+		commentService.removeComment(commentId);
+		List<Comment> commentList = commentService.showComment(articleId);
+
+		return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
+
 	}
 
 	/**
@@ -474,6 +486,26 @@ public class PartyController {
 		}
 	}
 	
+	/**
+	 * 파티 내부 모임 조회하기
+	 * 
+	 * @param partyId
+	 * @param condition
+	 * @return
+	 */
+	@GetMapping("/{partyId}/meet")
+	public ResponseEntity<?> showOneMeet(@PathVariable("partyId") int partyId, @ModelAttribute("meetId") int meetId) {
+		
+		Meet meet = meetService.selectMeetData(meetId);
+		System.out.println("test: "+meet);
+		if (meet == null) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+		
+			return new ResponseEntity<Meet>(meet, HttpStatus.OK);
+		}
+	}
+	
 	
 	/**
 	 * 파티 내부 모임 조회하기
@@ -511,6 +543,15 @@ public class PartyController {
 	public ResponseEntity<?> makeMeetRequest(@PathVariable("partyId") int partyId, @RequestBody Meet meet) {
 		meet.setPartyId(partyId);
 		int result = meetService.makeMeet(meet);
+		int meetId = meetService.lastMeetId();
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("meetId", meetId);
+		map.put("userId", meet.getUserId());
+		System.out.println(meet.getMeetId());
+		System.out.println(meet.getUserId());
+		meetService.joinRequest(map);
 		if (result == 0) {
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else {
@@ -534,6 +575,28 @@ public class PartyController {
 		System.out.println("가입 신청 함 ");
 		
 		int result = meetService.joinRequest(map);
+		if (result == 0) {
+			System.out.println("가입 신청 완료");
+			return new ResponseEntity<>(HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		}
+	}
+	/**
+	 * 파티 내부 모임 가입취소
+	 * 
+	 * @param meetId
+	 * @param meet
+	 * @return
+	 */
+	@DeleteMapping("/{partyId}/meet/{meetId}/{userId}")
+	public ResponseEntity<?> deleteMeetRequest(@PathVariable("userId") int userId,@PathVariable("meetId") int meetId) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("meetId", meetId);
+		map.put("userId", userId);
+		System.out.println("가입 신청 함 ");
+		
+		int result = meetService.deleteRequest(map);
 		if (result == 0) {
 			System.out.println("가입 신청 완료");
 			return new ResponseEntity<>(HttpStatus.OK);

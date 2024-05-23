@@ -31,5 +31,10 @@ public class PartyServiceImpl implements PartyService {
 		return partyDao.insertParty(party);
 	}
 
+	@Override
+	public PartyMemberCount selectOneParty(int partyId) {
+		return partyDao.selectOneParty(partyId);
+	}
+
 
 }

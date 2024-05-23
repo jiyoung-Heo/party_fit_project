@@ -3,8 +3,8 @@
         <nav class="leftbox fixed-left bg-light">
             <div class="nav-content">
                 <div class="party-info">
-                    <p @click="goPartyMainPage">{{ party.name }}</p>
-                    <img :src="party.introductionImage" alt="헬스장 이미지" width="150px">
+                    <p @click="goPartyMainPage">{{ store.selectedParty.name }}</p>
+                    <img :src="store.selectedParty.introductionImage" alt="헬스장 이미지" width="150px">
                     <p>참여인원 {{ store.selectedParty.memberCount }}명</p>
 
                 </div>
@@ -34,6 +34,10 @@
                         <li>
                             <RouterLink :to="{ name: 'introductionboard', params: { partyId: store.selectedParty.partyId}}">가입인사</RouterLink>
                         </li>
+                        <li>
+                            <RouterLink :to="{ name: 'reviewboard', params: { partyId: store.selectedParty.partyId}}">모임후기</RouterLink>
+                        </li>
+                        <p class="catagory">일정</p>
                         <p></p>
                         <p class="catagory"><a>일정</a></p>
                         <li>
@@ -41,10 +45,10 @@
                         </li>
                         <li>
                             <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.partyId}}">일정 등록</RouterLink>
-
                         </li>
-                        {{ store.isManager }}
+                        <!-- {{ store.isManager }} -->
                         <div v-if="store.isManager">
+                            <p class="catagory">운영</p>
                             <li>
                                 <RouterLink :to="{ name: 'manageRequest', params: { partyId: store.selectedParty.partyId } }">
                                     가입요청 관리
@@ -73,33 +77,28 @@
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { usePartyStore } from '@/stores/party';
 import { useUserStore } from '@/stores/user';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
 const router = useRouter();
+const route = useRoute();
 const userstore = useUserStore();
 const store = usePartyStore();
-const party = ref(store.selectedParty);
+const party = ref();
 
 const loginUser = ref(userstore.loginUser)
 const partylist = ref()
-onMounted(() => {
+const currentStatus= ref()
+onMounted(async () => {
     // party.value = store.selectedParty
     // store.getMemberList(store.selectedParty.partyId).then(() => {
     //     console.log('party member list:', partylist.value);
     // })
-    partylist.value = ref(store.partyMemberList);
+    partylist.value = store.partyMemberList;
+    party.value = await store.selectedParty;
 
+    currentStatus.value = userstore.partyStatus(route.params.partyId);
 
 })
-
-
-
-// watch(() => store.selectedParty, (newValue, oldValue) => {
-//   party.value = newValue;
-//   store.getMemberList(store.selectedParty.partyId).then(() => {
-//     console.log('party member list:', partylist.value);
-//   });
-// });
 
 
 const goArticleCreatePage = function () {
