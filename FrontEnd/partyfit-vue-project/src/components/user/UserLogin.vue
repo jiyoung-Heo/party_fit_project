@@ -45,6 +45,7 @@ const userLogin = function () {
   align-items: start;
   justify-content: left;
   padding: 150px;
+  padding-left: 200px;
   height: 90vh;
   max-width: 1300px;
 }

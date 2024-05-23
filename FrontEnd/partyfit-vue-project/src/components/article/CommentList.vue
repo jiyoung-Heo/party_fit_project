@@ -19,7 +19,7 @@
       </div>
       <div class="d-flex">
         <input type="text" class="form-control" v-model="content" placeholder="댓글을 입력해주세요" />
-        <button class="btn btn-light" @click="createComment(0, 1)">댓글쓰기</button>
+        <button class="button" @click="createComment(0, 1)">댓글쓰기</button>
       </div>
     </div>
   </div>
@@ -93,42 +93,21 @@ const createComment = async (parentId, depth) => {
 
 </script>
 
-
 <style scoped>
-.comment-item {
-  margin-top: 10px;
-  padding: 10px;
-  background-color: #f9f9f9;
-  border-left: 1px solid #ccc;
-}
-
-.commenter-image {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 10px;
-}
-
-.commenter-username {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.comment-content {
-  margin-top: 5px;
-  white-space: pre-wrap; /* Wrap long content */
-}
-
-.btn-light {
-  background-color: #ff7f00;
-  border: none;
-  color: white;
+.button{
+  width:100px;
+  margin-left: 20px;
   padding: 5px 10px;
+  border: 1px grey solid;
   cursor: pointer;
+  transition: transform 0.1s;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.249);
+  border-radius: 5px;
+}
+.button:hover{
+  transform: translateY(2px);
+  background-color: #8e8e8e;
+
 }
 
-.btn-light:hover {
-  background-color: #e06900;
-}
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="article-create">
     <select v-model="selectCategory" name="board">
-      <option value="1">자유게시판</option>
-      <option value="2">가입인사</option>
+      <option value="0">자유게시판</option>
+      <option value="1">가입인사</option>
       <option value="3">모임후기</option>
     </select>
     <input type="text" placeholder="제목 입력창" v-model="insertData.title" />
@@ -36,7 +36,7 @@
     </template>
     <p>내용</p>
     <div id="editor"></div>
-    <button @click="createArticle">게시하기</button>
+    <button class="btn" @click="createArticle">게시하기</button>
   </div>
 </template>
 
@@ -51,7 +51,7 @@ import { useRoute } from "vue-router";
 import Swal from "sweetalert2";
 import { NaverMap, NaverMarker, NaverInfoWindow } from "vue3-naver-maps";
 
-const selectCategory = ref(1);
+const selectCategory = ref(0);
 const thisMeet = ref();
 const route = useRoute();
 const partyStore = usePartyStore();
@@ -270,6 +270,14 @@ const createArticle = () => {
     if (thisMeet.value != null) {
       insertData.value.meetId = thisMeet.value.meetId;
     }
+    console.log()
+    if(userStore.nonWriteReview == null || userStore.nonWriteReview.length == 0){
+      Swal.fire({
+      title: "모임을 선택해주세요",
+      icon: "error",
+      })
+      return
+    }
     Swal.fire({
     title: "게시글 작성 완료",
     // text: "모임명: "+store.selectedMeet.title,
@@ -299,6 +307,27 @@ const reSelectLocation = () => {
 </script>
 
 <style scoped>
+.btn{
+  position: absolute;
+  right:0;
+  margin-top:10px;
+
+}
+.article-create{
+  position: relative;
+  align-items: start;
+  justify-content: left;
+  padding-left: 150px;
+  height: 90vh;
+  max-width: 1300px;
+width:900px;
+}
+select{
+  height: 30px;
+  margin-bottom:10px;
+  position : relative;
+  
+}
 /* 이미지 미리보기 컨테이너 */
 .file-upload {
   margin-bottom: 20px;

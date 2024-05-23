@@ -1,6 +1,7 @@
 <template>
     <div>
       <div class="banner">
+        <p class="title" style="font-size: 2em;"> {{ party.name }} </p>
         <div v-if="party.bannerImage !== null ||party.bannerImage !== ''">
           <img :src="party.bannerImage" width="100%" height="160px" style="z-index:2;" />
         </div>
@@ -18,7 +19,8 @@
       </div>
       <div class="status">
         <div v-if="currentStatus == 100" class="status-container ">
-          <button @click="joinParty" class="join-button btn btn-jelly">가입하기</button>
+          <button @click="joinParty" class="join-button btn btn-jittery
+btn-jittery">가입하기</button>
         </div>
         <div v-else-if="currentStatus == 0" class="status-container">
           <p class="pending-message">가입 심사중...</p>
@@ -138,28 +140,40 @@
 
 .status {
   position: absolute;
-  right : 9px; 
-  top:80px; 
+  right:9px; 
+  top:10px; 
   z-index:1;
 }
 
 
 .status-container {
+
 }
 
 
 .join-button,
 .leave-button {
-
+  margin: 1rem;
+  border : none;
   
 }
 
 .join-button {
+  margin: 1rem;
+  border : none;
+  background-color: rgba(254, 176, 51, 0.744);
+  margin-left: 300px;
+  &-jittery {
+    animation: jittery 4s infinite;
+  }
 }
 
 
 .banner{
 position: relative;
+width:850px;
+margin-left: 100px;
+
 }
 
 .btn-jelly:hover {
@@ -225,7 +239,6 @@ position: relative;
 }
 
 .note-title {
-  font-weight: bold;
 }
 
 .note-date {
@@ -290,5 +303,51 @@ li span{
   display: flex;
   flex-direction: row;
 }
+
+.btn-jittery {
+  animation: jittery 4s infinite;
+}
+
+.join-button:hover{
+  background-color: rgba(238, 255, 7, 0.74);
+  
+}
+
+@keyframes jittery {
+  5%,
+  50% {
+    transform: scale(1);
+  }
+  
+  10% {
+    transform: scale(0.9);
+  }
+  
+  15% {
+    transform: scale(1.15);
+  }
+  
+  20% {
+    transform: scale(1.15) rotate(-5deg);
+    background-color: rgba(255, 179, 36, 0.943);
+  }
+  
+  25% {
+    transform: scale(1.15) rotate(5deg);
+  }
+  
+  30% {
+    transform: scale(1.15) rotate(-3deg);
+  }
+  
+  35% {
+    transform: scale(1.15) rotate(2deg);
+  }
+
+  40% {
+    transform: scale(1.15) rotate(0);
+  }
+}
+
 
 </style>

@@ -60,7 +60,6 @@ const meetList = computed(() => store.meetList);
 
 .title {
   font-size: 18px;
-  font-weight: bold;
 }
 
 .more-link {
@@ -97,7 +96,6 @@ const meetList = computed(() => store.meetList);
 }
 
 .meet .title {
-  font-weight: bold;
 }
 
 .meet .date {

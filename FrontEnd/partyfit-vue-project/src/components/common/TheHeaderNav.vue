@@ -301,19 +301,17 @@ setInterval(() => {
 }
 
 .top {
-  padding-top: 50px;
+  padding-top: 55px;
   padding-bottom: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-around;
-  height: 15vh;
+  height: 14vh;
   width: 600px;
 }
 
 .top h1 {
-  margin-bottom: 50px;
-  /* 여기에 간격을 추가합니다 */
 }
 
 .nav .navbar-menu {
@@ -359,12 +357,16 @@ setInterval(() => {
   border: 1px solid transparent;
   border-radius: 5px;
   transition: all 0.3s;
+  width:300px;
+
+  background-color:white;
+margin:0 10px;
 }
 
 .navbar-menu .index1:hover,
 .navbar-menu .index1.router-link-active {
   color: black;
-  transform: scale(1.05) translateY(3px);
+  transform: scale(1.06) translateY(-3px);
   border-color: #f8f9fa;
   border-top: 1px solid rgb(116, 116, 116);
   /* 상단 테두리 */
@@ -382,7 +384,7 @@ setInterval(() => {
 .navbar-menu .index2:hover,
 .navbar-menu .index2.router-link-active {
   color: black;
-  transform: scale(1.05) translateY(3px);
+  transform: scale(1.06) translateY(-3px);
   border-color: #f8f9fa;
   border-top: 1px solid rgb(116, 116, 116);
   border-left: 1px solid rgb(116, 116, 116);
@@ -395,7 +397,7 @@ setInterval(() => {
 .navbar-menu .index3:hover,
 .navbar-menu .index3.router-link-active {
   color: black;
-  transform: scale(1.05) translateY(3px);
+  transform: scale(1.06) translateY(-3px);
   border-color: #f8f9fa;
   border-top: 1px solid rgb(116, 116, 116);
   border-left: 1px solid rgb(116, 116, 116);
@@ -475,8 +477,7 @@ a {
     width: 370px;
     padding: 20px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: black solid 0.5px;
-    background-color: white;
+    background-color: rgba(255, 246, 203, 0.299);
     border-radius: 5px;
   }
 
