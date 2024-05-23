@@ -409,7 +409,7 @@ export const usePartyStore = defineStore(
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
       });
     };
 
