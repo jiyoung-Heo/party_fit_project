@@ -243,13 +243,6 @@ export const usePartyStore = defineStore(
         },
       })
         .then((res) => {
-          if(category == 0){
-            router.push({ name: 'freeboard', params: { partyId: selectedParty.partyId } })
-          }else if(category == 1){
-            router.push({ name: 'introductionboard', params: { partyId: selectedParty.partyId } })
-          }else if(category == 2){
-            router.push({ name: 'category', params: { partyId: selectedParty.partyId } })
-          }
           router.go(-1);
           console.log(res);
         })
