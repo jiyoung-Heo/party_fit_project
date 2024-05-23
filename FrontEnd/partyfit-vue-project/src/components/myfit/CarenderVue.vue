@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <FullCalendar :options="calendarOptions" @dateClick="handleDateClick" style="a{color:black;}"/>
+    <FullCalendar :options="calendarOptions" @dateClick="handleDateClick" />
   </div>
 </template>
 
@@ -89,16 +89,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-
-a {
-  color: rgb(0, 0, 0) !important; /* 원하는 색상으로 변경 */
-}
-
-.container{
-  background-color:white;
-  border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
 
 /* 스크롤바 설정*/
 .a::-webkit-scrollbar {

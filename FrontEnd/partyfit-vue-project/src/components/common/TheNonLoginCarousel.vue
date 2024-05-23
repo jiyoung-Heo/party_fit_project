@@ -1,5 +1,5 @@
 <template>
-    <div class="container" >
+    <div class="container">
       <div
         id="carouselExampleFade"
         class="carousel slide carousel-fade"
@@ -30,7 +30,7 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img
-              src="/src/assets/user/back.png"
+              src="https://picsum.photos/1024/480/?image=10"
               class="d-block w-100"
               alt="로고배너1"
             />
