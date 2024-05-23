@@ -1,8 +1,8 @@
 <template>
   <div>
     <select v-model="selectCategory" name="board">
-      <option value="1">자유게시판</option>
-      <option value="2">가입인사</option>
+      <option value="0">자유게시판</option>
+      <option value="1">가입인사</option>
       <option value="3">모임후기</option>
     </select>
     <input type="text" placeholder="제목 입력창" v-model="insertData.title" />
@@ -51,7 +51,7 @@ import { useRoute } from "vue-router";
 import Swal from "sweetalert2";
 import { NaverMap, NaverMarker, NaverInfoWindow } from "vue3-naver-maps";
 
-const selectCategory = ref(1);
+const selectCategory = ref(0);
 const thisMeet = ref();
 const route = useRoute();
 const partyStore = usePartyStore();
@@ -269,6 +269,14 @@ const createArticle = () => {
     }
     if (thisMeet.value != null) {
       insertData.value.meetId = thisMeet.value.meetId;
+    }
+    console.log()
+    if(userStore.nonWriteReview == null || userStore.nonWriteReview.length == 0){
+      Swal.fire({
+      title: "모임을 선택해주세요",
+      icon: "error",
+      })
+      return
     }
     Swal.fire({
     title: "게시글 작성 완료",
