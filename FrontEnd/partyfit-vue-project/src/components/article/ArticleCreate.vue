@@ -1,77 +1,46 @@
 <template>
   <div>
+    <select v-model="selectCategory" name="board">
+      <option value="1">자유게시판</option>
+      <option value="2">가입인사</option>
+      <option value="3">모임후기</option>
+    </select>
     <input type="text" placeholder="제목 입력창" v-model="insertData.title" />
     <hr />
-    <div class="file-upload">
-      <p>사진</p>
-      <input type="file" @change="handleInputFile" />
-      <div v-if="imageUrl">
-        미리보기:
-        <img :src="imageUrl" alt="preview Image" class="preview-image" />
+    <template v-if="selectCategory == '3'">
+      <div>
+        모임 선택
+        <div v-if="userStore.nonWriteReview == null || userStore.nonWriteReview.length == 0">
+          참여한 모임이 없습니다.
+        </div>
+        <div v-for="review in userStore.nonWriteReview" :key="review.articleId">
+          <p><input
+            type="checkbox"
+            :value="review.reviewId"
+            @click="selectMeet(review)"
+          /> {{ review.title }}({{ review.startTime.split("T")[0]
+            }}{{ review.startTime.split("T")[1].slice(0, 5) }} ~
+            {{ review.endTime.split("T")[0]
+            }}{{ review.endTime.split("T")[1].slice(0, 5) }}): {{ review.headcount }} 명 참여</p>
+        </div>
       </div>
-    </div>
-    <div class="map-upload">
-      <p>장소설정</p>
-      <input type="text" v-model="location" />
-      <button type="button" @click="findLocation">장소찾기</button>
-      {{ locationStore.locationList.length }}개 조회했습니다.
-      <button @click="selectLocation" v-if="finLo==null || finLo==undefined || finLo == ''">선택하기</button>
-      <button @click="reSelectLocation" v-else>다시선택</button>
-      {{finLo}}
-      <ul>
-        <li
-          v-for="location in locationStore.locationList"
-          :key="location.mapId"
-        >
-          {{ location.title }}
-        </li>
-      </ul>
-      <div v-if="locationStore.locationList.length > 0">
-        <naver-map
-          style="width: 100%; height: 400px"
-          :mapOptions="mapOptions"
-          :initLayers="initLayers"
-        >
-          <div
-            v-for="location in locationStore.locationList"
-            :key="location.mapId"
-          >
-            <naver-marker
-              :key="location.mapId"
-              :latitude="Number(location.mapy) / 10000000"
-              :longitude="Number(location.mapx) / 10000000"
-              @click="toggleInfoWindow(location.mapId)"
-              @onLoad="onLoadMarker($event)"
-            >
-            </naver-marker>
-            <naver-info-window
-              :key="location.mapId"
-              :open="location.isOpen"
-              :marker="markers[location.mapId]"
-            >
-              <p>{{ location.title }}</p>
-            </naver-info-window>
-          </div>
-        </naver-map>
+      <div class="map-upload">
+        <p>
+          장소:
+          <template v-if="finLo != null">
+            <div v-html="finLo.title"></div>
+          </template>
+          <button type="button" @click="clickFindLoc">장소찾기</button>
+        </p>
       </div>
-    </div>
-    <p>
-      모임 선택(내가 참여한 모임 중 종료된 모임 && 내가 해당 모임에 대한 리뷰를
-      안쓴 경우 뜨게 하기)
-      <ul>
-        <li v-for="review in userStore.nonWriteReview" :key="review.articleId" @click="selectMeet(review)">
-            {{ review }}
-        </li>
-      </ul>
-      선택된 모임: {{ thisMeet }}
-    </p>
+    </template>
     <p>내용</p>
     <div id="editor"></div>
     <button @click="createArticle">게시하기</button>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import { useLocationStore } from "@/stores/location";
 import { usePartyStore } from "@/stores/party";
 import { useUserStore } from "@/stores/user";
@@ -79,10 +48,12 @@ import { Editor } from "@toast-ui/editor";
 import axios from "axios";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import Swal from "sweetalert2";
 import { NaverMap, NaverMarker, NaverInfoWindow } from "vue3-naver-maps";
 
+const selectCategory = ref(1);
 const thisMeet = ref();
-const route = useRoute()
+const route = useRoute();
 const partyStore = usePartyStore();
 const locationStore = useLocationStore();
 const userStore = useUserStore();
@@ -96,12 +67,12 @@ const onLoadMarker = (markerObject) => {
   markers.value.push(markerObject);
 };
 const insertData = ref({
-  title: '',
-  content: '',
+  title: "",
+  content: "",
   category: 3,
   mapJson: "",
   userId: userStore.loginUserId,
-  meetId: '',
+  meetId: "",
   partyId: route.params.partyId,
 });
 
@@ -147,16 +118,10 @@ onMounted(() => {
     previewStyle: "vertical",
     hooks: {
       async addImageBlobHook(blob, callback) {
-        // 이미지 업로드 로직 커스텀
         try {
-          /*
-           * 1. 에디터에 업로드한 이미지를 FormData 객체에 저장
-           *    (이때, 컨트롤러 uploadEditorImage 메서드의 파라미터인 'image'와 formData에 append 하는 key('image')값은 동일해야 함)
-           */
           const formData = new FormData();
           formData.append("image", blob);
 
-          // 2. FileApiController - uploadEditorImage 메서드 호출
           const fileName = ref();
           await axios({
             url: `http://localhost:8080/tui-editor/image-upload`,
@@ -164,12 +129,11 @@ onMounted(() => {
             data: formData,
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: userStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+              Authorization: userStore.accessToken,
             },
           }).then((response) => {
             fileName.value = response.data;
           });
-          console.log(fileName.value);
 
           callback(
             `http://localhost:8080/tui-editor/image-print?fileName=${fileName.value}`,
@@ -180,7 +144,6 @@ onMounted(() => {
         }
       },
     },
-    /* end of hooks */
   });
   locationStore.locationList = [];
   userStore.getNonWriteReview();
@@ -206,20 +169,121 @@ watch(location, () => {
   locationStore.locationList = [];
 });
 
-const findLocation = () => {
+const findLocation = async () => {
   markers.value = [];
-  locationStore.findLocation(location.value);
+  await locationStore.findLocation(location.value); // 이 부분이 Promise를 반환하도록 수정
+};
+
+const clickFindLoc = () => {
+  Swal.fire({
+    title: "장소 찾기",
+    html: `
+      <input type="text" id="locationInput" placeholder="장소를 입력하세요" style="width: 100%; padding: 8px; margin-bottom: 10px;" />
+      <button type="button" id="searchLocation" style="padding: 8px 16px; background-color: #4caf50; color: white; border: none; border-radius: 4px; cursor: pointer;">장소찾기</button>
+      <div id="locationResult" style="margin-top: 20px;"></div>
+    `,
+    showCancelButton: true,
+    confirmButtonText: "장소 결정",
+    cancelButtonText: "취소",
+    preConfirm: () => {
+      return document.getElementById("locationResult").dataset.selectedLocation;
+    },
+    didOpen: () => {
+      document
+        .getElementById("searchLocation")
+        .addEventListener("click", () => {
+          const locationInput = document.getElementById("locationInput").value;
+          findLocationInSwal(locationInput);
+        });
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      finLo.value = JSON.parse(result.value);
+    }
+  });
+};
+
+const findLocationInSwal = async (location) => {
+  try {
+    await locationStore.findLocation(location); // 비동기 함수 호출 및 완료 대기
+    const locationResult = document.getElementById("locationResult");
+    locationResult.innerHTML = "";
+    if (locationStore.locationList.length > 0) {
+      console.log("test");
+      // 지도와 장소 목록 추가
+      const mapContainer = document.createElement("div");
+      mapContainer.style.width = "100%";
+      mapContainer.style.height = "400px";
+      locationResult.appendChild(mapContainer);
+
+      const { naver } = window;
+      const map = new naver.maps.Map(mapContainer, {
+        center: new naver.maps.LatLng(
+          mapOptions.value.latitude,
+          mapOptions.value.longitude
+        ),
+        zoom: mapOptions.value.zoom,
+      });
+
+      locationStore.locationList.forEach((location) => {
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(
+            Number(location.mapy) / 10000000,
+            Number(location.mapx) / 10000000
+          ),
+          map: map,
+        });
+
+        const infoWindow = new naver.maps.InfoWindow({
+          content: `<div style="padding:10px;">${location.title}</div>`,
+        });
+
+        naver.maps.Event.addListener(marker, "click", () => {
+          infoWindow.open(map, marker);
+          document.querySelectorAll("#locationResult div").forEach((div) => {
+            div.style.backgroundColor = "";
+          });
+          locationResult.dataset.selectedLocation = JSON.stringify(location);
+        });
+      });
+    } else {
+      locationResult.innerText = "검색된 장소가 없습니다.";
+    }
+  } catch (error) {
+    console.error("장소 검색 중 오류 발생:", error);
+    // 오류 처리 로직 추가
+  }
 };
 
 const createArticle = () => {
-  const content = editor.value.getMarkdown();
-//   console.log("제목:", title.value);
-//   console.log("내용:", content);
-insertData.value.content = editor.value.getMarkdown();
-    insertData.value.mapJson = JSON.stringify(finLo.value)
-//   console.log(insertData.value)
-  partyStore.makeArticle(insertData.value)
+  const alertMsg = ref("");
+  if (insertData.value.title == "") {
+    alertMsg.value += "제목을 입력하세요\n";
+  }
+  if (editor.value.getMarkdown() == null || editor.value.getMarkdown() == "") {
+    alertMsg.value += "내용을 입력하세요\n";
+  } else {
+    insertData.value.content = editor.value.getMarkdown();
+    if (finLo != null) {
+      insertData.value.mapJson = JSON.stringify(finLo.value);
+    }
+    if (thisMeet.value != null) {
+      insertData.value.meetId = thisMeet.value.meetId;
+    }
+    Swal.fire({
+    title: "게시글 작성 완료",
+    // text: "모임명: "+store.selectedMeet.title,
+    icon: "success",
+    preConfirm: () => {
+      partyStore.makeArticle(insertData.value, selectCategory.value);
+    },
+  });
+  }
+  if (alertMsg.value != "") {
+    alert(alertMsg.value);
+  }
 };
+
 const finLo = ref();
 const selectLocation = () => {
   locationStore.locationList.forEach((location) => {
@@ -233,7 +297,7 @@ const reSelectLocation = () => {
   finLo.value = null;
 };
 </script>
-  
+
 <style scoped>
 /* 이미지 미리보기 컨테이너 */
 .file-upload {
@@ -279,32 +343,4 @@ p {
 }
 
 /* 에디터 스타일 */
-#editor {
-  margin-bottom: 20px;
-}
-
-/* 게시 버튼 스타일 */
-button[type="button"] {
-  padding: 8px 16px;
-  background-color: #008cba;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button[type="button"]:hover {
-  background-color: #005a8c;
-}
-
-/* ul 요소 스타일 */
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-/* li 요소 스타일 */
-li {
-  margin-bottom: 5px;
-}
 </style>

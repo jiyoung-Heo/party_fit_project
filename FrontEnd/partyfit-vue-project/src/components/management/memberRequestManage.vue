@@ -48,6 +48,8 @@ import { usePartyStore } from '@/stores/party';
 import { computed, onMounted, ref,watch } from 'vue';
 import { useRouter } from "vue-router";
 import MeetRequestManage from './meetRequestManage.vue';
+import Swal from "sweetalert2";
+
 const router = useRouter();
 const memberRequestList = computed(() => {return store.memberRequestList});
 const perPage = 12;
@@ -79,24 +81,39 @@ const currentPageArticleList = computed(() => {
         currentPage.value * perPage
     );
 });
-watch(() => store.memberRequestList, () => {
-  forceRerender();
-});
 
+const goBoard = function () {
+  router.push({
+    name: "manageRequest",
+    params: { partyId: store.selectedParty.partyId },
+  });
+  store.getMemberRequestList()
+
+};
 
 const approveRequest = function (user) {
     store.approveRequest(user);
     store.getMemberRequestList()
-    forceRerender();
-    window.location.reload();
+    Swal.fire({
+    title: "가입 요청을 승인하였습니다.",
+    text: "사용자 id: "+user.loginId,
+    icon: "success",
+  });
+  goBoard()
+
 // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
 }
 
 const rejectRequest = function (user) {
     store.rejectRequest(user);
     store.getMemberRequestList()
-    forceRerender();
-    window.location.reload();
+    Swal.fire({
+    title: "가입 요청을 거부하였습니다",
+    text: "사용자 id: "+user.loginId,
+    icon: "error",
+  });
+  goBoard()
+
     // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
 }
 

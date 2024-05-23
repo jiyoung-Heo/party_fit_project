@@ -69,7 +69,7 @@ const gopartyPage = function(party) {
     // console.log(party.partyId)
     //나중에 필요하면 쓰기
     partyStore.selectedParty = party;
-    console.log(party)
+    // console.log(party)
     //이제 페이지 이동하니까 초기화 시켜버리기 나중에 안헷갈리게
     partyStore.partyList = null;
     router.push({ name: 'partyfitmain', params: { partyId: party.partyId } });

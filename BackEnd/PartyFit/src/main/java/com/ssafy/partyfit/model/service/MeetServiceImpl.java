@@ -1,5 +1,6 @@
 package com.ssafy.partyfit.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,21 @@ public class MeetServiceImpl implements MeetService {
 	@Override
 	public List<User> showMeetMember(int meetId) {
 		return meetDao.selectMeetMember(meetId);
+	}
+
+	@Override
+	public int deleteRequest(Map<String, Object> map) {
+		return meetDao.deleteRequest(map);
+	}
+
+	@Override
+	public int lastMeetId() {
+		return meetDao.lastMeetId();
+	}
+
+	@Override
+	public Meet selectMeetData(int meetId) {
+		return meetDao.selectMeetData(meetId);
 	}
 	
 	

@@ -6,7 +6,7 @@
     </div>
     <hr />
     <div class="meet-list">
-      <div v-for="meet in meetList" :key="meet.meetId" class="meet">
+      <div v-for="meet in meetList" :key="meet.meetId" class="meet" @click="clickMeet(meet)">
         <p class="title">{{ meet.title }}</p>
         <p class="date">{{ meet.startTime.split("T")[0] }}</p>
       </div>
@@ -17,10 +17,22 @@
   <script setup>
 import { onMounted, computed } from "vue";
 import { useUserStore } from "@/stores/user";
-
+import { usePartyStore } from "@/stores/party";
+import { useRouter } from "vue-router";
+const router = useRouter()
+const partyStore = usePartyStore()
+const clickMeet = (meet)=>{
+  partyStore.getOneParty(meet.partyId)
+  partyStore.selectedMeet = meet
+  router.push({ 
+        name:"meetdetail", 
+      params: 
+      {partyId: meet.partyId, 
+        meetId: meet.meetId}})
+}
 const store = useUserStore();
-onMounted(() => {
-  store.getMyMeet();
+onMounted(async () =>  {
+  await store.getMyMeet();
   // console.log(store.meetList);
 });
 

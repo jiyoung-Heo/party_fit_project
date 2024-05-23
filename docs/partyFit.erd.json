@@ -4,13 +4,13 @@
   "settings": {
     "width": 2000,
     "height": 2000,
-    "scrollTop": -720,
-    "scrollLeft": -115.5615,
+    "scrollTop": -928.3335,
+    "scrollLeft": -323.8948,
     "zoomLevel": 0.8,
     "show": 511,
     "database": 4,
     "databaseName": "partyfit",
-    "canvasType": "@dineug/erd-editor/builtin-schema-sql",
+    "canvasType": "ERD",
     "language": 1,
     "tableNameCase": 4,
     "columnNameCase": 2,
@@ -2084,7 +2084,7 @@
         "tableId": "xCvu4PADb7B20D99NlCgY",
         "name": "reg_date",
         "comment": "파티등록일",
-        "dataType": "DATE",
+        "dataType": "DATETIME",
         "default": "CURRENT_TIMESTAMP",
         "options": 8,
         "ui": {
@@ -2095,7 +2095,7 @@
           "widthDefault": 122
         },
         "meta": {
-          "updateAt": 1716213263536,
+          "updateAt": 1716365103996,
           "createAt": 1716213208970
         }
       },
@@ -2888,7 +2888,7 @@
       -1,
       {
         "name": 1716213214214,
-        "dataType": 1716213217655,
+        "dataType": 1716365103994,
         "default": 1716213230918,
         "comment": 1716213244969,
         "options(unique)": 1716213261583,

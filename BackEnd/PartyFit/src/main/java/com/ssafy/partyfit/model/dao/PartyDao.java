@@ -10,5 +10,5 @@ import com.ssafy.partyfit.model.dto.PartyMemberCount;
 public interface PartyDao {
 	List<PartyMemberCount> selectPartyWithCondition(SearchCondition condition);
 	int insertParty(Party party);
-	
+	PartyMemberCount selectOneParty(int partyId);
 }

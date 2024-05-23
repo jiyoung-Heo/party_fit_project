@@ -1,7 +1,7 @@
 <template>
     <div>
       <div class="banner">
-        <div v-if="party.bannerImage !== null">
+        <div v-if="party.bannerImage !== null ||party.bannerImage !== ''">
           <img :src="party.bannerImage" width="100%" height="160px" />
         </div>
         <div v-else>
@@ -35,12 +35,15 @@
             <hr />
             <p>공지사항</p>
             <ul>
+                <div v-if="store.noticeList == null || store.noticeList == undefined || store.noticeList == ''">
+                    등록된 글이 하나도 없습니다.
+                </div>
               <div
                 v-for="(article, index) in store.noticeList"
                 :key="article.articleId"
               >
                 <template v-if="index < 5">
-                  <li>
+                  <li @click="goArticleDetail(article.articleId)">
                     <a>{{ article.title }}</a>
                     <a>{{ article.regDate.split('T')[0] }}</a>
                   </li>
@@ -52,12 +55,15 @@
             <hr />
             <p>인기글</p>
             <ul>
+                <div v-if="store.hotViewList == null || store.hotViewList == undefined || store.hotViewList == ''">
+                    등록된 글이 하나도 없습니다.
+                </div>
               <div
                 v-for="(article, index) in store.hotViewList"
                 :key="article.articleId"
               >
                 <template v-if="index < 5">
-                  <li>
+                  <li @click="goArticleDetail(article.articleId)">
                     <a>{{ article.title }}</a>
                     <a>{{ article.viewCount }}</a>
                   </li>
@@ -67,9 +73,9 @@
           </div>
         </div>
         <div>
-          <div class="calender">
+          <!-- <div class="calender">
             <h1>캘린더 들어갈곳</h1>
-          </div>
+          </div> -->
           파티 참여자
           <hr />
           <div v-for="member in store.partyMemberList" :key="member.partyMemberId">
@@ -100,7 +106,7 @@
   
   onMounted(async () => {
     store.getNoticeList(route.params.partyId);
-    store.getHotViewList(route.params.partyId);
+    store.getHotViewList(route.params.partyId,0);
     //가입중인원전체조회
     store.getMemberList(route.params.partyId, 1)
     currentStatus.value = await userstore.partyStatus(route.params.partyId);
@@ -115,10 +121,16 @@
     await userstore.partyLeaveRequest(store.selectedParty.partyId);
     currentStatus.value = await userstore.partyStatus(route.params.partyId);
   };
-  
-  const isWaiting = computed(() => {
-    return store.memberRequestList.includes(userstore.loginUser);
-  });
+
+  const goArticleDetail = function (articleId) {
+    // console.log(articleId);
+    // getArticleDetail(articleId,false)
+    if(currentStatus.value != 1){
+      alert('카페가입자만 조회가능합니다.')
+    }else{
+      router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId } })
+    }
+}
   </script>
   
   <style scoped>

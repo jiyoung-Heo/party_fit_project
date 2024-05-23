@@ -187,6 +187,9 @@ export const useUserStore = defineStore(
       })
         .then((res) => {
           loginUser.value = res.data;
+          if(loginUser.value.profile == null || loginUser.value.profile == undefined || loginUser.value.profile == ''){
+            loginUser.value.profile = "user.jpg";
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -286,10 +289,10 @@ export const useUserStore = defineStore(
     };
 
     const meetList = ref([]);
-    const getMyMeet = function () {
-      const userId = loginUser.value.userId;
+    const getMyMeet = async function () {
+      const userId = loginUserId.value;
       // console.log("store"+ userId)
-      axios({
+      await axios({
         url: `${REST_USER_API}/myMeet`,
         method: "GET",
         params: {

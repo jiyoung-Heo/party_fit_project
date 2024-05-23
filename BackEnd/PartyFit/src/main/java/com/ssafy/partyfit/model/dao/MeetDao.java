@@ -22,6 +22,12 @@ public interface MeetDao {
 	int meetMemberCount(int meetId);
 
 	int joinRequest(Map<String, Object> map);
+	
+	int deleteRequest(Map<String, Object> map);
+	
+	int lastMeetId();
+	Meet selectMeetData(int meetId);
+
 
 	List<User> selectMeetMember(int meetId);
 }

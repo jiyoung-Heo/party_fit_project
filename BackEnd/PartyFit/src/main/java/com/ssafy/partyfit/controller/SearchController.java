@@ -17,9 +17,10 @@ public class SearchController {
 
     @GetMapping("/getLocations")
     public ResponseEntity<String> getLocations(@RequestParam("query") String query) {
+    	System.out.println(query);
         String apiUrl = "https://openapi.naver.com/v1/search/local.json";
         String requestUrl = apiUrl + "?query=" + query+"&display=5&sort=random";
-
+        System.out.println(requestUrl);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("X-Naver-Client-Id", "UIjhXPuDzSpu59X8biEs");
@@ -29,7 +30,6 @@ public class SearchController {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.exchange(requestUrl, HttpMethod.GET, entity, String.class);
-
         return response;
     }
 }

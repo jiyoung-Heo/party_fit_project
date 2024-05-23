@@ -2,16 +2,12 @@
   <div>
     <h2>모임 상세 페이지</h2>
     <!-- <button type="button" @click="deleteMeet"> 삭제 </button> -->
-    <template v-if="isJoin">
-      참여예정 모임
-      <button @click="deleteMeet(store.selectedMeet.meetId)">참여취소</button>
-    </template>
-    <template v-else>
-      <button @click="meetjoinRequest(store.selectedMeet.meetId)">
-        참여하기
-      </button>
-    </template>
-    <div class="category" @click="goBoard()">모임목록 ></div>
+    <button @click="meetapproveRequest(store.selectedMeet.meetId)">승인</button>
+    <button @click="meetrejectRequest(store.selectedMeet.meetId)">거절</button>
+
+    <div class="category" @click="goBoard()">가입요청 목록 ></div>
+    <hr />
+
     <div class="title fs-5" v-if="store.selectedMeet">
       {{ store.selectedMeet.title }}
     </div>
@@ -29,15 +25,6 @@
       {{ store.selectedMeet.endTime.split("T")[1].slice(0, 5) }}
     </p>
     <p>모임 최대인원: {{ store.selectedMeet.maxHeadcount }}</p>
-    <p v-if="store.meetMemberList != null">
-      현재 참여자 수: {{ store.meetMemberList.length }}명
-    </p>
-    <div>
-      명단
-      <p v-for="member in store.meetMemberList" :key="member.userId">
-        {{ member.username }}
-      </p>
-    </div>
     <hr />
     <div class="container content" v-if="store.selectedMeet">
       {{ store.selectedMeet.content }}
@@ -53,13 +40,11 @@ import { useRoute } from "vue-router";
 import { useRouter } from "vue-router";
 import { usePartyStore } from "@/stores/party";
 import { useUserStore } from "@/stores/user";
+import Swal from "sweetalert2";
 
 const router = useRouter();
 const store = usePartyStore();
-const route = useRoute();
 const userstore = useUserStore();
-
-const articleId = ref();
 
 const deleteMeet = async (meetId) => {
   await store.canceljoinRequest(meetId);
@@ -73,20 +58,36 @@ const meetjoinRequest = async function (meetId) {
 
 const goBoard = function () {
   router.push({
-    name: "meetlist",
+    name: "manageRequest",
     params: { partyId: store.selectedParty.partyId },
   });
 };
 
-const isJoin = ref(false);
+const meetapproveRequest = function (meetId) {
+  // console.log("수락");
+  store.meetapproveRequest(meetId);
+  Swal.fire({
+    title: "모임 개설이 수락되었습니다.",
+    text: "모임명: "+store.selectedMeet.title,
+    icon: "success",
+  });
+  // window.location.reload();
+  goBoard()
+  // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
+};
 
-onMounted(async () => {
-  await store.getMeetMemberList(store.selectedMeet.meetId);
-
-  isJoin.value = store.meetMemberList.some(
-    (member) => member.userId == userstore.loginUserId
-  );
-});
+const meetrejectRequest = function (meetId) {
+  // console.log("거절");
+  store.meetrejectRequest(meetId);
+  Swal.fire({
+    title: "모임 개설이 거절되었습니다.",
+    text: "모임명: "+store.selectedMeet.title,
+    icon: "error",
+  });
+  // window.location.reload();
+  goBoard()
+  // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
+};
 </script>
   
   <style scoped>

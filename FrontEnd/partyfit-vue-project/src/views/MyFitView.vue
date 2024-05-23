@@ -28,9 +28,6 @@ import ReservationVue from "@/components/myfit/ReservationVue.vue";
 import TodoCheckVue from "@/components/myfit/TodoCheckVue.vue";
 import { onMounted } from "vue";
 
-onMounted(() => {
-
-})
 </script>
 
 <style scoped>

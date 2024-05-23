@@ -35,7 +35,7 @@ const store = usePartyStore();
 const party = ref();
 
 onUnmounted(() => {
-store.selectedParty = "";
+// store.selectedParty = "";
 store.isjoining = false;
 store.isManager = false;
 store.isWaiting = false;

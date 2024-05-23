@@ -3,7 +3,7 @@
     <div class="top">
       <div>
         <h1>
-          <RouterLink :to="{ name: moveMainPage }" class="coral-color"
+          <RouterLink :to="moveMainPage" class="coral-color"
             >party fit</RouterLink
           >
         </h1>
@@ -11,10 +11,16 @@
       <div class="logo-right">
         <p class="plus-party-fit">+party fit</p>
         <p>
-          <span class="material-symbols-outlined"> notifications </span>
+          <span class="material-symbols-outlined">notifications</span>
         </p>
 
-        <template v-if="store.accessToken == null || store.accessToken == ''">
+        <template
+          v-if="
+            store.loginUser == null ||
+            store.loginUser == undefined ||
+            store.loginUser == ''
+          "
+        >
           <p class="user-info">
             <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
           </p>
@@ -23,7 +29,7 @@
           </p>
         </template>
         <template v-else>
-          <a class="user-info"> {{ store.loginUser.username }} 님 </a>
+          <a class="user-info">{{ store.loginUser.username }} 님</a>
           <div v-if="hasProfile" class="user-info">
             <img
               :src="'/src/assets/user/' + store.loginUser.profile"
@@ -43,7 +49,6 @@
       </div>
     </div>
     <nav class="navbar-menu">
-      <!-- routerlink로 수정 -->
       <RouterLink :to="{ name: 'myFit' }">나의 운동</RouterLink>
       <RouterLink :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
       <RouterLink :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
@@ -68,31 +73,27 @@ const store = useUserStore();
 const router = useRouter();
 const accessToken = computed(() => store.accessToken);
 
-onMounted(() => {
-  if (store.accessToken == null || store.accessToken == "") {
-    router.push({ name: "beforeLoginMain" });
-  } else {
-    // router.push({ name: "myFit" });
-  }
-});
-
 const moveMainPage = computed(() => {
-  if (store.accessToken == null || store.accessToken == "") {
-    return "beforeLoginMain";
-  }
-  return "myFit";
+  return store.accessToken ? { name: "myFit" } : { name: "beforeLoginMain" };
 });
 
-watch(accessToken, async (nv, ov) => {
-  await nextTick(); 
-  if (nv == null || nv == "") {
+onMounted(() => {
+  if (!store.accessToken) {
+    router.push({ name: "beforeLoginMain" });
+  }
+});
+
+watch(accessToken, async (newVal) => {
+  await nextTick();
+  if (!newVal) {
     router.push({ name: "beforeLoginMain" });
   } else {
+    router.push({ name: "myFit" }); // 로그인 후 myFit으로 이동
   }
 });
 
 const hasProfile = computed(() => {
-  return store.loginUser.profile !== null;
+  return !!store.loginUser.profile;
 });
 
 const logout = () => {
@@ -110,24 +111,11 @@ const logout = () => {
   color: black;
 }
 
-@font-face {
-  font-family: "Material Icons";
-  font-style: normal;
-  font-weight: 400;
-  src: url(https://example.com/MaterialIcons-Regular.eot);
-  /* For IE6-8 */
-  src: local("Material Icons"), local("MaterialIcons-Regular"),
-    url(https://example.com/MaterialIcons-Regular.woff2) format("woff2"),
-    url(https://example.com/MaterialIcons-Regular.woff) format("woff"),
-    url(https://example.com/MaterialIcons-Regular.ttf) format("truetype");
-}
-
 .material-icons {
   font-family: "Material Icons";
   font-weight: normal;
   font-style: normal;
   font-size: 24px;
-  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -135,16 +123,9 @@ const logout = () => {
   word-wrap: normal;
   white-space: nowrap;
   direction: ltr;
-
-  /* Support for all WebKit browsers. */
   -webkit-font-smoothing: antialiased;
-  /* Support for Safari and Chrome. */
   text-rendering: optimizeLegibility;
-
-  /* Support for Firefox. */
   -moz-osx-font-smoothing: grayscale;
-
-  /* Support for IE. */
   font-feature-settings: "liga";
 }
 
@@ -167,7 +148,7 @@ const logout = () => {
 
 .logo-right p {
   display: flex;
-  margin-right: 10px; /* p 요소 사이의 공간을 설정 */
+  margin-right: 10px;
 }
 
 .plus-party-fit {

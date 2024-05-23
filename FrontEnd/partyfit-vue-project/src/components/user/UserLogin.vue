@@ -33,8 +33,8 @@ const loginId = ref("");
 const password = ref("");
 
 const userLogin = function () {
-  router.replace({ name: "home" });
   store.userLogin(loginId.value, password.value);
+  router.replace({ name: "home" });
 };
 </script>
 

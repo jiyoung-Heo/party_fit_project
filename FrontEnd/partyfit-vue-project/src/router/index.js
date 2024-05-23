@@ -26,6 +26,8 @@ import memberList from '@/components/management/memberList.vue'
 import { useUserStore } from '@/stores/user'
 import ArticleDetail from '@/components/article/ArticleDetail.vue'
 import PartyArticleList from '@/components/management/managePartyArticleList.vue'
+import ReviewBoard from '@/components/article/ReviewBoard.vue'
+import MeetRequestDetail from '@/components/management/meetRequestDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -127,11 +129,31 @@ const router = createRouter({
               path: '/partyfit/createArticle/:partyId',
               name: 'createArticle',
               component: ArticleCreate,
+              beforeEnter:async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus =await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 작성 가능합니다.')
+                }else{
+                  next()
+                }
+              },
             },
             {
-              path: '/partyfit/article/:articleId',
+              path: '/partyfit/article/:partyId/:articleId',
               name: 'articleDetail',
               component: ArticleDetail,
+              beforeEnter:async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus =await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              },
               props: true,
             },
 
@@ -140,22 +162,70 @@ const router = createRouter({
               path: '/partyfit/:partyId/0',
               name: 'freeboard',
               component: FreeBoard,
+              beforeEnter:async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus =await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              }
             },
 
             {
               path: '/partyfit/:partyId/1',
               name: 'introductionboard',
               component: IntroductionBoard,
+              beforeEnter:async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus =await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              }
             },
             {
               path: '/partyfit/:partyId/2',
               name: 'noticeboard',
               component: NoticeBoard,
+              beforeEnter: async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus = await userStore.partyStatus(partyId);
+                console.log(currentStatus)
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              }
+
+            },
+            
+            {
+              path: '/partyfit/:partyId/3',
+              name: 'reviewboard',
+              component: ReviewBoard,
             },
             {
               path: '/partyfit/:partyId/meetlist',
               name: 'meetlist',
               component: MeetList,
+              beforeEnter:async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus = await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              }
             },
             {
               path: '/partyfit/:partyId/:meetId',
@@ -166,6 +236,16 @@ const router = createRouter({
               path: '/partyfit/:partyId/meetcreate',
               name: 'meetcreate',
               component: MeetCreate,
+              beforeEnter: async (to, from, next) => {
+                const partyId = to.params.partyId;
+                const userStore = useUserStore();
+                const currentStatus =await userStore.partyStatus(partyId);
+                if(currentStatus != 1){
+                  alert('카페가입자만 조회가능합니다.')
+                }else{
+                  next()
+                }
+              }
             },
     
             {
@@ -173,7 +253,11 @@ const router = createRouter({
               name: 'manageRequest',
               component: memberRequestManage,
             },
-    
+            {
+              path: '/manageRequest/:partyId/:meetId',
+              name: 'meetManageDetail',
+              component: MeetRequestDetail,
+            },
             {
               path: '/manageMember/:partyId',
               name: 'manageMember',

@@ -1,16 +1,18 @@
 <template>
-<div>
-    나의 참여내역 탭
-    - 참여중인 파티
-    - 참여예정 모임
-    - 참여완료 모임
-    - 내가 쓴 글 조회 - 누르면 거기로 들어가지기
-
     <div >
 
+        <div class="input-group mb-3 ">
+            <div class ="input-group">
+
+            <input type="text" class="form-control me-4" placeholder="검색어를 입력해주세요" v-model="searchQuery" />
+            <button class="btn-warning" @click="performSearch()">검색</button>
+            </div>
+            <p @click ="goArticleCreate">+ 글 작성하기</p>
+        </div>
         <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
             <div class="flex-auto flex-shrink-0">
-                <h3 class="fw-bold mb-2">내가 쓴 글</h3>
+                <h3 class="fw-bold mb-2">리뷰 게시판</h3>
+                <p>모임 리뷰를 작성할 수 있는 게시판입니다.</p>
             </div>
             <div
                 class="gh-header-actions mt-0 mb-3 mb-md-2 ml-1 flex-md-order-1 flex-shrink-0 d-flex flex-items-center gap-1">
@@ -22,48 +24,34 @@
 
             </div>
         </div>
-        <!-- {{userstore.articleList}} -->
+
         <div class="container">
             <!-- <BoardSearchInput /> -->
             <table class="table table-hover text-center">
-                    <div v-if="articleList  === null">
-                가입 요청이 없습니다.
-            </div>
-            <div v-else>
                 <thead>
                     <tr>
-                        <th></th>
+                        <!-- <th></th> -->
                         <th>제목</th>
                         <th>작성자</th>
                         <th>조회</th>
                         <th>등록일</th>
-                        <th></th>
                     </tr>
 
                 </thead>
                 <tbody>
-
-                    {{ articleList }}
-                    <tr v-for="article in articleList" :key="article.article_id">
-                      
-                      
-                        <td @click="goArticleDetail(article.articleId)">
-                            {{ article.articleId }}
-                        </td>
+                    <tr v-for="article in currentPageArticleList" :key="article.article_id"
+                        @click="goArticleDetail(article.articleId)">
+                        <!-- <td> -->
+                            <!-- {{ article.articleId }} -->
+                        <!-- </td> -->
                         <td>
                             {{ article.title }}
                         </td>
                         <td>{{ article.username }}</td>
                         <td>{{ article.viewCount }}</td>
-                      
-                        <td>
-                            <button  @click ="deleteArticle(article.articleId)"
-                            >삭제</button>
-                       
-                        </td>
+                        <td>{{ article.regDate.split('T')[0] }}</td>
                     </tr>
                 </tbody>
-                </div>
             </table>
             <nav aria-label="Page navigation">
                 <ul class="pagination d-flex justify-content-center">
@@ -85,41 +73,30 @@
             </nav>
         </div>
 
-</div>
-</div>
+
+    </div>
+
 </template>
 
 <script setup>
 import { usePartyStore } from '@/stores/party';
-import { useUserStore } from '@/stores/user';
 import { computed, onMounted, ref } from 'vue';
-
+import ArticleDetail from './ArticleDetail.vue';
 import { useRouter } from "vue-router";
 const router = useRouter();
 
 const perPage = 12;
 const currentPage = ref(1);
 
-const partystore = usePartyStore();
-
-const userstore = useUserStore();
-
-const articleList = computed(() => {
-    return userstore.articleList
-})
-
+const store = usePartyStore();
 onMounted(() => {
-    userstore.getMyArticle()
-    // partystore.getFreeList(partystore.selectedParty.partyId, "reg_date", "DESC");
-    // partystore.getMeetList(0)
-    // partystore.getMeetList(1)
-    // partystore.getMeetList(2)
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3);
 })
 
 
 const pageCount = computed(() => {
-    if(partystore.freeList == null) return null
-    return Math.ceil(partystore.freeList.length / perPage);
+    if(store.freeList == null) return null
+    return Math.ceil(store.freeList.length / perPage);
 });
 
 const clickPage = function (page) {
@@ -127,47 +104,32 @@ const clickPage = function (page) {
 };
 
 const currentPageArticleList = computed(() => {
-    return partystore.freeList.slice(
+    if(store.freeList == null) return null
+    return store.freeList.slice(
         (currentPage.value - 1) * perPage,
         currentPage.value * perPage
     );
 });
 
+const goArticleDetail = function (articleId) {
+    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId:store.selectedParty.partyId } })
+}
 
 const setCurrent = function () {
-    partystore.getFreeList(partystore.selectedParty.partyId, "reg_date", "DESC");
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3);
 }
 
 const setOld = function () {
-    partystore.getFreeList(partystore.selectedParty.partyId, "reg_date", "ASC");
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "ASC",3);
 }
 
-const goArticleDetail = function (articleId) {
-    console.log(articleId);
-    // partystore.getArticleDetail(articleId,0)
-    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId} })
+const goArticleCreate = function () {
+    router.push({ name: 'articleCreate', params: { category: "모임후기" } })
 }
-
-const deleteArticle = function (articleId) {
-    console.log("삭제" + articleId);
-    partystore.deleteArticle(articleId)
-    // window.location.reload()
-}
-// const isAuth = ref(false)
-const hasAuth = function(userId) {
-    console.log(userstore.loginUser.userId);
-    console.log(userId)
-    if(partystore.isManager) {
-        // isAuth = true;
-        return true;
-    }
-    else if(userId === userstore.loginUser.userId){
-        // isAuth = true;
-        return true;
-    }
-     // isAuth = false;
-     console.log(false);
-     return false;
+const searchQuery = ref("");
+const performSearch = () =>{
+    // console.log('dd')
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",3,'title',searchQuery.value)
 }
 </script>
 

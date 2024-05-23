@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import { createNaverMap } from "vue3-naver-maps";
+import { marked } from 'marked';
 
 import App from "./App.vue";
 import router from "./router";
@@ -31,5 +32,17 @@ app.use(createNaverMap, {
 });
 app.component("FullCalendar", FullCalendar);
 app.use(Swal);
+// `marked`를 전역 프로퍼티로 추가
+app.config.globalProperties.$marked = marked;
+
+
+// Naver 지도 API를 로드하는 스크립트를 추가
+const script = document.createElement('script')
+script.src = 'https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=g6ctjn17no&submodules=geocoder'
+script.async = true
+document.body.appendChild(script)
+// window.naver 객체를 정의
+window.naver = {}
+
 
 app.mount("#app");

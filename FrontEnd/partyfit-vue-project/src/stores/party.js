@@ -21,8 +21,24 @@ export const usePartyStore = defineStore(
         },
       })
         .then((res) => {
-          console.log("success");
+          // console.log("success");
           partyList.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    const getOneParty = async function (partyId) {
+      await axios({
+        url: `${REST_USER_API}/${partyId}`,
+        method: "GET",
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      })
+        .then((res) => {
+          selectedParty.value = res.data;
         })
         .catch((err) => {
           console.log(err);
@@ -101,13 +117,15 @@ export const usePartyStore = defineStore(
 
     // 자유게시판글 조회 최신순
     const freeList = ref([]);
-    const getFreeList = function (partyId, orderBy, orderByDir) {
-      axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/0`,
+    const getFreeList = async function (partyId, orderBy, orderByDir,category,key,word) {
+      await axios({
+        url: `${REST_USER_API}/${partyId}/article/${category}`,
         method: "GET",
         params: {
           partyId: partyId,
           category: 0,
+          key:key,
+          word:word,
           orderBy: orderBy,
           orderByDir: orderByDir,
         },
@@ -151,9 +169,9 @@ export const usePartyStore = defineStore(
 
     // 조회수 순 전체 게시글 조회 -> 일단은 못해서 자유게시판만..
     const hotViewList = ref([]);
-    const getHotViewList = function (partyId) {
+    const getHotViewList = function (partyId, category) {
       axios({
-        url: `${REST_USER_API}/${partyId}/article/0`,
+        url: `${REST_USER_API}/${partyId}/article/${category}`,
         method: "GET",
         params: {
           orderBy: "view_count",
@@ -176,13 +194,12 @@ export const usePartyStore = defineStore(
     //isReload : false - 조회수 +1,
     const articleDetail = ref();
     const getArticleDetail = async function (articleId, isReload) {
-      console.log(selectedParty.value.partyId + " " + articleId + " " + isReload);
+      // console.log(selectedParty.value.partyId + " " + articleId + " " + isReload);
       await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/${isReload}`,
         method: "GET",
         params: {
           partyId: selectedParty.value.partyId,
-
           articleId: articleId,
           isReload: isReload,
         },
@@ -190,12 +207,13 @@ export const usePartyStore = defineStore(
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
       }).then((res) => {
+        console.log(res.data)
         articleDetail.value = res.data;
       });
     };
 
     //댓글리스트 가져오기
-    const commentList = ref([]);
+    const commentList = ref(null);
 
     const getCommentList = async function (articleId) {
       await axios({
@@ -207,7 +225,6 @@ export const usePartyStore = defineStore(
       })
         .then((res) => {
           commentList.value = res.data;
-          // console.log(commentList.value);
         })
         .catch((err) => {
           console.log(err);
@@ -215,9 +232,9 @@ export const usePartyStore = defineStore(
     };
 
     //게시글 작성
-    const makeArticle = function (data) {
+    const makeArticle = function (data, category) {
       axios({
-        url: `${REST_USER_API}/${data.partyId}/article/${data.category}`,
+        url: `${REST_USER_API}/${data.partyId}/article/${category}`,
         method: "POST",
         data: data,
         headers: {
@@ -225,6 +242,7 @@ export const usePartyStore = defineStore(
         },
       })
         .then((res) => {
+          router.go(-1);
           console.log(res);
         })
         .catch((err) => {
@@ -233,71 +251,28 @@ export const usePartyStore = defineStore(
     };
 
     //댓글 작성하기
-    const createComment = async function (
-      articleId,
-      content,
-      parentId,
-      username,
-      profile,
-      userId,
-      depth
-    ) {
+    const createComment = async function (articleId, comment) {
       // const createComment = function (comment) {
       // console.log(comment);
       axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment`,
+        url: `${REST_USER_API}/${selectedParty.partyId}/article/${articleId}/comment`,
         method: "POST",
         headers: {
           Authorization: useStore.accessToken,
         },
-        data: {
-          // comment
-          articleId,
-          content,
-          parentId,
-          username,
-          profile,
-          userId,
-          depth,
-        },
+        data: comment,
       })
         .then((res) => {
-          console.log(res.data);
+          commentList.value = res.data;
+          // console.log(res.data);
         })
         .catch((err) => {});
     };
 
     // 글 삭제
-    const deleteArticle = function (articleId) {
-      axios({
+    const deleteArticle = async function (articleId) {
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}`,
-        method: "DELETE",
-        headers: {
-          Authorization: useStore.accessToken,
-        },
-      })
-        .then((res) => {
-          console.log(res.data)
-        })
-        .catch((response) => {
-          if (response.status === 204) {
-            // 데이터를 삭제했을 경우
-            console.log('Article deleted successfully');
-            // TODO: 추가적인 처리 로직 작성
-          } else if (response.status === 404) {
-            // 삭제할 데이터가 없는 경우
-            console.error('Article not found');
-            // TODO: 추가적인 처리 로직 작성
-          }
-        });
-
-    }
-
-    //댓글 삭제
-
-    const deleteComment = function (articleId, commentId) {
-      axios({
-        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
         method: "DELETE",
         headers: {
           Authorization: useStore.accessToken,
@@ -317,6 +292,48 @@ export const usePartyStore = defineStore(
             // TODO: 추가적인 처리 로직 작성
           }
         });
+    };
+
+    //댓글 삭제
+
+    const deleteComment = function (articleId, commentId) {
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
+        method: "DELETE",
+        headers: {
+          Authorization: useStore.accessToken,
+        },
+      })
+        .then((res) => {
+          commentList.value = res.data;
+          // console.log(res.data);
+        })
+        .catch((response) => {
+          if (response.status === 204) {
+            // 데이터를 삭제했을 경우
+            console.log("Article deleted successfully");
+            // TODO: 추가적인 처리 로직 작성
+          } else if (response.status === 404) {
+            // 삭제할 데이터가 없는 경우
+            console.error("Article not found");
+            // TODO: 추가적인 처리 로직 작성
+          }
+        });
+    };
+    //댓글수정
+    const updateComment = function (articleId, commentId, content) {
+      // console.log(content)
+      axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/article/${articleId}/comment/${commentId}`,
+        method: "PUT",
+        data: { content: content },
+        headers: {
+          Authorization: useStore.accessToken,
+        },
+      }).then((res) => {
+        commentList.value = res.data;
+        // console.log(res.data);
+      });
     };
 
     //파티에 속해있는지 여부
@@ -341,7 +358,9 @@ export const usePartyStore = defineStore(
 
     //모임 생성
     const makeMeetRequest = function (data, partyId) {
-      axios({
+      data.userId = useStore.loginUserId;
+      
+            axios({
         url: `${REST_USER_API}/${partyId}/meet`,
         method: "POST",
         data: data,
@@ -358,7 +377,7 @@ export const usePartyStore = defineStore(
     };
 
     //가입요청 목록
-    const memberRequestList = ref([])
+    const memberRequestList = ref([]);
     const isWaiting = ref(false);
     const getMemberRequestList = function () {
       axios({
@@ -372,53 +391,15 @@ export const usePartyStore = defineStore(
           // console.log("getReq")
           memberRequestList.value = res.data;
           // console.log(memberRequestList.value)
-
         })
         .catch((err) => {
           console.log(err);
         });
     };
 
-    // // 모임 조회 (0:승인 대기 , 1: 모집중 , 2:정원마감)
-    // const getMeetList = function (status, partyId, condition) {
-    //   // console.log(status)
-    //   axios({
-    //     url: `${REST_USER_API}/${partyId}/meet/${status}`,
-    //     method: "GET",
-    //     headers: {
-    //       Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
-    //     },
-    //   })
-    //     .then((res) => {
-    //       if (status === 0) meetRequestList.value = res.data;
-    //       else if (status === 1) meetList.value = res.data;
-    //       else if (status === 2) meetFullList.value = res.data;
-    //       for (let i = 0; i < memberRequestList.value.length; i++) {
-    //         console.log(memberRequestList.value[i].userId)
-    //         if (memberRequestList.value[i].userId === useStore.loginUser.userId) {
-    //           console.log("속해있음")
-    //           if (memberRequestList.value[i].grade === 0) {
-    //             if (memberRequestList.value[i].status === 0) {
-    //               console.log("가입 대기 중 .")
-    //               isWaiting.value = true;
-    //               break;
-    //             }
-
-    //             console.log("안속해")
-
-    //           }
-    //         }
-
-
-    //   }  })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // };
 
     //가입 요청 수락
     const approveRequest = function (user) {
-
       axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/true`,
         method: "PUT",
@@ -426,38 +407,33 @@ export const usePartyStore = defineStore(
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log(res.data)
-        })
-    }
+      }).then((res) => {
+        console.log(res.data);
+      });
+    };
 
     //가입 요청 거절
-    const rejectRequest = function (user) {
-
-      axios({
+    const rejectRequest = async function (user) {
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/management/join/false`,
         method: "PUT",
         data: user,
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log(res.data)
-
-        })
-    }
-
+      }).then((res) => {
+        // console.log(res.data);
+      });
+    };
 
     // 모임 조회 (0:승인 대기 , 1: 모집중 , 2:정원마감)
-    const selectedMeet = ref()
-    const meetRequestList = ref([])
-    const meetList = ref([])
-    const meetFullList = ref([])
-    const getMeetList = function (status, condition) {
-      console.log(status)
-      axios({
+    const selectedMeet = ref();
+    const meetRequestList = ref([]);
+    const meetList = ref([]);
+    const meetFullList = ref([]);
+    const getMeetList = async function (status, condition) {
+      // console.log(status);
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${status}`,
         method: "GET",
         headers: {
@@ -465,24 +441,34 @@ export const usePartyStore = defineStore(
         },
       })
         .then((res) => {
-          if (status === 0)
-            meetRequestList.value = res.data;
-          else if (status === 1)
-            meetList.value = res.data;
-          else if (status === 2)
-            meetFullList.value = res.data;
-
-          console.log("getMeet")
-          console.log(meetRequestList.value)
+          if (status === 0) meetRequestList.value = res.data;
+          else if (status === 1) meetList.value = res.data;
+          else if (status === 2) meetFullList.value = res.data;
         })
         .catch((err) => {
           console.log(err);
         });
     };
+    
+    const getOneMeet = async function(meetId) {
+      try {
+        const response = await axios({
+          url: `${REST_USER_API}/${selectedParty.value.partyId}/meet`,
+          method: "GET",
+          params: { meetId: meetId },
+          headers: {
+            Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+          },
+        });
+        return response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
 
     //가입 요청 수락
     const meetapproveRequest = function (meetId) {
-
       axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/management/meet/${meetId}/true`,
         method: "PUT",
@@ -490,15 +476,13 @@ export const usePartyStore = defineStore(
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log(res.data)
-        })
-    }
+      }).then((res) => {
+        console.log(res.data);
+      });
+    };
 
     //가입 요청 거절
     const meetrejectRequest = function (meetId) {
-
       axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/management/meet/${meetId}/false`,
         method: "PUT",
@@ -506,47 +490,58 @@ export const usePartyStore = defineStore(
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log(res.data)
-
-        })
-    }
+      }).then((res) => {
+        console.log(res.data);
+      });
+    };
 
     //모임가입신청
-    const meetjoinRequest = function (meetId) {
-      console.log((meetId) + " " + (useStore.loginUser.userId))
-      axios({
+    const meetjoinRequest = async function (meetId) {
+      // console.log(meetId + " " + useStore.loginUser.userId);
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/${useStore.loginUser.userId}`,
         method: "PUT",
 
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log("가입신청함")
+      }).then((res) => {
+        getMeetMemberList(meetId)
+        // console.log("가입신청함");
+      });
+    };
 
-        })
+    //모임가입신청취소
+    const canceljoinRequest = async function (meetId) {
+      // console.log(meetId + " " + useStore.loginUser.userId);
+      await axios({
+        url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/${useStore.loginUser.userId}`,
+        method: "DELETE",
 
-    }
+        headers: {
+          Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
+        },
+      }).then((res) => {
+        getMeetMemberList(meetId)
+        // console.log("가입신청함");
+      });
+    };
 
-    //모임 내부 멤버 조회 
-    const meetMemberList = ref([])
-    const getMeetMemberList = function (meetId) {
-      axios({
+    //모임 내부 멤버 조회
+    const meetMemberList = ref([]);
+    const getMeetMemberList =  async function (meetId) {
+      await axios({
         url: `${REST_USER_API}/${selectedParty.value.partyId}/meet/${meetId}/member`,
         method: "GET",
 
         headers: {
           Authorization: useStore.accessToken, // 헤더에 accessToken을 포함하여 요청
         },
-      })
-        .then((res) => {
-          console.log("멤버 조회")
-          meetMemberList.value = res.data;
-        })
-    }
+      }).then((res) => {
+        // console.log("멤버 조회완");
+        meetMemberList.value = res.data;
+      });
+    };
 
     function $reset() {
       partyList.value = null;
@@ -561,12 +556,12 @@ export const usePartyStore = defineStore(
       commentList.value = null;
       isManager.value = false;
       isjoining.value = false;
-      meetRequestList.value = null
-      memberRequestList.value = null
-      meetList.value = null
-      meetFullList.value = null
-      meetMemberList.value = null
-      selectedMeet.value = null
+      meetRequestList.value = null;
+      memberRequestList.value = null;
+      meetList.value = null;
+      meetFullList.value = null;
+      meetMemberList.value = null;
+      selectedMeet.value = null;
     }
 
     return {
@@ -612,6 +607,10 @@ export const usePartyStore = defineStore(
       selectedMeet,
       isWaiting,
       $reset,
+      updateComment,
+      canceljoinRequest,
+      getOneParty,
+      getOneMeet,
     };
   },
   { persist: true }

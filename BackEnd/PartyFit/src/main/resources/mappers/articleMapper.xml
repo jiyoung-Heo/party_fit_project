@@ -5,7 +5,7 @@
 <mapper namespace="com.ssafy.partyfit.model.dao.ArticleDao">
 	<select id="selectArticle" parameterType="map" resultType="Article">
 		select a.article_id, a.title, a.content, a.reg_date, a.mod_date, a.view_count, a.map_json, a.category,
-		a.user_id, a.party_id,a.delete_yn, count(l.likes_id) as likesCount, u.username ,u.profile
+		a.user_id, a.party_id,a.delete_yn,a.meet_id, count(l.likes_id) as likesCount, u.username ,u.profile
 		from article a left join article_likes l ON  a.article_id = l.target_id left join user u ON  u.user_id = a.user_id
 		group by a.article_id
 		having category = #{category} and 
@@ -21,8 +21,8 @@
 	</select>
 	<insert id="insertArticle" parameterType="Article">
 		insert into
-		article(title, content, category, map_json, user_id, party_id) 
-		values(#{title}, #{content}, #{category},#{mapJson}, #{userId}, #{partyId})
+		article(title, content, category, map_json, user_id, party_id, meet_id) 
+		values(#{title}, #{content}, #{category},#{mapJson}, #{userId}, #{partyId},#{meetId})
 	</insert>
 	<update id="updateArticle" parameterType="Article">
 		update article set

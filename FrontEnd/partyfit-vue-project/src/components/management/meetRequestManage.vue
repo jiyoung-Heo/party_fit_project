@@ -6,31 +6,32 @@
 
       <thead>
         <tr>
-          <th>이름</th>
-          <th>제목</th>
+          <th>모임명</th>
           <!-- <th>내용</th> -->
+          <th>현재 인원</th>
           <th>정원</th>
-          <th>인원</th>
           <th>시작시간</th>
           <th>끝나는시간</th>
-          <th>모집중</th>
+          <!-- <th>모집중</th> -->
         </tr>
-
       </thead>
       <tbody>
-        <tr v-for="meet in store.meetRequestList" :key="meet.meetId">
-          <td>{{  }} </td>
-          <td>{{ meet.title }} </td>
+        <tr v-for="meet in store.meetRequestList" :key="meet.meetId" @click="goMeetManageDetail(meet)">
+          <td>{{ meet.title }}</td>
           <!-- <td>{{ meet.content }} </td> -->
-          <td>{{ meet.maxHeadcount }} </td>
-          <td>{{ meet.headcount }} </td>
-          <td>{{ meet.startTime.split('T')[0] }} 시간 : {{meet.startTime.split('T')[1].slice(0,5)}} </td>
-          <td>{{ meet.endTime.split('T')[0] }} 시간 : {{meet.endTime.split('T')[1].slice(0,5)}} </td>
-          <td> <p v-if="meet.status === 1">모집중</p>
-          <p v-if="meet.status === 2">정원마감</p> </td>
-          <button @click="meetapproveRequest(meet.meetId)">승인</button>
-          <button @click="meetrejectRequest(meet.meetId)">거절</button>
-        </tr>
+          <td>{{ meet.headcount }}</td>
+          <td>{{ meet.maxHeadcount }}</td>
+          <td>
+            {{ meet.startTime.split("T")[0] }}
+            {{ meet.startTime.split("T")[1].slice(0, 5) }}
+          </td>
+          <td>
+            {{ meet.endTime.split("T")[0] }}
+            {{ meet.endTime.split("T")[1].slice(0, 5) }}
+          </td>
+          <!-- <td> <p v-if="meet.status === 1">모집중</p>
+          <p v-if="meet.status === 2">정원마감</p> </td> -->
+                  </tr>
       </tbody>
     </table>
 
@@ -69,16 +70,17 @@ const currentPage = ref(1);
 
 const store = usePartyStore();
 
-onMounted(() => {
-})
-
 const key = ref(0);
 
 const forceRerender = () => {
   key.value++;
 };
+onMounted(()=>{
+  store.getMeetList(0)
+})
 
 const pageCount = computed(() => {
+  if(store.meetRequestList == null) return null
   return Math.ceil(store.meetRequestList.length / perPage);
 });
 
@@ -96,21 +98,10 @@ watch(() => store.meetRequestList, () => {
   forceRerender();
 });
 
-
-const meetapproveRequest = function (meetId) {
-  console.log("수락")
-  store.meetapproveRequest(meetId);
-  // window.location.reload();
-  // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
+const goMeetManageDetail = (meet)=>{
+  store.selectedMeet = meet;
+  router.push({ name: "meetManageDetail", params: { meetId: meet.meetId } });
 }
-
-const meetrejectRequest = function (meetId) {
-  console.log("거절")
-  store.meetrejectRequest(meetId);
-  // window.location.reload();
-  // router.push({ name: 'manageRequest', params: { partyId: store.selectedParty.partyId}})
-}
-
 
 
 </script>

@@ -5,7 +5,7 @@
             <div class ="input-group">
 
             <input type="text" class="form-control me-4" placeholder="검색어를 입력해주세요" v-model="searchQuery" />
-            <button class="btn-warning" @click="performSearch">검색</button>
+            <button class="btn-warning" @click="performSearch()">검색</button>
             </div>
             <p @click ="goArticleCreate">+ 글 작성하기</p>
         </div>
@@ -30,7 +30,7 @@
             <table class="table table-hover text-center">
                 <thead>
                     <tr>
-                        <th></th>
+                        <!-- <th></th> -->
                         <th>제목</th>
                         <th>작성자</th>
                         <th>조회</th>
@@ -41,14 +41,14 @@
                 <tbody>
                     <tr v-for="article in currentPageArticleList" :key="article.article_id"
                         @click="goArticleDetail(article.articleId)">
-                        <td>
-                            {{ article.articleId }}
-                        </td>
+                        <!-- <td> -->
+                            <!-- {{ article.articleId }} -->
+                        <!-- </td> -->
                         <td>
                             {{ article.title }}
                         </td>
                         <td>{{ article.username }}</td>
-                        <td>{{ article.viewCnt }}</td>
+                        <td>{{ article.viewCount }}</td>
                         <td>{{ article.regDate.split('T')[0] }}</td>
                     </tr>
                 </tbody>
@@ -90,11 +90,12 @@ const currentPage = ref(1);
 
 const store = usePartyStore();
 onMounted(() => {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC");
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",0);
 })
 
 
 const pageCount = computed(() => {
+    if(store.freeList == null) return null
     return Math.ceil(store.freeList.length / perPage);
 });
 
@@ -103,6 +104,7 @@ const clickPage = function (page) {
 };
 
 const currentPageArticleList = computed(() => {
+    if(store.freeList == null) return null
     return store.freeList.slice(
         (currentPage.value - 1) * perPage,
         currentPage.value * perPage
@@ -111,21 +113,26 @@ const currentPageArticleList = computed(() => {
 
 const goArticleDetail = function (articleId) {
     console.log(articleId);
-    router.push({ name: 'articleDetail', params: { articleId: articleId } })
+    router.push({ name: 'articleDetail', params: { articleId: articleId, partyId: store.selectedParty.partyId } })
 
 
 }
 
 const setCurrent = function () {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC");
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",0);
 }
 
 const setOld = function () {
-    store.getFreeList(store.selectedParty.partyId, "reg_date", "ASC");
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "ASC",0);
 }
 
 const goArticleCreate = function () {
     router.push({ name: 'articleCreate', params: { category: "자유게시판" } })
+}
+const searchQuery = ref("");
+const performSearch = () =>{
+    // console.log('dd')
+    store.getFreeList(store.selectedParty.partyId, "reg_date", "DESC",0,'title',searchQuery.value)
 }
 </script>
 
