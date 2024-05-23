@@ -67,5 +67,8 @@
 		select  u.user_id,name, username, age, profile, email 
 		from meet_member, user u where u.user_id = meet_member.user_id and meet_id=#{meetId}; 
 	</select>
+	<select id="selectAllMeetForUser" parameterType="int" resultType="meet">
+		select m.*, mem.* from meet m, meet_member mem where m.meet_id = mem.meet_id and m.delete_yn='N' and mem.user_id = #{user_id}
+	</select>
 	
 </mapper>

@@ -51,13 +51,11 @@ public class PartyController {
 	private LikesService likesService;
 	private JwtUtil jwtUtil;
 
-	
-
 	public PartyController(PartyService partyService, ArticleService articleService,
 			PartyMemberService partyMemberService, MeetService meetService, CommentService commentService,
 			LikesService likesService, JwtUtil jwtUtil) {
 		super();
-	
+
 		this.partyService = partyService;
 		this.articleService = articleService;
 		this.partyMemberService = partyMemberService;
@@ -82,7 +80,7 @@ public class PartyController {
 			return new ResponseEntity<List<PartyMemberCount>>(partyList, HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 파티목록
 	 * 
@@ -98,7 +96,6 @@ public class PartyController {
 			return new ResponseEntity<PartyMemberCount>(partyList, HttpStatus.OK);
 		}
 	}
-
 
 	/**
 	 * 파티 만들기
@@ -301,8 +298,7 @@ public class PartyController {
 	 * @return
 	 */
 	@PostMapping("/{partyId}/article/{articleId}/comment")
-	public ResponseEntity<?> addComment(@PathVariable("articleId") int articleId, @RequestBody Comment comment
-	) {
+	public ResponseEntity<?> addComment(@PathVariable("articleId") int articleId, @RequestBody Comment comment) {
 		// 해당 article 조회해와서 마지막의 topId를 조회해온다.
 //		comment.setArticleId(articleId);
 //		int userId;
@@ -314,7 +310,7 @@ public class PartyController {
 //		comment.setUserId(userId);
 		comment.setArticleId(articleId);
 //		System.out.println("커맨트" + comment);
-		
+
 		int result = 0;
 
 		// 제일 상위 depth의 댓글인 경우
@@ -333,7 +329,7 @@ public class PartyController {
 		if (result == 0) {
 			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.OK);
 		} else {
-			return new ResponseEntity<List<Comment>>(commentList,HttpStatus.CREATED);
+			return new ResponseEntity<List<Comment>>(commentList, HttpStatus.CREATED);
 		}
 	}
 
@@ -345,7 +341,8 @@ public class PartyController {
 	 * @return
 	 */
 	@PutMapping("/{partyId}/article/{articleId}/comment/{commentId}")
-	public ResponseEntity<?> modifyComment(@PathVariable("articleId") int articleId, @PathVariable("commentId") int commentId, @RequestBody Comment comment) {
+	public ResponseEntity<?> modifyComment(@PathVariable("articleId") int articleId,
+			@PathVariable("commentId") int commentId, @RequestBody Comment comment) {
 		comment.setCommentId(commentId);
 		commentService.modifyComment(comment);
 		List<Comment> commentList = commentService.showComment(articleId);
@@ -361,7 +358,8 @@ public class PartyController {
 	 * @return
 	 */
 	@DeleteMapping("/{partyId}/article/{articleId}/comment/{commentId}")
-	public ResponseEntity<?> removeComment(@PathVariable("articleId") int articleId, @PathVariable("commentId") int commentId) {
+	public ResponseEntity<?> removeComment(@PathVariable("articleId") int articleId,
+			@PathVariable("commentId") int commentId) {
 		commentService.removeComment(commentId);
 		List<Comment> commentList = commentService.showComment(articleId);
 
@@ -389,7 +387,7 @@ public class PartyController {
 		map.put("tableName", "comment_likes");
 		map.put("userId", userId);
 		map.put("targetId", commentId);
-		
+
 		int result = likesService.clickLikes(map);
 
 		if (result == 0) {
@@ -400,36 +398,36 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 코멘트 좋아요 했는지 여부
+	 * 
 	 * @param articleId
 	 * @param session
 	 * @return
 	 */
 	@GetMapping("/{partyId}/article/{commentId}/comment/like")
-	public ResponseEntity<?> isCommentLikes(@PathVariable("commentId") int commentId, HttpServletRequest  request ) {
+	public ResponseEntity<?> isCommentLikes(@PathVariable("commentId") int commentId, HttpServletRequest request) {
 		String userId;
 		String token = request.getHeader("Authorization");
 		userId = jwtUtil.getUserId(token);
 		System.out.println(userId);
-		
+
 		Map<String, Object> map = new HashMap<>();
 		map.put("tableName", "comment_likes");
 		map.put("userId", userId);
 		map.put("targetId", commentId);
-		
+
 		int result = likesService.isLike(map);
-		
+
 		if (result == 0) {
-			// 좋아요 안눌려있으면 
+			// 좋아요 안눌려있으면
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} else {
 			// 좋아요 눌렸으면
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
 	}
-	
 
 	/**
 	 * 파티 내부 멤버 조회하기
@@ -443,12 +441,30 @@ public class PartyController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
 		map.put("status", status);
-		System.out.println("파티 멤버 조회"+status+" "+partyId);
+		System.out.println("파티 멤버 조회" + status + " " + partyId);
 		List<PartyMemberUser> partyMemberList = partyMemberService.showPartyMember(map);
 		if (partyMemberList == null || partyMemberList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
 			return new ResponseEntity<List<PartyMemberUser>>(partyMemberList, HttpStatus.OK);
+		}
+	}
+
+	/**
+	 * 유저의 전체 모임 정보 리턴
+	 * 
+	 * @param partyId
+	 * @param status
+	 * @return
+	 */
+	@GetMapping("/meet")
+	public ResponseEntity<?> showAllMeet(@ModelAttribute("userId") int userId) {
+		List<Meet> meetList = meetService.selectAllMeetForUser(userId);
+
+		if (meetList == null || meetList.size() == 0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
 
@@ -460,32 +476,31 @@ public class PartyController {
 	 * @return
 	 */
 	@GetMapping("/{partyId}/meet/{status}")
-	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status
-			) {
-		System.out.println("내부 모임 조회"+status+" "+partyId);
+	public ResponseEntity<?> showMeet(@PathVariable("partyId") int partyId, @PathVariable("status") int status) {
+		System.out.println("내부 모임 조회" + status + " " + partyId);
 		Map<String, Object> map = new HashMap<>();
 		map.put("partyId", partyId);
 		map.put("status", status);
 		map.put("condition", new SearchCondition());
-		
+
 		List<Meet> meetList = meetService.showMeet(map);
-		
+
 		if (meetList == null || meetList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			for(int i = 0;i<meetList.size(); i++) {
-			int headcount= meetService.meetMemberCount(meetList.get(i).getMeetId());
-			meetList.get(i).setHeadcount(headcount);
-			if(headcount>= meetList.get(i).getMaxHeadcount()) {
-				meetList.get(i).setStatus(2);
+			for (int i = 0; i < meetList.size(); i++) {
+				int headcount = meetService.meetMemberCount(meetList.get(i).getMeetId());
+				meetList.get(i).setHeadcount(headcount);
+				if (headcount >= meetList.get(i).getMaxHeadcount()) {
+					meetList.get(i).setStatus(2);
+				}
+				System.out.println(meetList.get(i));
 			}
-			System.out.println(meetList.get(i));
-			}
-			
+
 			return new ResponseEntity<List<Meet>>(meetList, HttpStatus.OK);
 		}
 	}
-	
+
 	/**
 	 * 파티 내부 모임 조회하기
 	 * 
@@ -495,20 +510,19 @@ public class PartyController {
 	 */
 	@GetMapping("/{partyId}/meet")
 	public ResponseEntity<?> showOneMeet(@PathVariable("partyId") int partyId, @ModelAttribute("meetId") int meetId) {
-		
+
 		Meet meet = meetService.selectMeetData(meetId);
-		System.out.println("test: "+meet);
+		System.out.println("test: " + meet);
 		if (meet == null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-		
+
 			return new ResponseEntity<Meet>(meet, HttpStatus.OK);
 		}
 	}
-	
-	
+
 	/**
-	 * 파티 내부 모임 조회하기
+	 * 파티 내부 멤버 조회하기
 	 * 
 	 * @param partyId
 	 * @param condition
@@ -516,21 +530,16 @@ public class PartyController {
 	 */
 	@GetMapping("/{partyId}/meet/{meetId}/member")
 	public ResponseEntity<?> showMeetMember(@PathVariable("meetId") int meetId) {
-		
+
 		List<User> memberList = meetService.showMeetMember(meetId);
-		
+
 		if (memberList == null || memberList.size() == 0) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} else {
-			
-			
+
 			return new ResponseEntity<List<User>>(memberList, HttpStatus.OK);
 		}
 	}
-	
-	
-	
-	
 
 	/**
 	 * 파티 내부 모임 생성요청
@@ -544,9 +553,9 @@ public class PartyController {
 		meet.setPartyId(partyId);
 		int result = meetService.makeMeet(meet);
 		int meetId = meetService.lastMeetId();
-		
+
 		Map<String, Object> map = new HashMap<>();
-		
+
 		map.put("meetId", meetId);
 		map.put("userId", meet.getUserId());
 		System.out.println(meet.getMeetId());
@@ -559,7 +568,6 @@ public class PartyController {
 		}
 	}
 
-
 	/**
 	 * 파티 내부 모임 가입
 	 * 
@@ -568,12 +576,12 @@ public class PartyController {
 	 * @return
 	 */
 	@PutMapping("/{partyId}/meet/{meetId}/{userId}")
-	public ResponseEntity<?> joinMeetRequest(@PathVariable("userId") int userId,@PathVariable("meetId") int meetId) {
+	public ResponseEntity<?> joinMeetRequest(@PathVariable("userId") int userId, @PathVariable("meetId") int meetId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("meetId", meetId);
 		map.put("userId", userId);
 		System.out.println("가입 신청 함 ");
-		
+
 		int result = meetService.joinRequest(map);
 		if (result == 0) {
 			System.out.println("가입 신청 완료");
@@ -582,6 +590,7 @@ public class PartyController {
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		}
 	}
+
 	/**
 	 * 파티 내부 모임 가입취소
 	 * 
@@ -590,12 +599,12 @@ public class PartyController {
 	 * @return
 	 */
 	@DeleteMapping("/{partyId}/meet/{meetId}/{userId}")
-	public ResponseEntity<?> deleteMeetRequest(@PathVariable("userId") int userId,@PathVariable("meetId") int meetId) {
+	public ResponseEntity<?> deleteMeetRequest(@PathVariable("userId") int userId, @PathVariable("meetId") int meetId) {
 		Map<String, Object> map = new HashMap<>();
 		map.put("meetId", meetId);
 		map.put("userId", userId);
 		System.out.println("가입 신청 함 ");
-		
+
 		int result = meetService.deleteRequest(map);
 		if (result == 0) {
 			System.out.println("가입 신청 완료");
@@ -605,7 +614,4 @@ public class PartyController {
 		}
 	}
 
-	
-	
-	
 }

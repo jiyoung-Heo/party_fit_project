@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.partyfit.model.dao.MeetDao;
 import com.ssafy.partyfit.model.dto.Meet;
+import com.ssafy.partyfit.model.dto.Party;
 import com.ssafy.partyfit.model.dto.User;
 
 @Service
@@ -79,6 +80,11 @@ public class MeetServiceImpl implements MeetService {
 	@Override
 	public Meet selectMeetData(int meetId) {
 		return meetDao.selectMeetData(meetId);
+	}
+
+	@Override
+	public List<Meet> selectAllMeetForUser(int userId) {
+		return meetDao.selectAllMeetForUser(userId);
 	}
 	
 	

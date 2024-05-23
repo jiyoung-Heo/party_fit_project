@@ -44,9 +44,9 @@ const loadComments = async () => {
   await store.getCommentList(props.articleId);
 };
 
-onMounted(() => {
-  loadComments();
-});
+// onMounted(() => {
+//   loadComments();
+// });
 
 // watch(() => props.articleId, () => {
 //   currentPage.value = 1;
