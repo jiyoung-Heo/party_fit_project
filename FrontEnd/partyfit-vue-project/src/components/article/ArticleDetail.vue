@@ -233,7 +233,7 @@ const compiledMarkdown = computed(() => {
   align-items: center;
   min-height: 100vh;
   background-color: #f0f2f5;
-}
+  }
 
 .widget {
   background: #fff;
