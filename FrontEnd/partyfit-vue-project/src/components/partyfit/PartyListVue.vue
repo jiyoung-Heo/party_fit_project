@@ -96,10 +96,16 @@ const gopartyPage = function(party) {
 }
 
 .party:hover{
-  transform: scale(1.1) translateY(3px);
+  transform: scale(1.1) translateY(-15px);
+  transition: all 0.3s ease;
+  
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
+  
+}
+.party{
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 }
-
 .fit-image {
   width: 100%;
   height: auto;

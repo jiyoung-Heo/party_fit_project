@@ -3,14 +3,17 @@
     <h1>로그인</h1>
     <fieldset>
       <div class="input-group">
-        <label for="id">아이디 : </label><input type="text" id="id" v-model="loginId" />
+        <label for="id">아이디 : </label>
+        <input type="text" id="id" v-model="loginId" />
       </div>
+      <hr>
       <div class="input-group">
-        <label for="password">비밀번호 : </label>
+        <label  for=" password">비밀번호 : </label>
         <input type="password" id="password" v-model="password" />
       </div>
+      <hr>
       <div class="btns" style="display: inline">
-        <p>📌<a @click="userLogin" class="custom-btn btn-15"> 로그인</a></p>
+        <p>📌<a @click="userLogin" class=" custom-btn btn-15"> 로그인</a></p>
 
         <p>👍 <RouterLink class="custom-btn btn-15" :to="{ name: 'findLoginId' }">아이디찾기</RouterLink></p>
         <p>✔️ <RouterLink class="custom-btn btn-15" :to="{ name: 'findPassword' }">비밀번호찾기</RouterLink></p>
@@ -38,19 +41,29 @@ const userLogin = function () {
 </script>
 
 <style scoped>
-
-.btns p a{
-padding:5px;
-}
-
 .login-container {
   align-items: start;
   justify-content: left;
   padding: 150px;
   height: 90vh;
-  background-color: #f7f7f7;
   max-width: 1300px;
 }
+hr{
+  margin: 0;
+    color: inherit;
+    border: 0;
+    border-top: var(--bs-border-width) solid;
+    opacity: .25;
+}
+
+.btns p a{
+padding:5px;
+}
+
+.btns p{
+  margin-top:20px;
+}
+
 
 h1 {
   margin-bottom: 20px;
@@ -64,7 +77,7 @@ input {
 .input-group {
   display: flex;
   flex-direction: row;
-  margin-bottom: 15px;
+  margin-top: 15px;
 }
 
 label {
@@ -76,17 +89,6 @@ label {
 
 }
 
-
-
-.login-button:hover {
-  background-color: #f4f761ef;
-  background-position: 100% 0;
-}
-
-.link-group {
-  margin-top: 10px;
-  text-align: center;
-}
 
 
 
@@ -104,7 +106,7 @@ label {
   top: 0;
   right: 0;
   z-index: -1;
-  background-color: #e3fa30e8;
+  background-color: #dcca00b8;
   border-radius: 5px;
 
   transition: all 0.3s ease;

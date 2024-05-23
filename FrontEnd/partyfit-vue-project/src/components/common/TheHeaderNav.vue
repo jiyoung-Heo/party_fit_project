@@ -2,44 +2,37 @@
   <div class="container1 d-flex">
     <div class="top ">
 
-
-      <h1>
-        <RouterLink :to="{ name: moveMainPage }" class="coral-color">party fit</RouterLink>
-      </h1>
-
       <nav class="navbar-menu">
         <!-- routerlink로 수정 -->
-        <RouterLink class="navbar-link" :to="{ name: 'myFit' }">나의 운동</RouterLink>
-        <RouterLink class="navbar-link" :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
-        <RouterLink class="navbar-link" :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
+        <RouterLink class="navbar-link index1" :to="{ name: 'myFit' }">나의 운동</RouterLink>
+        <RouterLink class="navbar-link index2" :to="{ name: 'myPartyFit' }">나의 party fit</RouterLink>
+        <RouterLink class="navbar-link index3" :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
       </nav>
     </div>
     <div>
 
-      <div class="animated-text">
-        <p class="plus-party-fit" :class="{ animated: isAnimating }">+party fit</p>
-        <p class="material-symbols-outlined" :class="{ animated: isAnimating }">notifications</p>
-
-      </div>
     </div>
     <div class="box">
 
-      <div class="user-card"  >
 
-        <div class="user-info">
-          <template v-if="store.accessToken == null || store.accessToken == ''">
-            <p class="login">
-              <RouterLink :to="{ name: 'login' }">로그인</RouterLink>
-            </p>
-            <p class="sign">
-              <RouterLink :to="{ name: 'signup' }">회원가입</RouterLink>
-            </p>
-          </template>
-          <template v-else>
-            <div v-if="hasProfile" class="user-info profile ">
-              <img  :src="'/src/assets/user/' + store.loginUser.profile" alt="프로필사진" width="20px" />
+      <div class="user-info">
+        <template v-if="store.accessToken == null || store.accessToken == ''">
+            <div class="login-logout">
+
+              <p class="login" @click="click">
+                로그인
+              </p>
+              <p class="sign" @click="signup">
+                회원가입
+              </p>
             </div>
-            
+        </template>
+        <template v-else>
+          <div class="user-card">
+            <div v-if="hasProfile" class="user-info profile ">
+              <img :src="'/src/assets/user/' + store.loginUser.profile" alt="프로필사진" width="20px" />
+            </div>
+
             <div v-else class="profile">
               <span class="material-icons">face</span>
             </div>
@@ -48,11 +41,11 @@
 
               <div class="user-actions">
                 <RouterLink class="my-page-link" :to="{ name: 'myPage' }">마이페이지</RouterLink>
-                <button class="logout-button" @click="logout">로그아웃</button>
+                <a class="logout-button" @click="logout">로그아웃</a>
               </div>
             </span>
-          </template>
-        </div>
+          </div>
+        </template>
       </div>
     </div>
 
@@ -71,6 +64,8 @@ const store = useUserStore();
 const router = useRouter();
 const accessToken = computed(() => store.accessToken);
 
+const click = () => { router.push({ name: "login" }); }
+const signup = () => { router.push({ name: "signup" }); }
 onMounted(() => {
   if (store.accessToken == null || store.accessToken == "") {
     router.push({ name: "beforeLoginMain" });
@@ -118,12 +113,23 @@ setInterval(() => {
   /* display : inline; */
   position: relative;
   padding: 0px 40px;
-  width: 1300px;
+
   margin: 0 auto;
-  height : 30vh;
+  height: auto;
+
+  max-width: 1400px;
+  min-width: 1300px;
+  background-image: url('/src/assets/user/back-top2.png');
+  background-size: contain;
+  /* 배경 이미지를 커버로 채움 */
+  background-position: bottom;
+  /* 배경 이미지를 가운데 정렬 */
+  background-repeat: no-repeat;
+  /* 배경 이미지 반복 없음 */
+  background-origin: border-box;
+
+
 }
-
-
 
 
 .user-info {
@@ -149,18 +155,20 @@ setInterval(() => {
   height: 120px;
   /* 최대값으로 설정 */
   width: 370px;
-  border: 1px solid rgb(169, 169, 169);
-  /* 로고의 테두리 */
-  border-radius: 5px;
-  /* user-card에서 가져온 속성 */
-  background-color: #fff;
+  background-color: rgba(253, 253, 227, 0.568);
   padding: 20px;
   /* user-card에서 가져온 속성 */
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+.user-card:hover {
+  transition: transformX(30px);
+}
+
 .my-page-link:hover {
   color: lightcoral;
+
+
 }
 
 .box1:hover {
@@ -171,16 +179,23 @@ setInterval(() => {
 }
 
 .username {
-  font-size: 20px;
+  font-size: 1.4em;
   font-weight: bold;
   margin-bottom: 10px;
+  color: black;
+  position: absolute;
+  top: 20px;
+  left: 110px;
+
 }
 
 .profile img {
   width: 5em;
   height: 5em;
   border-radius: 50%;
+  object-fit: cover;
 }
+
 
 .profile .material-icons {
   font-size: 40px;
@@ -192,35 +207,45 @@ setInterval(() => {
   gap: 10px;
 }
 
-.my-page-link {
 
-  z-index: 1;
-  bottom: 20px;
-  position: absolute;
-  color: black;
-  text-decoration: none;
-  font-size: 20px;
-  transition: color 0.3s ease;
-  margin: 5px;
-  margin-top: 5px;
-}
 
 .sign {
   position: absolute;
   left: 200px;
   z-index: 1;
   font-size: 20px;
-  width: 100px;
+  width: 130px;
   transition: color 0.1s, transform 0.1s;
+  text-align: center;
+  padding: 15px;
+  background-color: pink;
+  ;
+  color: black;
+  transform: scale(1.05) translateY(-3px);
+  border-color: #f8f9fa;
+  border-top: 1px solid rgb(117, 117, 117);
+  border-left: 1px solid rgb(116, 116, 116);
+  border-right: 1px solid rgb(116, 116, 116);
+  border-bottom: 1px solid #f8f9fa;
 }
 
 .login {
+  background-color: rgb(192, 233, 255);
+  text-align: center;
+  padding: 15px;
   position: absolute;
   left: 100px;
   z-index: 1;
   font-size: 20px;
-  width: 100px;
+  width: 130px;
   transition: color 0.1s, transform 0.1s;
+  color: black;
+  transform: scale(1.05) translateY(-3px);
+  border-color: #f8f9fa;
+  border-top: 1px solid rgb(159, 159, 159);
+  border-left: 1px solid rgb(116, 116, 116);
+  border-right: 1px solid rgb(116, 116, 116);
+  border-bottom: 1px solid #f8f9fa;
 }
 
 .sign a,
@@ -239,16 +264,29 @@ setInterval(() => {
   margin-top: var(--bs-gutter-y);
 }
 
+.my-page-link {
+  text-align: center;
+  position: absolute;
+  left: 120px;
+  top: 70px;
+  width: 100px;
+  z-index: 1;
+  color: black;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  height: 30px;
+
+}
+
 .logout-button {
   position: absolute;
-  bottom: 20px;
+  top: 65px;
   pointer-events: auto;
-  right: 20px;
+  left: 230px;
   padding: 5px 10px;
   background-color: #ececec;
   border: none;
   color: rgb(0, 0, 0);
-  font-size: 18px;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -260,10 +298,7 @@ setInterval(() => {
 }
 
 
-.animated-text {
-  display: flex;
-  align-items: center;
-}
+
 
 .plus-party-fit,
 .material-symbols-outlined {
@@ -273,45 +308,46 @@ setInterval(() => {
   transition: transform 1s ease, opacity 0.3s ease;
 }
 
-.animated-text .plus-party-fit.animated,
-.animated-text .material-symbols-outlined.animated {
-  transform: scale(1.05);
-  opacity: 0.8;
-}
 
-.plus-party-fit {
-  color: coral;
-}
 
 .top {
-  padding-top: 30px;
+  padding-top: 50px;
   padding-bottom: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-around;
-  flex: 3;
-  height:28vh;
+  height: 15vh;
+  width: 600px;
 }
 
 .top h1 {
   margin-bottom: 50px;
   /* 여기에 간격을 추가합니다 */
 }
-.nav .navbar-menu {
 
-  z-index: 1000;
-}
+.nav .navbar-menu {}
+
+.navbar-menu * {}
+
 .navbar-menu {
   position: sticky;
-  top:0px;
+  top: 0px;
   display: flex;
   margin-bottom: 0px;
-
+  margin-left: 70px;
   text-align: center;
-  z-index: 1;
+
   /* width: 1200px; */
   /* margin:auto; */
+}
+
+.nav-bar {
+  position: sticky;
+  top: 0px;
+  height: 200px;
+  background-color: #E8E8E8;
+
 }
 
 .navbar-menu a {
@@ -334,23 +370,55 @@ setInterval(() => {
   transition: all 0.3s;
 }
 
-.navbar-menu .navbar-link:hover,
-.navbar-menu .navbar-link.router-link-active {
+.navbar-menu .index1:hover,
+.navbar-menu .index1.router-link-active {
   color: black;
   transform: scale(1.05) translateY(3px);
   border-color: #f8f9fa;
   border-top: 1px solid rgb(116, 116, 116);
   /* 상단 테두리 */
   border-left: 1px solid rgb(116, 116, 116);
-  /* 좌측 테두리 */
+
   border-right: 1px solid rgb(116, 116, 116);
   /* 우측 테두리 */
   border-bottom: 1px solid #f8f9fa;
   /* 하단 테두리 */
   /* transform 속성 합치기 */
-  background-color: #f8f9fa;
+  background-color: #ffeb91;
   z-index: 1;
 }
+
+.navbar-menu .index2:hover,
+.navbar-menu .index2.router-link-active {
+  color: black;
+  transform: scale(1.05) translateY(3px);
+  border-color: #f8f9fa;
+  border-top: 1px solid rgb(116, 116, 116);
+  border-left: 1px solid rgb(116, 116, 116);
+  border-right: 1px solid rgb(116, 116, 116);
+  border-bottom: 1px solid #f8f9fa;
+  background-color: #bbffbb;
+  z-index: 1;
+}
+
+
+.navbar-menu .index3:hover,
+.navbar-menu .index3.router-link-active {
+  color: black;
+  transform: scale(1.05) translateY(3px);
+  border-color: #f8f9fa;
+  border-top: 1px solid rgb(116, 116, 116);
+  border-left: 1px solid rgb(116, 116, 116);
+
+  border-right: 1px solid rgb(116, 116, 116);
+  /* 우측 테두리 */
+  border-bottom: 1px solid #ffffff;
+  /* 하단 테두리 */
+  /* transform 속성 합치기 */
+  background-color: #ebcfff;
+  z-index: 1;
+}
+
 
 a {
   text-decoration: none;
@@ -391,89 +459,182 @@ a {
 }
 
 
-
-@media (max-width: 1350px) {
+/* @media (max-width: 1411px) {
   .container1 {
-    padding: 0px 40px;
-    width: 95%;
-  }
+  position: relative;
+  padding: 0px 40px;
+  max-width: 1400px;
+  height : 15vh;
+  width:1411px;
+  min-width: 1300px;
+  background-image: url('/src/assets/user/back-top.png');
+  background-size: contain;
+  background-position: bottom; 
+  background-repeat: no-repeat; 
+  background-origin: border-box;
 
 }
+} */
 
-
-@media (max-width: 1200px) {
+@media (min-width: 1350px) {
+  .user-card {
+    position: absolute;
+    right: 50px;
+    top: -200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 120px;
+    width: 370px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+border:black solid 0.5px;
+    background-color: white;
+    border-radius: 5px;
+  }
 
   
-  .box{
+.login-logout{
+  position: absolute;
+    right: 50px;
+    top: -160px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 120px;
+    width: 370px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+    border-radius: 5px;
+} 
+}
+
+@media (max-width: 1350px) {
+
+  .user-card {
+    position: absolute;
+    right: 50px;
+    top: 0px;
+    align-items: center;
+    gap: 10px;
+    height: 120px;
+    width: 370px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    background-color: none;
+    border-radius: 5px;
+  }
+
+  .login-logout{
+  position: absolute;
+    right: 0px;
+    top: 70px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 120px;
+    width: 370px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+   
+    border-radius: 5px;
+} 
+  .container1 {
+    padding: 0px 40px;
+  }
+
+  .info-card {
+
+    height: 120px;
+    /* 최대값으로 설정 */
+    width: 370px;
+
+    padding: 20px;
+    /* 로고의 테두리 */
+    border-radius: 5px;
+    /* user-card에서 가져온 속성 */
+    background-color: #baa439a1;
+  }
+
+
+  .box {
     position: fixed;
-    right:-400px;
-    top:80px;
+    right: -300px;
+    top: 80px;
     margin-right: 200px;
   }
 
 
-  .profile img{
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    top : -45px;
-    right: -35px;
-  }
-  
+
+
   .user-info {
     position: relative;
   }
-  
-  .user-actions .logout-button{
+
+  .logout-button {
+    background-color: rgb(255, 227, 232);
     position: absolute;
-    left : 0;
-    
-    width : 100px;
+    left: 120px;
+    width: 100px;
     z-index: 1;
     font-size: 15px;
-    top:25px;
-    height:30px;
-  }
-  .username{
-    position : fixed;
-    top : 100px;
-   color: black;
-  }
-  .user-actions .my-page-link{
-    font-size: 15px;
-    position: absolute;
-    left :0;
-    top: -5px;
-    width : 200px;
-    z-index: 1;
-    height: 15px;
-    
+    top: 80px;
+    height: 30px;
+    text-align: center;
   }
 
-  .login{
+  .my-page-link {
+    text-align: center;
     font-size: 15px;
     position: absolute;
-    left :0;
-    width : 200px;
+    left: 120px;
+    top: 50px;
+    width: 100px;
     z-index: 1;
     height: 15px;
-    font-size: 20px;
-    top: -40px;
-    
+    color: black;
+    text-decoration: none;
+    bottom: 20px;
+    transition: color 0.3s ease;
+    margin: 5px;
+    margin-top: 5px;
+
   }
-  
-  .sign{
+
+  .login {
+
     font-size: 15px;
     position: absolute;
-    left :0;
+    left: 0;
+    width: 300px;
+    z-index: 1;
+    font-size: 20px;
+    top: -60px;
+    background-color: pink;
+    border-radius: 5px;
+    margin: 0px;
+    padding: 8px;
+    text-align: left;
+
+  }
+
+  .sign {
+    text-align: left;
+    padding: 8px;
+    background-color: rgb(192, 233, 255);
+    margin: 0px;
+    font-size: 15px;
+    position: absolute;
+    left: 0;
     top: 0px;
-    width : 200px;
+    width: 300px;
     z-index: 1;
-    height: 15px;
     font-size: 20px;
-    
+    border-radius: 5px;
   }
-}
 
+
+}
 </style>

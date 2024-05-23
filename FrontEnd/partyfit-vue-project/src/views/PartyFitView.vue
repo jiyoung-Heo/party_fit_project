@@ -1,11 +1,10 @@
 <template>
     <div>
         <hr>
-        <div class="container">
+        <div class="party-main">
             <div class="main">
-                {{ isHovered}}
-                <div id="left" @mouseenter="isHovered = true" @mouseleave="isHovered = false" :class="{ 'hovered': isHovered}" style="background-color:pink; width: 100px !important;">
-   여기 isHover로 바꿔야함              <div v-if="isHovered" id="leftbox" class="leftbox">
+                <div id="left" @mouseenter="isHovered = true" @mouseleave="isHovered = false" :class="{ 'hovered': isHovered}" >
+            <div v-if="isHovered" id="leftbox" class="leftbox">
                         <PartyNav />
                     </div>
                 </div>
@@ -31,7 +30,6 @@ import { onMounted, onUnmounted, ref,computed } from 'vue'
 import { usePartyStore } from '@/stores/party';
 
 const isHovered = ref(false);
-const isunhovered = computed(() =>!isHovered.value);
 
 const store = usePartyStore();
 const party = ref();
@@ -56,14 +54,23 @@ onMounted(()=>{
 </script>
 
 <style scoped>
+.party-main{
+    align-items: start;
+  justify-content: left;
+  max-width: 1300px;
+}
 
 #leftbox{
+    border:1px black solid;
     position:sticky;
-    height:auto;
+    height: auto;
+    z-index: 999;
 }
 .hovered {
     transform: translateX(10px); /* 요소를 위로 이동시켜 튀어나오는 효과 생성 */
-    transition: transform 0.3s ease; /* transform 속성에 대한 애니메이션 효과를 0.3초 동안 ease 함수로 적용 */
+    transition: transform 01s ease; /* transform 속성에 대한 애니메이션 효과를 0.3초 동안 ease 함수로 적용 */
+
+
 }
 
 .main {
@@ -73,10 +80,6 @@ onMounted(()=>{
     height: 100%;
 }
 
-#leftArea {
-    height: 70vh;
-    width: 20px;
-}
 
 .leftbox {
     position :sticky;
@@ -86,11 +89,12 @@ onMounted(()=>{
     overflow-y: auto;
     flex: 1;
     animation: compare 2s infinite alternate;
-    z-index:1;
+    z-index:100;
 }
 
 .rightbox {
     flex: 1;
+    padding: 0px 20px;
 }
 
   .slide-enter-active, .slide-leave-active {
@@ -102,11 +106,14 @@ onMounted(()=>{
 }
 
 
-* {
-    border: 1px solid red;
+#left{
+    background-color:rgba(195, 195, 195, 0.233); 
+    width: 100px !important;
 }
 
-.row {
-    padding: 10px;
+#left:hover{
+    background-color:rgb(255, 255, 255); 
+    width: 100px !important;
 }
+
 </style>

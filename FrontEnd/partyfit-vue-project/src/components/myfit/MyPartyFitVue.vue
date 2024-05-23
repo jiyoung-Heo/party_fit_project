@@ -79,6 +79,8 @@ const goAllparty = function(){
   border-radius: 5px;
   cursor: pointer;
   transition: transform 0.3s;
+  transform: translateY(15px);
+  box-shadow: 0 10px 8px rgba(0, 0, 0, 0.1);
 }
 
 .party:hover {
@@ -88,8 +90,8 @@ const goAllparty = function(){
 .btn {
   margin: 1rem;
   border : none;
-  background-color: coral;
-  
+  background-color: rgba(254, 176, 51, 0.744);
+  margin-left: 300px;
   &-jittery {
     animation: jittery 4s infinite;
   }
@@ -121,7 +123,7 @@ const goAllparty = function(){
   
   20% {
     transform: scale(1.15) rotate(-5deg);
-    background-color: rgba(255, 180, 40, 0.74);
+    background-color: rgba(231, 150, 0, 0.943);
   }
   
   25% {

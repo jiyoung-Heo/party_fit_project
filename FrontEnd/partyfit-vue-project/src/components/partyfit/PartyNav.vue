@@ -115,6 +115,7 @@ const goPartyMainPage = function () {
     background-color : rgba(255, 235, 192, 0.842);
     padding:3px 10px;
     display: inline-block;
+    z-index:99;
     
 }
 .catagory{
@@ -144,6 +145,7 @@ const goPartyMainPage = function () {
 
 
 .nav-content {
+    height:100%;
     top:0px;
     display: flex;
     flex-direction: column;
@@ -186,7 +188,7 @@ const goPartyMainPage = function () {
 }
 
 .leftbox {
-    flex: 1;
+    
 }
 /* 스크롤바 설정*/
 .leftbox::-webkit-scrollbar{

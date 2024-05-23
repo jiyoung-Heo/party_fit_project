@@ -1,56 +1,79 @@
 <template>
+  <div>
     <div class="main">
-      <h1>
-        <RouterLink :to="{ name: moveMainPage }" class="coral-color">party fit</RouterLink>
-      </h1>
-
-        <TheHeaderNav class="nav-bar"/>
-        <div class="con">
-
-          <RouterView class="content"/>
-        </div>
+      <span class="coral-color">
+        <RouterLink :to="{ path : '/my-fit' }">party fit</RouterLink>
+      </span>
+      <TheHeaderNav class="nav-bar" />
+      <div class="con">
+        <RouterView class="content" />
+      </div>
     </div>
+    <footer>
+      
+    </footer>
+  </div>
 </template>
 
 <script setup>
-    import TheHeaderNav from '@/components/common/TheHeaderNav.vue';
+import TheHeaderNav from "@/components/common/TheHeaderNav.vue";
 </script>
 
 <style scoped>
 .main {
-  min-height: 100vh; 
-
-
+  background-color: #e8e8e8;
+  position: relative;
 }
 
-.nav-bar{
-position:sticky;
-top:0px;
+.nav-bar {
+  position: sticky;
+  top: 0px;
+  height: 200px;
+  z-index: 10;
+}
 
+.coral-color a {
+  padding: 20px;
+  color: coral;
+  text-decoration: none;
+  margin-top: 40px;
+  height: 40vh;
+  position: relative;
+  padding: 0px 40px;
+  font-size: 45px;
+  width: 1300px;
+  background-color: #e8e8e8;
 }
-* {
-  background-color: rgba(255, 208, 251, 0.21); 
-}
+
 .content {
   display: flex;
   flex-direction: column;
-  padding: 100px;
-  background-color: #f8f9fa;
-  margin-bottom : 5%;
+  padding-left: 10%;
+  padding-right: 8%;
   max-width: 1400px;
-  margin: 0 auto;
-  margin-bottom: 5%;
-  background-image: url('/src/assets/user/back.png');
-  background-size: contain; /* 배경 이미지를 커버로 채움 */
-  background-position: top; /* 배경 이미지를 가운데 정렬 */
-  background-repeat: no-repeat; /* 배경 이미지 반복 없음 */
-  background-origin: border-box;
+  min-width: 1300px;
 }
 
-@media (max-width: 1500px) {
-  .container {
-    padding: 0px 40px; 
-    width:95%;
-  }
+.con {
+  min-width: 1300px;
+  max-width: 1400px;
+  background-color: #e8e8e8;
+  background-image: url('/src/assets/user/back-mid.png');
+  background-size: contain;
+  background-position: center;
+  background-repeat: repeat;
+  background-origin: border-box;
+  margin: 0 auto;
+}
+
+footer {
+  margin: auto;
+  height: 140px;
+  bottom: 0px;
+  max-width: 1400px;
+  min-width: 1300px;
+  background: url('/src/assets/user/back-bottom135.png') top center no-repeat, #e8e8e8;
+  background-size: contain;
+  background-origin: border-box;
 }
 </style>
