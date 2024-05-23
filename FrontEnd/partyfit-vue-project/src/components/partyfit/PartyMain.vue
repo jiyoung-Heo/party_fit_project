@@ -1,6 +1,7 @@
 <template>
     <div>
       <div class="banner">
+         <h1>{{ party.name }}</h1> 
         <div v-if="party.bannerImage !== null ||party.bannerImage !== ''">
           <img :src="party.bannerImage" width="100%" height="160px" style="z-index:2;" />
         </div>
@@ -159,6 +160,8 @@
 
 
 .banner{
+  width: 600px;
+  margin-left:100px;
 position: relative;
 }
 

@@ -9,23 +9,29 @@
         <RouterLink class="navbar-link index3" :to="{ name: 'allPartyFit' }">전체 party fit</RouterLink>
       </nav>
     </div>
-    <div>
 
-    </div>
+
+
     <div class="box">
 
 
       <div class="user-info">
-        <template v-if="store.loginUser == null || store.loginUser == undefined || store.loginUser == ''">
+        <template
+          v-if="
+            store.loginUser == null ||
+            store.loginUser == undefined ||
+            store.loginUser == ''
+          "
+        >
             <div class="login-logout">
 
-              <p class="login" @click="click">
-                로그인
-              </p>
-              <p class="sign" @click="signup">
-                회원가입
-              </p>
-            </div>
+            <p class="login" @click="click">
+              로그인
+            </p>
+            <p class="sign" @click="signup">
+              회원가입
+            </p>
+          </div>
         </template>
         <template v-else>
           <div class="user-card">
@@ -48,15 +54,12 @@
         </template>
       </div>
     </div>
-    
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
-    />
+
+
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link rel="stylesheet"
@@ -128,7 +131,7 @@ setInterval(() => {
 
   max-width: 1400px;
   min-width: 1300px;
-  background-image: url("/src/assets/user/back-top2.png");
+  background-image: url('/src/assets/user/back-top2.png');
   background-size: contain;
   /* 배경 이미지를 커버로 채움 */
   background-position: bottom;
@@ -301,13 +304,12 @@ setInterval(() => {
 }
 
 .top {
-  padding-top: 50px;
   padding-bottom: 0px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-content: space-around;
-  height: 15vh;
+  height: 10vh;
   width: 600px;
 }
 
@@ -338,19 +340,21 @@ setInterval(() => {
   position: sticky;
   top: 0px;
   height: 200px;
-  background-color: #e8e8e8;
+  background-color: #E8E8E8;
+
 }
 
 .navbar-menu a {
   text-align: center;
   color: black;
-  width: 180px;
+  width: 130px;
   transition: color 0.1s, transform 0.1s;
-  font-size: 20px;
+  font-size: 1.1em;
+  margin: 0 20px;
 }
 
 .navbar-menu a:hover {
-  color: black;
+  color: rgb(147, 147, 147);
 }
 
 .navbar-menu .navbar-link {
@@ -388,7 +392,7 @@ setInterval(() => {
   border-left: 1px solid rgb(116, 116, 116);
   border-right: 1px solid rgb(116, 116, 116);
   border-bottom: 1px solid #f8f9fa;
-  background-color: #bbffbb;
+  background-color: #ffdcbb;
   z-index: 1;
 }
 
@@ -480,8 +484,9 @@ a {
     border-radius: 5px;
   }
 
-  .login-logout {
-    position: absolute;
+  
+.login-logout{
+  position: absolute;
     right: 50px;
     top: -160px;
     display: flex;
@@ -497,6 +502,7 @@ a {
 }
 
 @media (max-width: 1350px) {
+
   .user-card {
     position: absolute;
     right: 50px;
@@ -512,8 +518,8 @@ a {
     border-radius: 5px;
   }
 
-  .login-logout {
-    position: absolute;
+  .login-logout{
+  position: absolute;
     right: 0px;
     top: 70px;
     display: flex;
@@ -525,7 +531,7 @@ a {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     border-radius: 5px;
-  }
+} 
   .container1 {
     padding: 0px 40px;
   }

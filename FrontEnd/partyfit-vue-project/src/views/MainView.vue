@@ -21,20 +21,20 @@ import TheHeaderNav from "@/components/common/TheHeaderNav.vue";
 
 <style scoped>
 .main {
-  background-color: #e8e8e8;
+  /* background-color: #e8e8e8; */
   position: relative;
 }
 
 .nav-bar {
   position: sticky;
   top: 0px;
-  height: 200px;
+  height: auto;
   z-index: 10;
 }
 
 .coral-color a {
   padding: 20px;
-  color: coral;
+  color: rgb(0, 145, 255);
   text-decoration: none;
   margin-top: 40px;
   height: 40vh;
@@ -42,7 +42,7 @@ import TheHeaderNav from "@/components/common/TheHeaderNav.vue";
   padding: 0px 40px;
   font-size: 45px;
   width: 1300px;
-  background-color: #e8e8e8;
+  /* background-color: #e8e8e8; */
 }
 
 .content {
@@ -57,8 +57,8 @@ import TheHeaderNav from "@/components/common/TheHeaderNav.vue";
 .con {
   min-width: 1300px;
   max-width: 1400px;
-  background-color: #e8e8e8;
-  background-image: url('/src/assets/user/back-mid.png');
+  /* background-color: #e8e8e8; */
+  /* background-image: url('/src/assets/user/back-mid.png'); */
   background-size: contain;
   background-position: center;
   background-repeat: repeat;
@@ -72,7 +72,7 @@ footer {
   bottom: 0px;
   max-width: 1400px;
   min-width: 1300px;
-  background: url('/src/assets/user/back-bottom135.png') top center no-repeat, #e8e8e8;
+  /* background: url('/src/assets/user/back-bottom135.png') top center no-repeat, #e8e8e8; */
   background-size: contain;
   background-origin: border-box;
 }

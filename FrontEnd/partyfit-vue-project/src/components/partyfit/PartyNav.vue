@@ -156,6 +156,7 @@ const goPartyMainPage = function () {
 .profile-info,
 .nav-links {
     width: 100%;
+    background-color: white;
 }
 
 .write-button {
@@ -168,7 +169,7 @@ const goPartyMainPage = function () {
 }
 
 .party-info p {
-    color: orange;
+    color: rgb(0, 0, 0);
     /* 주황색으로 설정 */
 }
 
@@ -188,6 +189,7 @@ const goPartyMainPage = function () {
 
 .leftbox {
     
+    background-color: white;
 }
 /* 스크롤바 설정*/
 .leftbox::-webkit-scrollbar{
