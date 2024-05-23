@@ -70,12 +70,10 @@
         </div>
       </div>
       <div class="right parent"> 
-        <div class="sticky-header is-sticky">
+        <PartyCarenderVue/>
+        <div class="sticky-header is-sticky party-members">
 
-          <div class="calender ">
-            <PartyCarenderVue/>
-          </div>
-          <div class="party-members">
+          <!-- <div class="party-members"> -->
             파티 참여자
             <ul>
               <li v-for="member in store.partyMemberList" :key="member.partyMemberId">
@@ -83,7 +81,7 @@
               </li>
             </ul>
           </div>
-        </div>
+        <!-- </div> -->
       </div>
       </div>
     </div>
