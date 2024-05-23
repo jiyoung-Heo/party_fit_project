@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div class="delete-user">
     <label for="changePW">현재 비밀번호</label>
     <input type="password" v-model="nowPW" placeholder="현재 비밀번호" />
     <div v-if="!isSame">비밀번호가 달라요</div>
     <button @click="deleteUser">탈퇴하기</button>
   </div>
 </template>
-    
-    
-    <script setup>
+
+
+<script setup>
 import { useUserStore } from "@/stores/user";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
@@ -20,7 +20,7 @@ const store = useUserStore();
 const partyStore = usePartyStore();
 const isSame = ref(true);
 
-onMounted(() => {});
+onMounted(() => { });
 const nowPW = ref();
 const deleteUser = () => {
   if (nowPW.value == store.loginUser.password) {
@@ -40,12 +40,12 @@ const deleteUser = () => {
           title: "탈퇴완료!",
           text: "탈퇴되었습니다. 메인페이지로 이동합니다.",
           icon: "success",
-        }).then(()=>{
-            console.log("test")
-            //회원탈퇴진행
-            store.$reset();
-            partyStore.$reset()
-            router.push({name:'home'})
+        }).then(() => {
+          console.log("test")
+          //회원탈퇴진행
+          store.$reset();
+          partyStore.$reset()
+          router.push({ name: 'home' })
         });
       }
     });
@@ -54,7 +54,12 @@ const deleteUser = () => {
   }
 };
 </script>
-    
-    
-    <style scoped>
+
+
+<style scoped>
+.delete-user {
+  align-items: start;
+  justify-content: left;
+  max-width: 1300px;
+}
 </style>

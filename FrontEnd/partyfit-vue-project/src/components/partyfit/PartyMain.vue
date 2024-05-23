@@ -2,7 +2,7 @@
   <div>
     <div class="banner">
       <div v-if="party.bannerImage !== null">
-        <img :src="party.bannerImage" width="100%" height="160px" />
+        <img :src="party.bannerImage" width="100%" height="160px" style="z-index:2;"/>
       </div>
       <div v-else>
         <div style="
