@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <FullCalendar :options="calendarOptions" @dateClick="handleDateClick" />
   </div>
 </template>

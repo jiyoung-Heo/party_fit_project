@@ -218,6 +218,7 @@ public class PartyController {
 	 * @return
 	 */
 	@PutMapping("/{partyId}/article/{articleId}")
+	
 	public ResponseEntity<?> modifyArticle(@PathVariable("partyId") int partyId,
 			@PathVariable("articleId") int articleId, @RequestBody Article article, HttpSession session) {
 		int userId;

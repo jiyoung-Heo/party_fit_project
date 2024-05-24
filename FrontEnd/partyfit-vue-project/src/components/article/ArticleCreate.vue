@@ -21,7 +21,9 @@
           /> {{ review.title }}({{ review.startTime.split("T")[0]
             }}{{ review.startTime.split("T")[1].slice(0, 5) }} ~
             {{ review.endTime.split("T")[0]
-            }}{{ review.endTime.split("T")[1].slice(0, 5) }}): {{ review.headcount }} 명 참여</p>
+            }}{{ review.endTime.split("T")[1].slice(0, 5) }})
+          </p>
+          <!-- {{ review.headcount }} 명 참여 -->
         </div>
       </div>
       <div class="map-upload">

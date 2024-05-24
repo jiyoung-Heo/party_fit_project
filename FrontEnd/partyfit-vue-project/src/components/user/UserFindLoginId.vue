@@ -50,9 +50,9 @@ const goLogin = function(){
 .findId-container{
   align-items: start;
   justify-content: left;
-  padding: 150px;
   height: 90vh;
   max-width: 1300px;
+  padding: 10% 0 0 36%;
 }
 hr{
   margin: 0;

@@ -3,14 +3,26 @@
     <div class="header">
       <h3>PARTY FIT</h3>
       <div class="buttons">
-        <button type="button" class="btn btn-outline-primary" @click="end">모집마감</button>
-        <button type="button" class="btn btn-outline-primary" @click="ing">모집중</button>
+        <button type="button" class="btn btn-outline-primary" @click="end">
+          모집마감
+        </button>
+        <button type="button" class="btn btn-outline-primary" @click="ing">
+          모집중
+        </button>
       </div>
     </div>
     <div class="search mb-3">
-      <input type="text" placeholder="검색어 입력" v-model="searchWord" class="form-control" />
-      <img src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png" @click="search"
-        class="search-icon" />
+      <input
+        type="text"
+        placeholder="검색어 입력"
+        v-model="searchWord"
+        class="form-control"
+      />
+      <img
+        src="https://s3.ap-northeast-2.amazonaws.com/cdn.wecode.co.kr/icon/search.png"
+        @click="search"
+        class="search-icon"
+      />
     </div>
     <div v-if="partyStore.partyList == null">
       <p class="count">모집중인 모임 0개</p>
@@ -24,18 +36,17 @@
       <option value="member_count desc">회원많은순</option>
       <option value="member_count asc">회원적은순</option>
     </select>
-    <hr>
+    <hr />
     <PartyListVue :order-by="orderBy" :is-end="isEnd" :search="propsWord" />
   </div>
 </template>
 
 <script setup>
-
 import PartyListVue from "@/components/partyfit/PartyListVue.vue";
 import { usePartyStore } from "@/stores/party";
 import { ref, watch } from "vue";
 
-const partyStore = usePartyStore()
+const partyStore = usePartyStore();
 const selectedOrder = ref("reg_date desc");
 
 const orderBy = ref(selectedOrder.value);
@@ -52,17 +63,15 @@ const ing = () => {
   isEnd.value = false;
 };
 
-const propsWord = ref('')
-const searchWord = ref('')
+const propsWord = ref("");
+const searchWord = ref("");
 
 const search = () => {
-  propsWord.value = searchWord.value
-}
-
+  propsWord.value = searchWord.value;
+};
 </script>
 
 <style scoped>
-
 .mypartyfit-container {
   justify-content: left;
   padding-left: 150px;

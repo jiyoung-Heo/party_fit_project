@@ -1,19 +1,19 @@
 <template>
   <div>
     
-    모집중인 모임 {{filteredPartyList.length}}개
+    {{filteredPartyList.length}}개
+    {{ props.isEnd }}
     <div class="row row-cols-1 row-cols-md-3 g-4" data-aos="fade-down">
       <div v-for="party in filteredPartyList" :key="party.partyId" @click="gopartyPage(party)">
         <div class="col"  
         data-aos-easing="ease-out-cubic"
         data-aos-anchor-placement="top-bottom"
         
-        data-aos="fade-down"
         
         data-aos-duration="800"
         
         >
-          <div class="card party ">
+          <div class="card party">
             <img
             :src="party.introductionImage"
             class="card-img-top fit-image"

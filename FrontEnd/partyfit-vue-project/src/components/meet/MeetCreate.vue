@@ -1,9 +1,6 @@
 <template>
   <div class="article-create">
-    <h2>meet 등록</h2>
-    <select v-model="selectCategory" name="board">
-      <option value="3">모임후기</option>
-    </select>
+    <h2>meet 등록 요청</h2>
     <input type="text" placeholder="제목 입력창" v-model="data.title" />
     <hr />
     <template v-if="selectCategory == '3'">

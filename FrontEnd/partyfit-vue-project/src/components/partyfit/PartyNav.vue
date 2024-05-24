@@ -6,15 +6,14 @@
                     <p class="fs-4 mt-2" @click="goPartyMainPage">{{ store.selectedParty.name }}</p>
                     <img :src="store.selectedParty.introductionImage" alt="헬스장 이미지" width="150px">
                     <p>참여인원 {{ store.selectedParty.memberCount }}명</p>
-
                 </div>
                 <hr>
                 <div id="profile" class="profile-info">
                     <p v-if="loginUser.profile === ''">
-                        <img :src="loginUser.profile" alt="프로필사진" width="20px">
+                        <span class="material-icons">face</span>
                     </p>
                     <div v-else>
-                        <span class="material-icons">face</span>
+                        <img :src="`/src/assets/user/${loginUser.profile}`" alt="프로필사진" width="20px">
                     </div>
                     <a>{{ loginUser.name }} 님</a>
                 </div>
@@ -40,10 +39,10 @@
 
                         <p class="catagory"><a>일정</a></p>
                         <li>
-                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId}}">일정 조회</RouterLink>
+                            <RouterLink :to="{ name: 'meetlist', params: { partyId: store.selectedParty.partyId}}">모임 조회</RouterLink>
                         </li>
                         <li>
-                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.partyId}}">일정 등록</RouterLink>
+                            <RouterLink :to="{ name: 'meetcreate', params: { partyId: store.selectedParty.partyId}}">모임 등록</RouterLink>
                         </li>
                         <!-- {{ store.isManager }} -->
                         <div v-if="store.isManager">
@@ -88,6 +87,7 @@ const loginUser = ref(userstore.loginUser)
 const partylist = ref()
 const currentStatus= ref()
 onMounted(async () => {
+    store.getOneParty(route.params.partyId);
     // party.value = store.selectedParty
     // store.getMemberList(store.selectedParty.partyId).then(() => {
     //     console.log('party member list:', partylist.value);
@@ -187,7 +187,7 @@ const goPartyMainPage = function () {
 }
 
 .leftbox {
-    
+    height: 90vh; /* 예시로 90vh로 높이 설정 */
 }
 /* 스크롤바 설정*/
 .leftbox::-webkit-scrollbar{

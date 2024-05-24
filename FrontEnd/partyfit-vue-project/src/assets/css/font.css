@@ -2,7 +2,7 @@
 @font-face {
    font-family:'NeoDunggeunmo';
 
-  src: url('/assets/font/neodgm.woff2') format('woff2');
+  src: url('@/assets/font/neodgm.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
   font-feature-settings: "calt" off;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: "Galmuri14", sans-serif;
-  src: url('/assets/font/Galmuri11-Bold.woff2') format('woff2');
+  src: url('@/assets/font/Galmuri11-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
 }
@@ -31,4 +31,8 @@ body {
 --main-color :coral;
 
 --backgound-color : #f8f9fa;
+}
+
+*{
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'  width='40' height='48' viewport='0 0 100 100' style='fill:black;font-size:24px;'><text y='50%'>✏️</text></svg>") 16 0, auto;
 }

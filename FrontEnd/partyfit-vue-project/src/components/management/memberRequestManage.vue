@@ -19,7 +19,7 @@
                 <div></div>
                 
                 </div>
-                    <div class="list fs-4" v-for="user in memberRequestList" :key="user.userId">
+                    <div class="list" v-for="user in memberRequestList" :key="user.userId">
                         
                         <div>{{ user.username }} ({{ user.age}}세)</div>
                         <div>{{ user.loginId }}</div>
