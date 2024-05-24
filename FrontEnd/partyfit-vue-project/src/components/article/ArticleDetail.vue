@@ -7,7 +7,7 @@
         </button>
       </template>
       <div class="category" @click="goBoard(category)">{{ category }} &gt;</div>
-      
+
       <div class="title fs-5" v-if="article">{{ article.title }}</div>
 
       <div class="writer" v-if="article">
@@ -43,8 +43,17 @@
       ></div>
 
       <hr />
-
-      <div id="map" style="width: 100%; height: 400px;"></div>
+      <div class="mapArea">
+        <template v-if="
+    locationData &&
+    locationData.mapx &&
+    locationData.mapy
+  ">모임장소</template>
+       
+        <center>
+          <div id="map" style="width: 50%; height: 400px"></div>
+        </center>
+      </div>
       <CommentList :article-id="articleId" />
     </div>
   </div>
@@ -89,15 +98,13 @@ const deleteArticle = () => {
 };
 
 const locationData = ref();
-const mapContainer = document.getElementById('map');
-
+const mapContainer = document.getElementById("map");
 
 onMounted(async () => {
   articleId.value = route.params.articleId;
   await store.getArticleDetail(articleId.value, false).then(() => {
     article.value = store.articleDetail;
     if (!article.value.profile) {
-      
       article.value.profile = "user.jpg";
     }
     store.getCommentList(articleId.value);
@@ -156,7 +163,6 @@ const initializeMap = () => {
     // console.error("Container map not found or location data is missing");
   }
 };
-
 
 const category = ref();
 watch(article, (newVal) => {
@@ -233,7 +239,7 @@ const compiledMarkdown = computed(() => {
   align-items: center;
   min-height: 100vh;
   background-color: #f0f2f5;
-  }
+}
 
 .widget {
   background: #fff;
@@ -297,11 +303,10 @@ const compiledMarkdown = computed(() => {
 
 .content {
   margin: 20px 0;
-  padding: 10px;
+  padding: 20px; /* 내용 주위에 여백을 추가하여 더 크게 보이도록 조정 */
   background-color: #f9f9f9;
   border-radius: 5px;
-  max-height: 300px;
-  overflow-y: auto;
+  overflow-y: scroll; /* 내용이 넘칠 경우 수직 스크롤이 표시되도록 함 */
 }
 
 hr {
@@ -309,5 +314,12 @@ hr {
   height: 1px;
   background: #eee;
   margin: 20px 0;
+}
+.mapArea {
+  text-align: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+}
+.map{
+  border-radius: 10%;
 }
 </style>

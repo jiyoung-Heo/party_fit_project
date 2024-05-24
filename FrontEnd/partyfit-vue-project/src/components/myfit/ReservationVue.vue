@@ -2,7 +2,7 @@
   <div class="reservation">
     <div class="header">
       <div class="title">예약된 일정</div>
-      <a class="more-link">+ 더보기</a>
+      <!-- <a class="more-link">+ 더보기</a> -->
     </div>
     <hr />
     <div class="meet-list">
@@ -70,7 +70,7 @@ const meetList = computed(() => store.meetList);
 
 .meet-list {
   margin-top: 10px;
-  width: 250px;
+  /* width: 250px; */
   height : 50vh;
   white-space: nowrap; /* 텍스트가 줄 바꿈되지 않도록 설정 */
   text-overflow: ellipsis; /* 넘치는 부분을 ... 으로 표시 */

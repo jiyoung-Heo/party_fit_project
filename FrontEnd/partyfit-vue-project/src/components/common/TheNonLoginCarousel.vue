@@ -30,32 +30,32 @@
         <div class="carousel-inner">
           <div class="carousel-item active">
             <img
-              src="https://picsum.photos/1024/480/?image=10"
+              src="https://lh3.googleusercontent.com/proxy/xIIUukewF0KBShAKcjbEGte7CWflVsIssYIGRdw3Uk1NwVYNHKkzff7xVr3AI9ruq_YIb4FJTk8cA5YboN_uWLZD8oaZoyZCIqDHOLrxxDjdGzfYOw"
               class="d-block w-100"
               alt="로고배너1"
             />
             <div class="carousel-caption d-none d-md-block">
-              <h5>로고배너 sample</h5>
+              <h5>PARTYFIT과 함께!</h5>
             </div>
           </div>
           <div class="carousel-item">
             <img
-              src="https://picsum.photos/1024/480/?image=12"
+              src="https://www.the-stock.kr/news/photo/202104/14130_12854_1920.png"
               class="d-block w-100"
               alt="로고배너2"
             />
             <div class="carousel-caption d-none d-md-block">
-              <h5>로고배너2 sample</h5>
+              <h5>PARTYFIT과 함께!</h5>
             </div>
           </div>
           <div class="carousel-item">
             <img
-              src="https://picsum.photos/1024/480/?image=22"
+              src="https://img1.daumcdn.net/thumb/R1280x0.fjpg/?fname=http://t1.daumcdn.net/brunch/service/user/8Rkv/image/L0TN0gaV-hEf6M3JQfrfgqJ5cwo.jpg"
               class="d-block w-100"
               alt="로고배너3"
             />
             <div class="carousel-caption d-none d-md-block">
-              <h5>로고배너3 sample</h5>
+              <h5>PARTYFIT과 함께!</h5>
             </div>
           </div>
         </div>

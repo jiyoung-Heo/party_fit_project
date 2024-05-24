@@ -496,7 +496,7 @@ a {
   }
 }
 
-@media (max-width: 1350px) {
+@media (max-width: 3000px) {
   .user-card {
     position: absolute;
     right: 50px;

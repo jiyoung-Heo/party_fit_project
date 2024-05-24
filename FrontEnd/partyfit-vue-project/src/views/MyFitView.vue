@@ -1,5 +1,5 @@
 <template>
-  <div class="container grid text-center">
+  <div class="grid text-center">
     <div class="row" style="min-height: auto;">
       <div class="col-12 col-md-8">
         <!-- <TheMyFitHeaderNavVue /> -->
@@ -10,11 +10,8 @@
       </div>
     </div>
     <div class="row" style="min-height: auto;">
-      <div class="col-12 col-md-8">
+      <div class="col">
         <MyPartyFitVue  />
-      </div>
-      <div class="col-12 col-md-4 ">
-        <TodoCheckVue  />
       </div>
     </div>
   </div>

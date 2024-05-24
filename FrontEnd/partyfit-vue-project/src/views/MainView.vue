@@ -1,9 +1,11 @@
 <template>
-  <div>
+  <div class="test">
     <div class="main">
-      <span class="coral-color">
-        <RouterLink :to="{ path : '/my-fit' }">party fit</RouterLink>
-      </span>
+      <div class="container">
+        <span class="coral-color">
+          <RouterLink :to="{ name: 'beforeLoginMain'}">party fit</RouterLink>
+        </span>
+      </div>
       <TheHeaderNav class="nav-bar" />
       <div class="con">
         <RouterView class="content" />
@@ -31,18 +33,21 @@ import TheHeaderNav from "@/components/common/TheHeaderNav.vue";
   height: 200px;
   z-index: 10;
 }
-
+.container{
+  padding-top:2%;
+}
 .coral-color a {
-  padding: 20px;
+  /* padding: 20px; */
   color: coral;
   text-decoration: none;
-  margin-top: 40px;
-  height: 40vh;
-  position: relative;
-  padding: 0px 40px;
+  /* margin-top: 40px; */
+  /* height: 40vh; */
+  /* position: relative; */
+  /* padding: 0px 40px; */
   font-size: 45px;
-  width: 1300px;
+  /* width: 1300px; */
   background-color: #e8e8e8;
+  /* margin-left:10%; */
 }
 
 .content {
@@ -75,5 +80,8 @@ footer {
   background: url('/src/assets/user/back-bottom135.png') top center no-repeat, #e8e8e8;
   background-size: contain;
   background-origin: border-box;
+}
+.test{
+  background-color: #E8E8E8;
 }
 </style>

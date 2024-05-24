@@ -234,11 +234,9 @@ const isEmailUQ = async function () {
 .signup-container {
   align-items: start;
   justify-content: left;
-  padding: 150px;
+  padding: 10% 0 0 36%;
   height: 90vh;
   max-width: 1300px;
-  padding-left: 200px;
-
 }
 
 hr {

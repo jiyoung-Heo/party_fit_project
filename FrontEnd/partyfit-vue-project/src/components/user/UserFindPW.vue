@@ -18,7 +18,7 @@
       </div>
       
       <div class="btns" style="display: inline">
-       <p><a @click="changePassword"  class="custom-btn btn-15" >회원 조회</a></p>
+       <p>✔️ <a @click="changePassword"  class="custom-btn btn-15" >회원 조회</a></p>
       </div>
     </fieldset>
     </div>
@@ -51,9 +51,9 @@ const changePassword = () => {
 .findPW-container{
   align-items: start;
   justify-content: left;
-  padding: 150px;
   height: 90vh;
   max-width: 1300px;
+  padding: 10% 0 0 36%;
 }
 hr{
   margin: 0;
