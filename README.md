@@ -1,5 +1,8 @@
-# party-fit
+# 🏃 party-fit
 SSAFY 11기 1학기 관통 프로젝트
+
+## 프로젝트 소개
+>함께 운동하는것을 즐기는 운동인들을 위한 모임 매칭 및 일정관리 플랫폼
 >개발기간: 24.05.10~24.05.24
 
 ## 개발팀 소개
@@ -34,9 +37,6 @@ SSAFY 11기 1학기 관통 프로젝트
 ![Eclipse](https://img.shields.io/badge/Eclipse-FE7A16.svg?style=for-the-badge&logo=Eclipse&logoColor=white)
 ![Visual Studio Code](https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white)
 ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
-
-## 프로젝트 소개
->함께 운동하는것을 즐기는 운동인들을 위한 모임 매칭 및 일정관리 플랫폼
 
 ### 화면구성 📺
 | 메인페이지 | Party메인페이지 |
