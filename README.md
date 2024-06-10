@@ -1,10 +1,15 @@
 # 🏃 party-fit
-SSAFY 11기 1학기 관통 프로젝트
+**SSAFY 11기 1학기 관통 프로젝트**
+>**개발기간: 24.05.10~24.05.24**
 
-## 프로젝트 소개
->함께 운동하는것을 즐기는 운동인들을 위한 모임 매칭 및 일정관리 플랫폼
+**함께 운동하는것을 즐기는 운동인들을 위한 모임 매칭 및 일정관리 플랫폼**
+>소모임처럼 다양한 party-fit 그룹이 존재하고 그 그룹내에 참여하여 모임을 개최하고 모임원들과 커뮤니티를 구축할 수 있는 운동인 전용 커뮤니티!
 
->개발기간: 24.05.10~24.05.24
+![메인](https://private-user-images.githubusercontent.com/93931316/338035436-f6c25732-7edc-4d76-b889-5db86cc86c3d.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTc5OTA4MjUsIm5iZiI6MTcxNzk5MDUyNSwicGF0aCI6Ii85MzkzMTMxNi8zMzgwMzU0MzYtZjZjMjU3MzItN2VkYy00ZDc2LWI4ODktNWRiODZjYzg2YzNkLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDA2MTAlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQwNjEwVDAzMzUyNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWFlMWIxY2M1YWUyODQ2NGE2Nzk2MjA3ZTUxOTJhYTAwYWVmMjAyM2JkZDcxNTQyZjI2ZmNiYWRiMjg4M2NiYmQmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0JmFjdG9yX2lkPTAma2V5X2lkPTAmcmVwb19pZD0wIn0.cDMm1ywLcf9hLCmeTqI8HCcrWt0_KhZO_gwEqXSVXvQ)
+
+
+>**개발기간: 24.05.10~24.05.24**
+
 
 ## 개발팀 소개
 
