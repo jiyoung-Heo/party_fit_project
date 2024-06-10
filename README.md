@@ -6,7 +6,7 @@ SSAFY 11기 1학기 관통 프로젝트
 
 | 허지영 | 이다영 |
 | --- | --- |
-| ![허지영](https://avatars.githubusercontent.com/u/93931316?v=4) | ![이다영](https://avatars.githubusercontent.com/u/120040559?v=4) |
+| <img src="https://avatars.githubusercontent.com/u/93931316?v=4" width="300" height="300"/>|<img src="https://avatars.githubusercontent.com/u/120040559?v=4" width="300" height="300"/>
 | [@jiyoung-Heo](https://github.com/jiyoung-Heo) |  [@2dayoung](https://github.com/2dayoung) |
 
 ## Stacks 🐈
