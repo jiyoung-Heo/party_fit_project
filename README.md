@@ -1,6 +1,7 @@
-# 🏃 party-fit [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjiyoung-Heo%2Fhit-counter&count_bg=%23282A36&title_bg=%23DD6387&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+# 🏃 party-fit 
 **SSAFY 11기 1학기 관통 프로젝트**
 >**개발기간: 24.05.10~24.05.24**
+>[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjiyoung-Heo%2Fparty_fit_project%2Ftree%2Fmain&count_bg=%23FF9400&title_bg=%23FFD296&icon=spring.svg&icon_color=%23FFFFFF&title=&edge_flat=true)](https://hits.seeyoufarm.com)
 
 **함께 운동하는것을 즐기는 운동인들을 위한 모임 매칭 및 일정관리 플랫폼**
 >소모임처럼 다양한 party-fit 그룹이 존재하고 그 그룹내에 참여하여 모임을 개최하고 모임원들과 커뮤니티를 구축할 수 있는 운동인 전용 커뮤니티!
