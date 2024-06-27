@@ -1,4 +1,6 @@
-# 🏃 party-fit [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjiyoung-Heo%2Fparty_fit_project%2Ftree%2Fmain&count_bg=%23FF9400&title_bg=%23FFD296&icon=spring.svg&icon_color=%23FFFFFF&title=&edge_flat=true)](https://hits.seeyoufarm.com)
+[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fjiyoung-Heo%2Fparty_fit_project%2Ftree%2Fmain&count_bg=%23FF9400&title_bg=%23FFD296&icon=spring.svg&icon_color=%23FFFFFF&title=&edge_flat=true)](https://hits.seeyoufarm.com)
+
+# 🏃 party-fit 
 
 **SSAFY 11기 1학기 관통 프로젝트**
 >**개발기간: 24.05.10~24.05.24**
